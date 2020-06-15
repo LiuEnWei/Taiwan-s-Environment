@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animated-vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:drawable="@drawable/ic_splash_taiwan">
+    <target
+        android:animation="@animator/anim_frame"
+        android:name="frame"/>
+    <target
+        android:animation="@animator/anim_outline_taiwan"
+        android:name="outline_taiwan"/>
+    <target
+        android:animation="@animator/anim_translate_taiwan"
+        android:name="group_taiwan"/>
+    <target
+        android:animation="@animator/anim_sea"
+        android:name="sea"/>
+    <target
+        android:animation="@animator/anim_sea_2"
+        android:name="sea_2"/>
+    <target
+        android:animation="@animator/anim_sea_2_color"
+        android:name="sea_2_color"/>
+</animated-vector>

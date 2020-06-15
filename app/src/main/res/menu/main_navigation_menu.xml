@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/btn_home"
+        android:checked="true"
+        android:icon="@drawable/ic_round_home_24"
+        android:title="@string/home"
+        app:showAsAction="ifRoom|withText"/>
+    <item
+        android:id="@+id/btn_taiwan_region"
+        android:checked="true"
+        android:icon="@drawable/ic_round_view_list_24"
+        android:title="@string/taiwan_region"
+        app:showAsAction="ifRoom|withText"/>
+    <item
+        android:id="@+id/btn_more"
+        android:checked="true"
+        android:icon="@drawable/ic_round_more_horiz_24"
+        android:title="@string/more"
+        app:showAsAction="ifRoom|withText"/>
+</menu>

@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">Taiwan-s-Environment</string>
+
+    <string name="T">T</string>
+    <string name="a">a</string>
+    <string name="i">i</string>
+    <string name="w">w</string>
+    <string name="n">n</string>
+    <string name="home">首頁</string>
+    <string name="taiwan_region">台灣地區</string>
+    <string name="more">更多</string>
+
 </resources>
