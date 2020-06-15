@@ -41,21 +41,4 @@ abstract class BaseFragment: Fragment() {
     }
 
     abstract fun getLayoutId(): Int
-
-    fun showErrorMessageDialog() {
-        val errorDialog = AlertDialog.Builder(requireActivity())
-        errorDialog.setTitle("Error")
-        errorDialog.setMessage("Message")
-        errorDialog.setCancelable(false)
-        errorDialog.setPositiveButton("OK", object : DialogInterface.OnClickListener {
-                override fun onClick(dialog: DialogInterface?, id: Int) {
-
-                }
-            })
-        errorDialog.setNegativeButton("Cancel",  object : DialogInterface.OnClickListener {
-                override fun onClick(dialog: DialogInterface?, id: Int) {
-                }
-            })
-        errorDialog.show()
-    }
 }

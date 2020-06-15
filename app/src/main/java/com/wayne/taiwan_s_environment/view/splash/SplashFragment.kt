@@ -48,8 +48,6 @@ class SplashFragment : BaseFragment() {
         })
 
         viewModel.getUV()
-
-        showErrorMessageDialog()
         startSplashAnimator()
     }
 
