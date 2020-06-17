@@ -19,4 +19,40 @@
     <target
         android:animation="@animator/anim_sea_2_color"
         android:name="sea_2_color"/>
+    <target
+        android:animation="@animator/anim_path_t"
+        android:name="path_t"/>
+    <target
+        android:animation="@animator/anim_t"
+        android:name="t"/>
+    <target
+        android:animation="@animator/anim_path_a_1"
+        android:name="path_a_1"/>
+    <target
+        android:animation="@animator/anim_a_1"
+        android:name="a_1"/>
+    <target
+        android:animation="@animator/anim_path_i"
+        android:name="path_i"/>
+    <target
+        android:animation="@animator/anim_i"
+        android:name="i"/>
+    <target
+        android:animation="@animator/anim_path_w"
+        android:name="path_w"/>
+    <target
+        android:animation="@animator/anim_w"
+        android:name="w"/>
+    <target
+        android:animation="@animator/anim_path_a_2"
+        android:name="path_a_2"/>
+    <target
+        android:animation="@animator/anim_a_2"
+        android:name="a_2"/>
+    <target
+        android:animation="@animator/anim_path_n"
+        android:name="path_n"/>
+    <target
+        android:animation="@animator/anim_n"
+        android:name="n"/>
 </animated-vector>

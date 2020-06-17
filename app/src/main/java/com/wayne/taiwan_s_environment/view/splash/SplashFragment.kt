@@ -54,27 +54,5 @@ class SplashFragment : BaseFragment() {
     private fun startSplashAnimator() {
         vectorDrawable = (img_outline_taiwan.drawable as AnimatedVectorDrawable)
         vectorDrawable?.start()
-        startTextAnimator(text_t,2500)
-        startTextAnimator(text_a_1,2600)
-        startTextAnimator(text_i,2700)
-        startTextAnimator(text_w,2800)
-        startTextAnimator(text_a_2,2900)
-        startTextAnimator(text_n,3000)
-    }
-
-    private fun startTextAnimator(view: View, startDelay: Long) {
-        view.translationY = 15f
-        view.alpha = 0f
-        val textTranslationY = ObjectAnimator.ofFloat(view, "translationY", 15f, -2f , 0f)
-        textTranslationY.duration = 500
-        textTranslationY.interpolator = AccelerateDecelerateInterpolator()
-        textTranslationY.startDelay = startDelay
-        textTranslationY.start()
-
-        val textAlpha = ObjectAnimator.ofFloat(view, "alpha", 0f, 0.5f, 1f)
-        textAlpha.duration = 500
-        textAlpha.interpolator = LinearInterpolator()
-        textAlpha.startDelay = startDelay
-        textAlpha.start()
     }
 }
