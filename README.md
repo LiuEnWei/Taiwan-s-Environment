@@ -17,3 +17,5 @@
   Koin
   
   OkHttp/Retrofit
+
+  RichPath

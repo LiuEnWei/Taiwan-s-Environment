@@ -16,14 +16,10 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
 
-class SplashFragment : BaseFragment() {
+class SplashFragment : BaseFragment(R.layout.fragment_splash) {
     private val viewModel by viewModel<SplashViewModel>()
 
     private var vectorDrawable: AnimatedVectorDrawable? = null
-
-    override fun getLayoutId(): Int {
-        return R.layout.fragment_splash
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -32,11 +28,13 @@ class SplashFragment : BaseFragment() {
             when (it) {
                 is ApiResult.Success -> {
                     vectorDrawable?.stop()
-                    if (viewModel.isFirstStartApp) {
-                        findNavController().navigate(SplashFragmentDirections.actionSplashFragmentToIntroFragment())
-                    } else {
-                        findNavController().navigate(SplashFragmentDirections.actionSplashFragmentToHomeFragment())
-                    }
+//                    if (viewModel.isFirstStartApp) {
+//                        findNavController().navigate(SplashFragmentDirections.actionSplashFragmentToIntroFragment())
+//                    } else {
+//                        findNavController().navigate(SplashFragmentDirections.actionSplashFragmentToHomeFragment())
+//                    }
+                    // TODO
+                    findNavController().navigate(SplashFragmentDirections.actionSplashFragmentToHomeFragment())
                 }
 
                 is ApiResult.Error -> {
@@ -54,5 +52,9 @@ class SplashFragment : BaseFragment() {
     private fun startSplashAnimator() {
         vectorDrawable = (img_outline_taiwan.drawable as AnimatedVectorDrawable)
         vectorDrawable?.start()
+    }
+
+    override fun getStatusBarColor(): Int {
+        return R.color.colorAmber500
     }
 }

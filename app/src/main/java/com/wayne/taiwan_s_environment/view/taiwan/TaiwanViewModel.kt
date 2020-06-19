@@ -4,36 +4,37 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.wayne.taiwan_s_environment.model.api.ApiResult
-import com.wayne.taiwan_s_environment.model.api.OpenDataService
-import com.wayne.taiwan_s_environment.model.api.vo.UV
+import com.wayne.taiwan_s_environment.model.db.dao.UVDao
+import com.wayne.taiwan_s_environment.model.db.vo.UV
 import com.wayne.taiwan_s_environment.view.base.BaseViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import org.koin.core.inject
-import retrofit2.HttpException
 
 class TaiwanViewModel : BaseViewModel() {
 
-    private val openDateService: OpenDataService by inject()
+    private val uvDao: UVDao by inject()
 
     private val _uvList = MutableLiveData<ApiResult<List<UV>>>()
     val uvList: LiveData<ApiResult<List<UV>>>
         get() = _uvList
 
-    fun getUV() {
+    fun getUVByCounty(county: String? = null) {
         viewModelScope.launch {
             flow {
-                val result = openDateService.getUV()
-                if (!result.isSuccessful) throw HttpException(result)
-                emit(ApiResult.success(result.body()))
+                val uvList = if (county == null) {
+                    uvDao.getAll()
+                } else {
+                    uvDao.getAllByCounty(county)
+                }
+                emit(ApiResult.success(uvList))
             }.flowOn(Dispatchers.IO)
-                .onStart {  }
                 .catch { e -> emit(ApiResult.error(e)) }
-                .onCompletion {  }
                 .collect { _uvList.value = it }
         }
     }
-
-
 }

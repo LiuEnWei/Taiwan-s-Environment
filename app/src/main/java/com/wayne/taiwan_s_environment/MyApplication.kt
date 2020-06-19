@@ -13,7 +13,7 @@ import timber.log.Timber
 class MyApplication : Application() {
 
     companion object {
-        lateinit var self : Application
+        private lateinit var self : Application
         fun applicationContext(): Application {
             return self
         }

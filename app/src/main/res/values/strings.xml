@@ -1,13 +1,50 @@
 <resources>
     <string name="app_name">Taiwan-s-Environment</string>
 
-    <string name="T">T</string>
-    <string name="a">a</string>
-    <string name="i">i</string>
-    <string name="w">w</string>
-    <string name="n">n</string>
     <string name="home">首頁</string>
-    <string name="taiwan_region">台灣地區</string>
+    <string name="home_title">個人首頁</string>
+    <string name="region">地區</string>
+    <string name="taiwan_region_title">臺灣地區</string>
     <string name="more">更多</string>
+    <string name="more_title">更多</string>
+
+    <string name="references">參考資料</string>
+    <string name="photo_and_icon_original">照片/圖標來源</string>
+    <string name="about_developer">關於開發者</string>
+    <string name="privacy_policy">隱私權政策</string>
+    <string name="copyright">版權聲明</string>
+    <string name="app_version">應用程式版本</string>
+
+    <!--  Taiwan Region  -->
+    <string name="country_taiwan">臺灣</string>
+    <string name="keelung_city">基隆市</string>
+    <string name="taipei_city">臺北市</string>
+    <string name="new_taipei_city">新北市</string>
+    <string name="taoyuan_city">桃園市</string>
+    <string name="hsinchu_city">新竹市</string>
+    <string name="hsinchu_county">新竹縣</string>
+    <string name="miaoli_county">苗栗縣</string>
+    <string name="taichung_city">臺中市</string>
+    <string name="changhua_county">彰化縣</string>
+    <string name="yunlin_county">雲林縣</string>
+    <string name="chiayi_county">嘉義縣</string>
+    <string name="chiayi_city">嘉義市</string>
+    <string name="tainan_city">臺南市</string>
+    <string name="kaohsiung_city">高雄市</string>
+    <string name="pingtung_county">屏東縣</string>
+    <string name="yilan_county">宜蘭縣</string>
+    <string name="hualien_county">花蓮縣</string>
+    <string name="taitung_county">臺東縣</string>
+    <string name="nantou_county">南投縣</string>
+    <string name="penghu_county">澎湖縣</string>
+    <string name="kinmen_county">金門縣</string>
+    <string name="lienchiang_county">連江縣</string>
+    <string name="kueishan_islands">龜山島</string>
+    <string name="liouciou_hsiao_island">小琉球</string>
+    <string name="ludao_township">綠島</string>
+    <string name="lanyu_township">蘭嶼</string>
+    <string name="dongsha_islands">東沙群島</string>
+    <string name="nasha_islands">南沙群島</string>
+    <string name="wuqiu_township">烏坵嶼</string>
 
 </resources>

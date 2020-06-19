@@ -36,15 +36,15 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.wayne.taiwan_s_environment.view.home.HomeFragment"
-        android:label="HomeFragment"
+        android:label="@string/home_title"
         tools:layout="@layout/fragment_home">
         <action
-            android:id="@+id/action_homeFragment_to_moreFragment"
+            android:id="@+id/action_bottom_nav_to_moreFragment"
             app:destination="@id/moreFragment"
             app:popUpTo="@id/homeFragment"
             app:popUpToInclusive="true" />
         <action
-            android:id="@+id/action_homeFragment_to_taiwanFragment"
+            android:id="@+id/action_bottom_nav_to_taiwanFragment"
             app:destination="@id/taiwanFragment"
             app:popUpTo="@id/homeFragment"
             app:popUpToInclusive="true" />
@@ -53,15 +53,15 @@
     <fragment
         android:id="@+id/moreFragment"
         android:name="com.wayne.taiwan_s_environment.view.more.MoreFragment"
-        android:label="MoreFragment"
+        android:label="@string/more_title"
         tools:layout="@layout/fragment_more">
         <action
-            android:id="@+id/action_moreFragment_to_homeFragment"
+            android:id="@+id/action_bottom_nav_to_homeFragment"
             app:destination="@id/homeFragment"
             app:popUpTo="@id/moreFragment"
             app:popUpToInclusive="true" />
         <action
-            android:id="@+id/action_moreFragment_to_taiwanFragment"
+            android:id="@+id/action_bottom_nav_to_taiwanFragment"
             app:destination="@id/taiwanFragment"
             app:popUpTo="@id/moreFragment"
             app:popUpToInclusive="true" />
@@ -71,15 +71,15 @@
     <fragment
         android:id="@+id/taiwanFragment"
         android:name="com.wayne.taiwan_s_environment.view.taiwan.TaiwanFragment"
-        android:label="TaiwanFragment"
+        android:label="@string/taiwan_region_title"
         tools:layout="@layout/fragment_taiwan">
         <action
-            android:id="@+id/action_taiwanFragment_to_homeFragment"
+            android:id="@+id/action_bottom_nav_to_homeFragment"
             app:destination="@id/homeFragment"
             app:popUpTo="@id/taiwanFragment"
             app:popUpToInclusive="true" />
         <action
-            android:id="@+id/action_taiwanFragment_to_moreFragment"
+            android:id="@+id/action_bottom_nav_to_moreFragment"
             app:destination="@id/moreFragment"
             app:popUpTo="@id/taiwanFragment"
             app:popUpToInclusive="true" />

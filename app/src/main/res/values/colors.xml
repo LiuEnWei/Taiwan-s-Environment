@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#6200EE</color>
-    <color name="colorPrimaryDark">#3700B3</color>
+    <color name="colorPrimary">@color/colorAmber500</color>
+    <color name="colorPrimaryDark">@color/colorAmber700</color>
     <color name="colorAccent">#03DAC5</color>
+
+    <!--  Taiwan ROC political division map -->
+    <color name="colorRocBlue">#afdde9</color>
+    <color name="colorRocGreen">#eeffaa</color>
+    <color name="colorRocGray">#808080</color>
 
     <color name="colorTransparent">#00000000</color>
     <!--  2014 Material Design color palettes  -->

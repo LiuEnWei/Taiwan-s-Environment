@@ -35,16 +35,19 @@ class SplashViewModel : BaseViewModel() {
         if (startTime == null) startTime = Date().time
         viewModelScope.launch {
             flow {
-                Timber.e("before ${uvDao.getAll().size}")
+                // TODO
+                Timber.e("local min publish time : ${uvDao.getMinPublishTime()}")
+
                 val result = openDateService.getUV()
                 val body = result.body()
                 if (!result.isSuccessful || body == null) throw HttpException(result)
                 insertUVAll(body)
-                Timber.e("after ${uvDao.getAll().size}")
+
                 val delayTime = Date().time - startTime!!
-                if (delayTime < 3000) {
-                    delay(3000 - startTime!!)
+                if (delayTime < 5000) {
+                    delay(5000 - delayTime)
                 }
+                Timber.e("delayTime end")
                 emit(ApiResult.success(body))
             }.flowOn(Dispatchers.IO)
                 .catch { e -> emit(ApiResult.error(e)) }
