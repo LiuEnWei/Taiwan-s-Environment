@@ -23,6 +23,6 @@
         android:duration="1500"
         android:propertyName="fillColor"
         android:valueFrom="@color/colorTransparent"
-        android:valueTo="@color/colorGreen500"
+        android:valueTo="@color/colorLightGreenA100"
         android:valueType="colorType"/>
 </set>

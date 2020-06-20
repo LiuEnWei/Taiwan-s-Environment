@@ -3,30 +3,6 @@
     android:height="30dp"
     android:viewportWidth="30"
     android:viewportHeight="30">
-    <group>
-        <clip-path
-            android:pathData="M5,2 h20
-            a3,3 0 0 1 3,3 v20
-            a3,3 0 0 1 -3,3 h-20
-            a3,3 0 0 1 -3,-3 v-20
-            a3,3 0 0 1 3,-3z">
-        </clip-path>
-        <group
-            android:name="sea"
-            android:translateY="-25">
-            <path
-                android:fillAlpha="1"
-                android:pathData="M2,26
-                Q8.5,24 15,26
-                T28,26
-                T41,26
-                T54,26
-                T67,26
-                v100 H2z"
-                android:strokeWidth="1"
-                android:fillColor="@color/colorLightBlue200"/>
-        </group>
-    </group>
     <path
         android:name="frame"
         android:pathData="M5,2 h20
@@ -35,7 +11,8 @@
         a3,3 0 0 1 -3,-3 v-20
         a3,3 0 0 1 3,-3z"
         android:strokeColor="@color/colorGray600"
-        android:strokeWidth="0.5"/>
+        android:strokeWidth="0.5"
+        android:fillColor="@color/colorLightBlue200"/>
     <group
         android:translateX="3.91"
         android:translateY="3.91">
@@ -45,52 +22,33 @@
                 android:name="outline_taiwan"
                 android:pathData="M14.432,11.184c0.275,-1.218 0.18,-2.865 0.945,-3.556c1.694,-1.535 0.085,-4.014 1.905,-5.323c0.012,-0.011 -0.123,-0.258 -0.216,-0.375C16.386,1.082 15.158,1.099 14.375,0c-0.757,1.601 -2.726,1.131 -3.464,2.396c-0.767,1.322 -1.876,2.355 -2.676,3.625c-0.961,1.519 -2.236,2.95 -2.742,4.612c-0.585,1.913 -1.066,4.003 0.21,6.051c0.567,0.909 0.897,1.897 1.959,2.358c0.798,0.348 1.075,1.067 1.183,1.839c0.08,0.575 -0.178,1.397 0.776,1.288c0.7,-0.077 0.692,-0.805 0.645,-1.371c-0.101,-1.233 0.173,-2.51 0.98,-3.277C13.1,15.745 13.896,13.56 14.432,11.184z"
                 android:strokeColor="@color/colorGray600"
-                android:fillColor="@color/colorGreen500"
+                android:fillColor="@color/colorLightGreenA100"
                 android:strokeLineJoin="round"
                 android:strokeWidth="0.5"
                 android:trimPathOffset=".248"
                 android:trimPathEnd="1"/>
         </group>
     </group>
-    <group>
-        <clip-path
-            android:pathData="M5,2 h20
-            a3,3 0 0 1 3,3 v20
-            a3,3 0 0 1 -3,3 h-20
-            a3,3 0 0 1 -3,-3 v-20
-            a3,3 0 0 1 3,-3z">
-        </clip-path>
-        <group
-            android:name="t">
-            <path
-                android:pathData="M10.2,20.5 h2.7z
+    <path
+        android:pathData="M10.2,20.5 h2.7z
                 M11.55,20.65 v3z"
-                android:strokeColor="@color/colorGray600"
-                android:strokeWidth="0.65"
-                android:strokeLineJoin="round"
-                android:trimPathEnd="1"/>
-        </group>
-        <group
-            android:name="a_1">
-            <path
-                android:pathData="M13.45,22.7375 a0.9125,0.9125 0 0 1 1.825,0 a0.9125,0.9125 0 0 1 -1.825,0z
+        android:strokeColor="@color/colorGray600"
+        android:strokeWidth="0.65"
+        android:strokeLineJoin="round"
+        android:trimPathEnd="1"/>
+    <path
+        android:pathData="M13.45,22.7375 a0.9125,0.9125 0 0 1 1.825,0 a0.9125,0.9125 0 0 1 -1.825,0z
                 M15.275,21.825 v1.8250z"
-                android:strokeColor="@color/colorGray600"
-                android:strokeWidth="0.65"
-                android:strokeLineJoin="round"/>
-        </group>
-        <group
-            android:name="i">
-            <path
-                android:pathData="M16.495,21.825 v1.8250z M16.495,21v-0.03z"
-                android:strokeColor="@color/colorGray600"
-                android:strokeWidth="0.65"
-                android:strokeLineJoin="round"/>
-        </group>
-        <group
-            android:name="w">
-            <path
-                android:pathData="M17.645,21.825
+        android:strokeColor="@color/colorGray600"
+        android:strokeWidth="0.65"
+        android:strokeLineJoin="round"/>
+    <path
+        android:pathData="M16.495,21.825 v1.8250z M16.495,21v-0.03z"
+        android:strokeColor="@color/colorGray600"
+        android:strokeWidth="0.65"
+        android:strokeLineJoin="round"/>
+    <path
+        android:pathData="M17.645,21.825
                 l0.65,1.825
                 l0.65-1.825
                 l0.65,1.825
@@ -99,26 +57,18 @@
                 l-0.65,-1.825
                 l-0.65,1.825
                 l-0.65,-1.825z"
-                android:strokeColor="@color/colorGray600"
-                android:strokeWidth="0.65"
-                android:strokeLineJoin="round"/>
-        </group>
-        <group
-            android:name="a_2">
-            <path
-                android:pathData="M21.15,22.7375 a0.9125,0.9125 0 0 1 1.825,0 a0.9125,0.9125 0 0 1 -1.825,0z
+        android:strokeColor="@color/colorGray600"
+        android:strokeWidth="0.65"
+        android:strokeLineJoin="round"/>
+    <path
+        android:pathData="M21.15,22.7375 a0.9125,0.9125 0 0 1 1.825,0 a0.9125,0.9125 0 0 1 -1.825,0z
                 M22.975,21.825 v1.8250z"
-                android:strokeColor="@color/colorGray600"
-                android:strokeWidth="0.65"
-                android:strokeLineJoin="round"/>
-        </group>
-        <group
-            android:name="n">
-            <path
-                android:pathData="M24.195,21.825 v1.8250z M24.195,22.7375 a0.9125,0.9125 0 0 1 1.825,0 v0.9125 v-0.9125  a0.9125,0.9125 0 0 0 -1.825,0z"
-                android:strokeColor="@color/colorGray600"
-                android:strokeWidth="0.65"
-                android:strokeLineJoin="round"/>
-        </group>
-    </group>
+        android:strokeColor="@color/colorGray600"
+        android:strokeWidth="0.65"
+        android:strokeLineJoin="round"/>
+    <path
+        android:pathData="M24.195,21.825 v1.8250z M24.195,22.7375 a0.9125,0.9125 0 0 1 1.825,0 v0.9125 v-0.9125  a0.9125,0.9125 0 0 0 -1.825,0z"
+        android:strokeColor="@color/colorGray600"
+        android:strokeWidth="0.65"
+        android:strokeLineJoin="round"/>
 </vector>
