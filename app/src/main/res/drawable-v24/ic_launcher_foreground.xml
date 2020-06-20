@@ -4,7 +4,7 @@
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
-    <!-- 原圖30x30 放大2.5倍 在 108x108 置中 -->
+    <!-- 原圖30x30 放大2.5倍 在 108x108 置中 strokeWidth 需放大2.5倍 -->
     <group
         android:scaleX="2.5"
         android:scaleY="2.5"
@@ -21,7 +21,7 @@
                     android:strokeColor="@color/colorGray600"
                     android:fillColor="@color/colorLightGreenA100"
                     android:strokeLineJoin="round"
-                    android:strokeWidth="0.5"
+                    android:strokeWidth="1.25"
                     android:trimPathOffset=".248"
                     android:trimPathEnd="1"/>
             </group>
@@ -31,7 +31,7 @@
                 android:pathData="M10.2,20.5 h2.7z
                 M11.55,20.65 v3z"
                 android:strokeColor="@color/colorGray600"
-                android:strokeWidth="0.65"
+                android:strokeWidth="1.65"
                 android:strokeLineJoin="round"
                 android:trimPathEnd="1"/>
 
@@ -39,13 +39,13 @@
                 android:pathData="M13.45,22.7375 a0.9125,0.9125 0 0 1 1.825,0 a0.9125,0.9125 0 0 1 -1.825,0z
                 M15.275,21.825 v1.8250z"
                 android:strokeColor="@color/colorGray600"
-                android:strokeWidth="0.65"
+                android:strokeWidth="1.65"
                 android:strokeLineJoin="round"/>
 
             <path
-                android:pathData="M16.495,21.825 v1.8250z M16.495,21v-0.03z"
+                android:pathData="M16.495,21.825 v1.8250z M16.495,21v-0.075z"
                 android:strokeColor="@color/colorGray600"
-                android:strokeWidth="0.65"
+                android:strokeWidth="1.65"
                 android:strokeLineJoin="round"/>
             <path
                 android:pathData="M17.645,21.825
@@ -58,18 +58,18 @@
                 l-0.65,1.825
                 l-0.65,-1.825z"
                 android:strokeColor="@color/colorGray600"
-                android:strokeWidth="0.65"
+                android:strokeWidth="1.65"
                 android:strokeLineJoin="round"/>
             <path
                 android:pathData="M24.195,21.825 v1.8250z M24.195,22.7375 a0.9125,0.9125 0 0 1 1.825,0 v0.9125 v-0.9125  a0.9125,0.9125 0 0 0 -1.825,0z"
                 android:strokeColor="@color/colorGray600"
-                android:strokeWidth="0.65"
+                android:strokeWidth="1.65"
                 android:strokeLineJoin="round"/>
             <path
                 android:pathData="M21.15,22.7375 a0.9125,0.9125 0 0 1 1.825,0 a0.9125,0.9125 0 0 1 -1.825,0z
                 M22.975,21.825 v1.8250z"
                 android:strokeColor="@color/colorGray600"
-                android:strokeWidth="0.65"
+                android:strokeWidth="1.65"
                 android:strokeLineJoin="round"/>
         </group>
     </group>
