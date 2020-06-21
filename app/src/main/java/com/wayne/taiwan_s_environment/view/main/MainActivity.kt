@@ -1,22 +1,18 @@
 package com.wayne.taiwan_s_environment.view.main
 
 import android.content.res.ColorStateList
-import android.content.res.Configuration
-import android.content.res.Resources
 import android.os.Bundle
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.graphics.ColorUtils
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
+import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.wayne.taiwan_s_environment.R
 import com.wayne.taiwan_s_environment.view.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import timber.log.Timber
 
 class MainActivity : BaseActivity(R.layout.activity_main), MainActivityListener {
 
@@ -29,6 +25,7 @@ class MainActivity : BaseActivity(R.layout.activity_main), MainActivityListener 
         appBarConfig = AppBarConfiguration(setOf(R.id.splashFragment, R.id.introFragment, R.id.homeFragment, R.id.taiwanFragment,R.id.moreFragment))
         toolbar.setupWithNavController(findNavController(), appBarConfig)
         setSupportActionBar(toolbar)
+        setupActionBarWithNavController(findNavController(), appBarConfig)
 
         bottom_navigation.setOnNavigationItemSelectedListener {
             if (it.itemId != bottom_navigation.selectedItemId) {

@@ -13,5 +13,25 @@ data class UV(
     @SerializedName("WGS84Lat") val wgs84Lat: String,
     @SerializedName("WGS84Lon") val wgs84Lon: String
 ) {
-    val PUBLISH_TIME_FORMAT = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.TAIWAN)
+    companion object {
+        val PUBLISH_TIME_FORMAT = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.TAIWAN)
+    }
+    private fun getPublishTime(): Long? {
+        return try {
+            PUBLISH_TIME_FORMAT.parse(publishTime)?.time
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
+    }
+
+    fun toDbUV(): com.wayne.taiwan_s_environment.model.db.vo.UV {
+        return com.wayne.taiwan_s_environment.model.db.vo.UV(siteName,
+            county,
+            publishAgency,
+            getPublishTime(),
+            uvi,
+            wgs84Lat,
+            wgs84Lon)
+    }
 }

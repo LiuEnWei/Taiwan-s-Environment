@@ -173,7 +173,7 @@ abstract class AbstractPref protected constructor(private val preferenceFileName
             return prefs.getString(key, defaultValue)
         }
 
-        fun set(value: String) {
+        fun set(value: String?) {
             val prefs = MyApplication.applicationContext().getSharedPreferences(
                 preferenceFileName,
                 Context.MODE_PRIVATE

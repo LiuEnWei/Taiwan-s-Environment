@@ -2,20 +2,15 @@ package com.wayne.taiwan_s_environment.view.more
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
+import androidx.navigation.fragment.findNavController
 import com.wayne.taiwan_s_environment.BuildConfig
 import com.wayne.taiwan_s_environment.R
 import com.wayne.taiwan_s_environment.view.base.BaseFragment
 import kotlinx.android.synthetic.main.fragment_more.*
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class MoreFragment : BaseFragment(R.layout.fragment_more), View.OnClickListener {
-
-    companion object {
-
-    }
-
-    private val viewModel by viewModel<MoreViewModel>()
     private val appVersion = "v${BuildConfig.VERSION_NAME}"
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -41,23 +36,22 @@ class MoreFragment : BaseFragment(R.layout.fragment_more), View.OnClickListener 
         return R.color.colorLightBlue200
     }
 
-    // TODO
     override fun onClick(view: View?) {
         when (view?.id) {
             R.id.btn_references -> {
-
+                findNavController().navigate(MoreFragmentDirections.actionMoreFragmentToReferencesFragment())
             }
             R.id.btn_photo_and_icon_original -> {
-
+                findNavController().navigate(MoreFragmentDirections.actionMoreFragmentToImageOriginalFragment())
             }
             R.id.btn_about_developer -> {
-
+                findNavController().navigate(MoreFragmentDirections.actionMoreFragmentToAboutDeveloperFragment())
             }
             R.id.btn_privacy_policy -> {
-
+                findNavController().navigate(MoreFragmentDirections.actionMoreFragmentToPrivacyPolicyFragment())
             }
             R.id.btn_copyright -> {
-
+                Toast.makeText(requireContext(), R.string.copyright_message, Toast.LENGTH_LONG).show()
             }
             R.id.btn_app_version -> {
                 if (text_app_version.visibility == View.VISIBLE) {

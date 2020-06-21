@@ -1,11 +1,8 @@
 package com.wayne.taiwan_s_environment.view.splash
 
-import android.animation.ObjectAnimator
 import android.graphics.drawable.AnimatedVectorDrawable
 import android.os.Bundle
 import android.view.View
-import android.view.animation.AccelerateDecelerateInterpolator
-import android.view.animation.LinearInterpolator
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.wayne.taiwan_s_environment.R
@@ -39,13 +36,13 @@ class SplashFragment : BaseFragment(R.layout.fragment_splash) {
 
                 is ApiResult.Error -> {
                     Timber.e("${it.throwable}")
-                    viewModel.getUV()
+                    viewModel.getOpenUV()
                     //TODO show error message
                 }
             }
         })
 
-        viewModel.getUV()
+        viewModel.getOpenUV()
         startSplashAnimator()
     }
 

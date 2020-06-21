@@ -15,7 +15,7 @@ interface UVDao {
     fun getAllByCounty(county: String): List<UV>
 
     @Query("SELECT MIN(publishTime) FROM uv")
-    fun getMinPublishTime(): String
+    fun getMinPublishTime(): Long
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertUV(uv: UV)

@@ -15,6 +15,17 @@
     <string name="copyright">版權聲明</string>
     <string name="app_version">應用程式版本</string>
 
+    <string name="privacy_policy_1_title">一、隱私權政策的適用範圍</string>
+    <string name="privacy_policy_1_detail">隱私權政策的適用範圍，僅包括處理您使用本App服務時所獲取的個人資料，並不適用於本App以外的相關連結。</string>
+    <string name="privacy_policy_2_title">二、個人資料的處理及利用方式</string>
+    <string name="privacy_policy_2_detail">當您使用本App服務時，會根據您所使用的服務功能性質，請您提供需要的系統權限，並在該服務功能範圍內處理您的個人資料，本App並不會將您的個人資料用於其他用途，不會在任何伺服器中記錄您的個人資料。</string>
+    <string name="privacy_policy_3_title">三、對外的相關連結</string>
+    <string name="privacy_policy_3_detail">本App中的其他網路連結，不適用本App的隱私權保護政策，您必須參考該連結網站中的隱私權保護政策。</string>
+    <string name="privacy_policy_4_title">四、隱私權保護政策之修正</string>
+    <string name="privacy_policy_4_detail">本App的隱私權政策，將因應需求隨時進行修正。</string>
+
+    <string name="copyright_message">Copyright © 2020 LIU,EnWei 版權所有</string>
+
     <!--  Taiwan Region  -->
     <string name="country_taiwan">臺灣</string>
     <string name="keelung_city">基隆市</string>
