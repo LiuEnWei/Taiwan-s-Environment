@@ -26,6 +26,16 @@
 
     <string name="copyright_message">Copyright © 2020 LIU,EnWei 版權所有</string>
 
+    <string name="item_more_title">%1$s 在%2$s。</string>
+    <string name="uv_index">紫外線指數：%1$s</string>
+    <string name="uv_index_low">低量級</string>
+    <string name="uv_index_middleweight">中量級</string>
+    <string name="uv_index_high">高量級</string>
+    <string name="uv_index_excess">過量級</string>
+    <string name="uv_index_dangerous">危險級</string>
+    <string name="sunburn_time">#曝曬%1$d分鐘內就可能曬傷</string>
+    <string name="pay_attention_to_sun_protection">#注意防曬</string>
+
     <!--  Taiwan Region  -->
     <string name="country_taiwan">臺灣</string>
     <string name="keelung_city">基隆市</string>

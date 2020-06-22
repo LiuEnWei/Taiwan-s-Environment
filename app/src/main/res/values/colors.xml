@@ -2,7 +2,14 @@
 <resources>
     <color name="colorPrimary">@color/colorAmber500</color>
     <color name="colorPrimaryDark">@color/colorAmber700</color>
-    <color name="colorAccent">#03DAC5</color>
+    <color name="colorAccent">@color/colorLightBlue200</color>
+
+    <!--  from : https://zh.wikipedia.org/wiki/%E7%B4%AB%E5%A4%96%E7%B7%9A%E7%B7%9A%E6%8C%87%E6%95%B8  -->
+    <color name="colorUVIndexLow">#289500</color>
+    <color name="colorUVIndexMiddleweight">#F7e400</color>
+    <color name="colorUVIndexHigh">#F85900</color>
+    <color name="colorUVIndexExcess">#d8001d</color>
+    <color name="colorUVIndexDangerous">#6B49C8</color>
 
     <!--  Taiwan ROC political division map -->
     <color name="colorRocBlue">#afdde9</color>

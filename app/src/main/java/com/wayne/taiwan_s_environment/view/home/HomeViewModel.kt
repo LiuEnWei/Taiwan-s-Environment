@@ -35,7 +35,7 @@ class HomeViewModel : BaseViewModel() {
     val openUvUpdate: LiveData<ApiResult<Nothing>>
         get() = _openUvUpdate
 
-    val county = MutableLiveData<String>().also { it.value = pref.county }
+    val county = MutableLiveData<String>()
 
     private val _uvList = MutableLiveData<ApiResult<List<UV>>>()
     val uvList: LiveData<ApiResult<List<UV>>>
@@ -51,7 +51,12 @@ class HomeViewModel : BaseViewModel() {
                 emit(ApiResult.success(null))
             }.flowOn(Dispatchers.IO)
                 .catch { e -> emit(ApiResult.error(e)) }
-                .collect { _openUvUpdate.value = it }
+                .collect {
+                    _openUvUpdate.value = it
+                    county.value?.let { county ->
+                        getUVByCounty(county)
+                    }
+                }
         }
     }
 
@@ -73,7 +78,7 @@ class HomeViewModel : BaseViewModel() {
                 val geocoder = Geocoder(MyApplication.applicationContext(), Locale.getDefault())
                 val address = geocoder.getFromLocation(location.latitude, location.longitude, 1)
                 val firstAddress = address.first()
-                Timber.e("firstAddress : $firstAddress")
+                Timber.e("firstAddress : ${firstAddress.getAddressLine(0)}")
                 val admin = firstAddress.adminArea
                 Timber.e("admin : $admin")
                 val uvList = uvDao.getAllByCounty(admin)
