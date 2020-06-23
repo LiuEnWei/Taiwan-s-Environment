@@ -7,10 +7,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.wayne.taiwan_s_environment.MyApplication
 import com.wayne.taiwan_s_environment.model.api.ApiResult
-import com.wayne.taiwan_s_environment.model.api.OpenDataService
+import com.wayne.taiwan_s_environment.model.api.EpaDataService
 import com.wayne.taiwan_s_environment.model.db.dao.UVDao
 import com.wayne.taiwan_s_environment.model.db.vo.UV
 import com.wayne.taiwan_s_environment.model.exception.CountyNotFoundException
+import com.wayne.taiwan_s_environment.model.exception.SameCountyException
 import com.wayne.taiwan_s_environment.model.pref.Pref
 import com.wayne.taiwan_s_environment.utils.toDbUVList
 import com.wayne.taiwan_s_environment.view.base.BaseViewModel
@@ -27,7 +28,7 @@ import java.util.*
 
 class HomeViewModel : BaseViewModel() {
 
-    private val openDateService: OpenDataService by inject()
+    private val epaDateService: EpaDataService by inject()
     private val uvDao: UVDao by inject()
     private val pref: Pref by inject()
 
@@ -41,13 +42,19 @@ class HomeViewModel : BaseViewModel() {
     val uvList: LiveData<ApiResult<List<UV>>>
         get() = _uvList
 
+    fun initData() {
+        pref.county?.let {
+            getUVByCounty(it)
+        }
+    }
+
     fun getUVOpenData() {
         viewModelScope.launch {
             flow {
-                val result = openDateService.getUV()
-                val body = result.body()
-                if (!result.isSuccessful || body == null) throw HttpException(result)
-                uvDao.insertUVAll(body.toDbUVList())
+                val result = epaDateService.getUV()
+                val records = result.body()?.records
+                if (!result.isSuccessful || records == null) throw HttpException(result)
+                uvDao.insertUVAll(records.toDbUVList())
                 emit(ApiResult.success(null))
             }.flowOn(Dispatchers.IO)
                 .catch { e -> emit(ApiResult.error(e)) }
@@ -65,6 +72,10 @@ class HomeViewModel : BaseViewModel() {
             flow {
                 val uvList = uvDao.getAllByCounty(county)
 
+                if (uvList.isNotEmpty()) {
+                    this@HomeViewModel.county.postValue(county)
+                }
+
                 emit(ApiResult.success(uvList))
             }.flowOn(Dispatchers.IO)
                 .catch { e -> emit(ApiResult.error(e)) }
@@ -81,15 +92,23 @@ class HomeViewModel : BaseViewModel() {
                 Timber.e("firstAddress : ${firstAddress.getAddressLine(0)}")
                 val admin = firstAddress.adminArea
                 Timber.e("admin : $admin")
+                if (admin == county.value) throw SameCountyException()
                 val uvList = uvDao.getAllByCounty(admin)
                 if (uvList.isNullOrEmpty()) throw CountyNotFoundException()
 
-                pref.county = admin
                 county.postValue(admin)
                 emit(ApiResult.success(uvList))
             }.flowOn(Dispatchers.IO)
                 .catch { e -> emit(ApiResult.error(e)) }
                 .collect { _uvList.value = it }
         }
+    }
+
+    fun isPowerSaving(): Boolean {
+        return pref.isPowerSaving
+    }
+
+    fun setPowerSaving(isPowerSaving: Boolean) {
+        pref.isPowerSaving = isPowerSaving
     }
 }

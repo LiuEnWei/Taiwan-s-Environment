@@ -36,6 +36,9 @@
     <string name="sunburn_time">#曝曬%1$d分鐘內就可能曬傷</string>
     <string name="pay_attention_to_sun_protection">#注意防曬</string>
 
+    <string name="please_click">請</string>
+
+    <string name="select_region">選擇地區</string>
     <!--  Taiwan Region  -->
     <string name="country_taiwan">臺灣</string>
     <string name="keelung_city">基隆市</string>
@@ -67,5 +70,30 @@
     <string name="dongsha_islands">東沙群島</string>
     <string name="nasha_islands">南沙群島</string>
     <string name="wuqiu_township">烏坵嶼</string>
+
+    <string-array name="taiwan_region">
+        <item>@string/lienchiang_county</item>
+        <item>@string/kinmen_county</item>
+        <item>@string/keelung_city</item>
+        <item>@string/taipei_city</item>
+        <item>@string/new_taipei_city</item>
+        <item>@string/taoyuan_city</item>
+        <item>@string/hsinchu_city</item>
+        <item>@string/hsinchu_county</item>
+        <item>@string/miaoli_county</item>
+        <item>@string/taichung_city</item>
+        <item>@string/changhua_county</item>
+        <item>@string/yunlin_county</item>
+        <item>@string/chiayi_city</item>
+        <item>@string/chiayi_county</item>
+        <item>@string/tainan_city</item>
+        <item>@string/kaohsiung_city</item>
+        <item>@string/pingtung_county</item>
+        <item>@string/yilan_county</item>
+        <item>@string/hualien_county</item>
+        <item>@string/taitung_county</item>
+        <item>@string/nantou_county</item>
+        <item>@string/penghu_county</item>
+    </string-array>
 
 </resources>

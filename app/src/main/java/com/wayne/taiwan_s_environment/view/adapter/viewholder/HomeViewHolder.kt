@@ -6,19 +6,17 @@ import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.format.DateUtils
-import android.text.style.ForegroundColorSpan
-import android.text.style.RelativeSizeSpan
 import android.text.style.StyleSpan
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.wayne.taiwan_s_environment.R
+import com.wayne.taiwan_s_environment.model.span.BoldColorSpan
 import com.wayne.taiwan_s_environment.utils.getUVColor
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.ceil
-import kotlin.math.roundToInt
 
 class HomeViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
     companion object {
@@ -66,10 +64,7 @@ class HomeViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
             messageBuilder.append("\n")
 
             val uviStart = messageBuilder.indexOf(uvi)
-
-            messageBuilder.setSpan(ForegroundColorSpan(context.getUVColor(uv)), uviStart, uviStart + uvi.length, Spanned.SPAN_INCLUSIVE_INCLUSIVE)
-            messageBuilder.setSpan(StyleSpan(Typeface.BOLD), uviStart, uviStart + uvi.length, Spanned.SPAN_INCLUSIVE_INCLUSIVE)
-            messageBuilder.setSpan(RelativeSizeSpan(2f), uviStart, uviStart + uvi.length, Spanned.SPAN_INCLUSIVE_INCLUSIVE)
+            messageBuilder.setSpan(BoldColorSpan(context.getUVColor(uv),2f), uviStart, uviStart + uvi.length, Spanned.SPAN_INCLUSIVE_INCLUSIVE)
 
             var uvIndexLevel: String? = null
             when {
@@ -106,8 +101,7 @@ class HomeViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
             }
             uvIndexLevel?.let {
                 val levelStart = messageBuilder.indexOf(it)
-                messageBuilder.setSpan(ForegroundColorSpan(context.resources.getColor(R.color.colorLightBlue700)), levelStart, messageBuilder.length, Spanned.SPAN_INCLUSIVE_INCLUSIVE)
-                messageBuilder.setSpan(StyleSpan(Typeface.BOLD), levelStart, messageBuilder.length, Spanned.SPAN_INCLUSIVE_INCLUSIVE)
+                messageBuilder.setSpan(BoldColorSpan(context.resources.getColor(R.color.colorLightBlue700)), levelStart, messageBuilder.length, Spanned.SPAN_INCLUSIVE_INCLUSIVE)
             }
 
             textMessage.text = messageBuilder

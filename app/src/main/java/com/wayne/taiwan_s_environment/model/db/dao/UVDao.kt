@@ -11,7 +11,7 @@ interface UVDao {
     @Query("SELECT * FROM uv ORDER BY county")
     fun getAll(): List<UV>
 
-    @Query("SELECT * FROM uv WHERE county = :county ORDER BY county")
+    @Query("SELECT * FROM uv WHERE county = :county ORDER BY time DESC")
     fun getAllByCounty(county: String): List<UV>
 
     @Query("SELECT MAX(time) FROM uv")

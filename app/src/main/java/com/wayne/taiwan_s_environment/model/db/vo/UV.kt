@@ -2,7 +2,6 @@ package com.wayne.taiwan_s_environment.model.db.vo
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
-import androidx.room.PrimaryKey
 
 @Entity(tableName = "uv", primaryKeys = ["siteName", "publishTime"])
 data class UV(

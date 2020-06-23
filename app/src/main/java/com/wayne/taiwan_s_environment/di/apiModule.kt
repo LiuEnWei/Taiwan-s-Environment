@@ -1,7 +1,7 @@
 package com.wayne.taiwan_s_environment.di
 
 import com.wayne.taiwan_s_environment.Constant
-import com.wayne.taiwan_s_environment.model.api.OpenDataService
+import com.wayne.taiwan_s_environment.model.api.EpaDataService
 import okhttp3.OkHttpClient
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit
 
 val apiModule = module {
     single { createOkHttpClient() }
-    single { createOpenDataService(get()) }
+    single { createEpaDataService(get()) }
 }
 
 fun createOkHttpClient() : OkHttpClient {
@@ -21,11 +21,11 @@ fun createOkHttpClient() : OkHttpClient {
         .build()
 }
 
-fun createOpenDataService(okHttpClient: OkHttpClient): OpenDataService {
+fun createEpaDataService(okHttpClient: OkHttpClient): EpaDataService {
     val retrofit =  Retrofit.Builder()
         .client(okHttpClient)
         .addConverterFactory(GsonConverterFactory.create())
-        .baseUrl(Constant.OPEN_DATA_URL)
+        .baseUrl(Constant.EPA_DATA_URL)
         .build()
-    return retrofit.create(OpenDataService::class.java)
+    return retrofit.create(EpaDataService::class.java)
 }

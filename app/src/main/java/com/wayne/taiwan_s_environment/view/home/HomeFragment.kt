@@ -6,7 +6,6 @@ import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
 import android.os.Looper
-import android.text.Html
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
@@ -16,13 +15,16 @@ import com.google.android.gms.tasks.Task
 import com.wayne.taiwan_s_environment.R
 import com.wayne.taiwan_s_environment.model.api.ApiResult
 import com.wayne.taiwan_s_environment.model.exception.CountyNotFoundException
+import com.wayne.taiwan_s_environment.model.exception.SameCountyException
 import com.wayne.taiwan_s_environment.view.adapter.HomeAdapter
 import com.wayne.taiwan_s_environment.view.base.BaseFragment
+import com.wayne.taiwan_s_environment.view.dialog.selectcounty.OnCountySelectedListener
+import com.wayne.taiwan_s_environment.view.dialog.selectcounty.SelectCountyDialog
 import kotlinx.android.synthetic.main.fragment_home.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
-class HomeFragment : BaseFragment(R.layout.fragment_home) {
+class HomeFragment : BaseFragment(R.layout.fragment_home), OnCountySelectedListener {
 
     companion object {
         const val PERMISSIONS_CODE = 1000
@@ -56,23 +58,21 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
 
         viewModel.uvList.observe(viewLifecycleOwner, Observer {
             when (it) {
-                is ApiResult.Empty -> {
-                    Timber.e("uv list empty")
-                }
-
                 is ApiResult.Success -> {
                     Timber.e("uv list success")
                     recycler_home.adapter = HomeAdapter(it.result)
+                    if (viewModel.isPowerSaving()) {
+                        stopLocationUpdates()
+                    }
                 }
 
                 is ApiResult.Error -> {
-                    Timber.e("uv list error")
+                    Timber.e("uv list error : ${it.throwable}")
                     Timber.e("${it.throwable}")
                     when (it.throwable) {
-                        is CountyNotFoundException -> {
+                        is CountyNotFoundException, is SameCountyException -> {
                             Timber.e("CountyNotFoundException")
-                            btn_location.setImageResource(R.drawable.ic_round_location_unknown_24)
-                            //TODO show dialog to set county
+                            updateFloatingLocationButton()
                         }
 
                         else -> {
@@ -84,12 +84,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
         })
 
         viewModel.county.observe(viewLifecycleOwner, Observer {
-            Timber.e("county : $it")
-            if (it.isNullOrEmpty()) {
-                btn_location.setImageResource(R.drawable.ic_round_location_unknown_24)
-            } else {
-                btn_location.setImageResource(R.drawable.ic_round_my_location_24)
-            }
+            updateFloatingLocationButton()
         })
 
         btn_location.setOnClickListener {
@@ -99,7 +94,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
                 requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), PERMISSIONS_CODE)
             } else if (viewModel.county.value == null) {
                 btn_location.setImageResource(R.drawable.ic_round_location_unknown_24)
-                //TODO show dialog to set county
+                showSelectCountyDialog()
             } else if (isLocationUpdates) {
                 stopLocationUpdates()
             } else {
@@ -110,6 +105,8 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
         swipe_refresh.setOnRefreshListener {
             viewModel.getUVOpenData()
         }
+
+        viewModel.initData()
     }
 
     override fun onResume() {
@@ -180,6 +177,20 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
         }
     }
 
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            PERMISSIONS_CODE -> {
+                if ((grantResults.isNotEmpty() &&
+                            grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    btn_location.setImageResource(R.drawable.ic_round_location_unknown_24)
+                } else {
+                    // TODO show dialog to go settings or selected county
+                }
+            }
+        }
+    }
+
     private fun startLocationUpdates() {
         if (ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
                 || ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
@@ -203,12 +214,27 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
         isLocationUpdates = false
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        when (requestCode) {
-            PERMISSIONS_CODE -> {
-                btn_location.setImageResource(R.drawable.ic_round_location_unknown_24)
-            }
+    private fun updateFloatingLocationButton() {
+        // TODO show error message ?
+
+        if (ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+            && ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            btn_location.setImageResource(R.drawable.ic_round_location_disabled_24)
+        } else if (viewModel.county.value == null) {
+            btn_location.setImageResource(R.drawable.ic_round_location_unknown_24)
+        } else if (isLocationUpdates) {
+            btn_location.setImageResource(R.drawable.ic_round_my_location_24)
+        } else {
+            btn_location.setImageResource(R.drawable.ic_round_location_searching_24)
         }
+    }
+
+    private fun showSelectCountyDialog() {
+        SelectCountyDialog.newInstance(R.array.taiwan_region).show(childFragmentManager, SelectCountyDialog::javaClass.name)
+    }
+
+    override fun onSelected(county: String) {
+        Timber.e("selected county : $county")
+        viewModel.getUVByCounty(county)
     }
 }

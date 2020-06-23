@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.wayne.taiwan_s_environment.model.api.ApiResult
-import com.wayne.taiwan_s_environment.model.api.OpenDataService
+import com.wayne.taiwan_s_environment.model.api.EpaDataService
 import com.wayne.taiwan_s_environment.model.api.vo.UV
 import com.wayne.taiwan_s_environment.model.db.dao.UVDao
 import com.wayne.taiwan_s_environment.utils.toDbUVList
@@ -23,7 +23,7 @@ import java.util.*
 
 class SplashViewModel : BaseViewModel() {
 
-    private val openDateService: OpenDataService by inject()
+    private val epaDateService: EpaDataService by inject()
     private val uvDao: UVDao by inject()
 
     private val _uvList = MutableLiveData<ApiResult<List<UV>>>()
@@ -45,17 +45,21 @@ class SplashViewModel : BaseViewModel() {
                     delay(minDelayTime)
                     emit(ApiResult.success(arrayListOf()))
                 } else {
-                    val result = openDateService.getUV()
-                    val body = result.body()
-                    if (!result.isSuccessful || body == null) throw HttpException(result)
+                    val result = epaDateService.getUV()
+                    val records = result.body()?.records
+                    if (!result.isSuccessful || records == null) throw HttpException(result)
 
-                    uvDao.insertUVAll(body.toDbUVList())
+                    uvDao.insertUVAll(records.toDbUVList())
 
                     val delayTime = Date().time - startTime!!
                     if (delayTime < minDelayTime) {
                         delay(minDelayTime - delayTime)
                     }
-                    emit(ApiResult.success(body))
+
+                    for (uv in records) {
+                        Timber.e("$uv")
+                    }
+                    emit(ApiResult.success(records))
                 }
             }.flowOn(Dispatchers.IO)
                 .catch { e -> emit(ApiResult.error(e)) }
