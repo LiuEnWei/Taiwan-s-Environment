@@ -14,8 +14,8 @@ interface UVDao {
     @Query("SELECT * FROM uv WHERE county = :county ORDER BY county")
     fun getAllByCounty(county: String): List<UV>
 
-    @Query("SELECT MIN(publishTime) FROM uv")
-    fun getMinPublishTime(): Long
+    @Query("SELECT MAX(time) FROM uv")
+    fun getMaxTime(): Long
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertUV(uv: UV)

@@ -16,7 +16,7 @@ data class UV(
     companion object {
         val PUBLISH_TIME_FORMAT = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.TAIWAN)
     }
-    private fun getPublishTime(): Long? {
+    private fun getTime(): Long? {
         return try {
             PUBLISH_TIME_FORMAT.parse(publishTime)?.time
         } catch (e: Exception) {
@@ -29,9 +29,10 @@ data class UV(
         return com.wayne.taiwan_s_environment.model.db.vo.UV(siteName,
             county,
             publishAgency,
-            getPublishTime(),
+            publishTime,
             uvi,
             wgs84Lat,
-            wgs84Lon)
+            wgs84Lon,
+            getTime())
     }
 }

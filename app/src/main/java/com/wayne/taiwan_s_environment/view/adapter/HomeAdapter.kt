@@ -19,12 +19,9 @@ class HomeAdapter(var list: List<UV>): RecyclerView.Adapter<HomeViewHolder>() {
 
     override fun onBindViewHolder(holder: HomeViewHolder, position: Int) {
         val uv = list[position]
-        val context = holder.itemView.context
-
         holder.imgProfile.setImageResource(R.drawable.ic_oval_black)
-
         holder.setTitle(uv.publishAgency, uv.siteName)
-        holder.setTime(uv.publishTime)
+        holder.setTime(uv.time)
         holder.setMessage(uv.uvi)
         holder.textLocation.text = uv.county
     }

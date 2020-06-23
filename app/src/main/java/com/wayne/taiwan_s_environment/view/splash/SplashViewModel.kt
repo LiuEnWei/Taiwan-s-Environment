@@ -38,9 +38,9 @@ class SplashViewModel : BaseViewModel() {
         if (startTime == null) startTime = Date().time
         viewModelScope.launch {
             flow {
-                val minPublishTime = uvDao.getMinPublishTime()
-                Timber.e("local min publish time : $minPublishTime")
-                if (Date().time - minPublishTime < oneHour) {
+                val maxTime = uvDao.getMaxTime()
+                Timber.e("local max publish time : $maxTime")
+                if (Date().time - maxTime < oneHour) {
                     // not need update
                     delay(minDelayTime)
                     emit(ApiResult.success(arrayListOf()))

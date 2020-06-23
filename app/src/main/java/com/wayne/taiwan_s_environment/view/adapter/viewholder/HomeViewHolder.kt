@@ -7,6 +7,7 @@ import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.format.DateUtils
 import android.text.style.ForegroundColorSpan
+import android.text.style.RelativeSizeSpan
 import android.text.style.StyleSpan
 import android.view.View
 import android.widget.ImageView
@@ -16,6 +17,7 @@ import com.wayne.taiwan_s_environment.R
 import com.wayne.taiwan_s_environment.utils.getUVColor
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.math.ceil
 import kotlin.math.roundToInt
 
 class HomeViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
@@ -54,7 +56,8 @@ class HomeViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
     fun setMessage(uvi: String?) {
         if (uvi == null) return
         try {
-            val uv = uvi.toFloat().roundToInt()
+            val uv = ceil(uvi.toDouble()).toInt()
+//            val uv = uvi.toFloat().roundToInt()
 
             val messageBuilder = SpannableStringBuilder()
             messageBuilder.append(context.getString(R.string.uv_index, uvi))
@@ -66,6 +69,7 @@ class HomeViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
 
             messageBuilder.setSpan(ForegroundColorSpan(context.getUVColor(uv)), uviStart, uviStart + uvi.length, Spanned.SPAN_INCLUSIVE_INCLUSIVE)
             messageBuilder.setSpan(StyleSpan(Typeface.BOLD), uviStart, uviStart + uvi.length, Spanned.SPAN_INCLUSIVE_INCLUSIVE)
+            messageBuilder.setSpan(RelativeSizeSpan(2f), uviStart, uviStart + uvi.length, Spanned.SPAN_INCLUSIVE_INCLUSIVE)
 
             var uvIndexLevel: String? = null
             when {
