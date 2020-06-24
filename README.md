@@ -35,4 +35,4 @@
   
   [Taiwna_SVG](https://upload.wikimedia.org/wikipedia/commons/0/06/Taiwan_ROC_political_division_map.svg) made by [Luuva](https://commons.wikimedia.org/wiki/User:A-l%C3%BA-mih) from [wikimedia commons](https://commons.wikimedia.org/wiki/File:Taiwan_ROC_political_division_map.svg)
 
-  [App icon](https://material.io/resources/icons/?style=baseline) made by Android from [material design](https://material.io/resources/icons/)
+  [App icon](https://material.io/resources/icons/?style=baseline) made by Android from [material design](https://material.io/)
