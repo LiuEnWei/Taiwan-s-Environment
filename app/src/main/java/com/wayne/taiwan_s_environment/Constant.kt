@@ -19,5 +19,7 @@ class Constant {
         const val LINK_APP_ICONS = "https://material.io/resources/icons/?style=baseline"
         const val LINK_ANDROID = "https://www.android.com/"
         const val LINK_MATERIAL_DESIGN = "https://material.io/"
+
+        const val LINK_GITHUB_SOURCES_CODE = "https://github.com/LiuEnWei/Taiwan-s-Environment"
     }
 }

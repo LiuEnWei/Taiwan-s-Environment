@@ -49,6 +49,15 @@
 
     <string name="taiwan_epa_open_data">臺灣行政院環保署環境資料開放平臺</string>
 
+    <string name="name">Liu En-Wei</string>
+    <string name="about_developer_detail">&#8195;&#8195;一個Android Developer，大學三年級因專題學習撰寫Android App，畢業後至今工作五年，閒暇時喜歡旅遊、讀寫小說、玩遊戲和看遊戲實況。</string>
+    <string name="about_project">關於專案</string>
+    <string name="about_project_detail">&#8195;&#8195;此專案的構想是在2018年，為了練習Kotlin，利用當時公司(於2019年四月離職)提供的Side Project Time。\n
+        &#8195;&#8195;2020年五月於前公司離職後，使用前公司常用的App架構，依照當初的專案構想又重新撰寫了一次，並將原始碼開源至GitHub。</string>
+    <string name="sources_code">GitHub 原始碼</string>
+
+    <string name="no_site">%1$s 沒有觀測站</string>
+
     <string name="select_region">選擇地區</string>
     <!--  Taiwan Region  -->
     <string name="country_taiwan">臺灣</string>

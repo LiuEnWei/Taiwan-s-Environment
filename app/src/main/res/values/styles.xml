@@ -29,7 +29,7 @@
         <item name="android:paddingEnd">20dp</item>
     </style>
 
-    <style name="privacy_policy_title">
+    <style name="title">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">18sp</item>
@@ -37,7 +37,7 @@
         <item name="android:gravity">start</item>
         <item name="android:layout_marginTop">25dp</item>
     </style>
-    <style name="privacy_policy_detail">
+    <style name="detail">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">16sp</item>
@@ -45,7 +45,7 @@
         <item name="android:gravity">start</item>
         <item name="android:layout_marginTop">25dp</item>
     </style>
-    <style name="privacy_policy_title_line">
+    <style name="title_line">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">1dp</item>
         <item name="android:background">@color/colorLightBlue600</item>

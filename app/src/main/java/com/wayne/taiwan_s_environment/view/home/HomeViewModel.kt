@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.wayne.taiwan_s_environment.MyApplication
+import com.wayne.taiwan_s_environment.R
 import com.wayne.taiwan_s_environment.model.api.ApiResult
 import com.wayne.taiwan_s_environment.model.api.EpaDataService
 import com.wayne.taiwan_s_environment.model.db.dao.UVDao
@@ -69,17 +70,19 @@ class HomeViewModel : BaseViewModel() {
     }
 
     fun getUVByCounty(county: String) {
-        viewModelScope.launch {
-            flow {
-                val uvList = uvDao.getAllByCounty(county)
-                pref.county = county
-                if (uvList.isNotEmpty()) {
-                    this@HomeViewModel.county.postValue(county)
-                }
-                emit(ApiResult.success(uvList))
-            }.flowOn(Dispatchers.IO)
-                .catch { e -> emit(ApiResult.error(e)) }
-                .collect { _uvList.value = it }
+        county.checkSiteCounty().let {
+            viewModelScope.launch {
+                flow {
+                    val uvList = uvDao.getAllByCounty(it)
+                    pref.county = it
+                    if (uvList.isNotEmpty()) {
+                        this@HomeViewModel.county.postValue(it)
+                    }
+                    emit(ApiResult.success(uvList))
+                }.flowOn(Dispatchers.IO)
+                    .catch { e -> emit(ApiResult.error(e)) }
+                    .collect { _uvList.value = it }
+            }
         }
     }
 
@@ -90,9 +93,10 @@ class HomeViewModel : BaseViewModel() {
                 val address = geocoder.getFromLocation(location.latitude, location.longitude, 1)
                 val firstAddress = address.first()
                 Timber.e("firstAddress : ${firstAddress.getAddressLine(0)}")
-                val admin = firstAddress.adminArea
+                val admin = firstAddress.adminArea.checkSiteCounty()
                 Timber.e("admin : $admin")
                 if (admin == county.value) throw SameCountyException()
+
                 val uvList = uvDao.getAllByCounty(admin)
                 if (uvList.isNullOrEmpty()) throw CountyNotFoundException()
 
@@ -111,5 +115,17 @@ class HomeViewModel : BaseViewModel() {
 
     fun setPowerSaving(isPowerSaving: Boolean) {
         pref.isPowerSaving = isPowerSaving
+    }
+
+    /**
+     * 新竹市沒有UV觀測站
+     * */
+    private fun String.checkSiteCounty(): String {
+        val hsinchuCity = context.resources.getString(R.string.hsinchu_city)
+        if (this == hsinchuCity) {
+            return context.resources.getString(R.string.hsinchu_county)
+        } else {
+            return this
+        }
     }
 }
