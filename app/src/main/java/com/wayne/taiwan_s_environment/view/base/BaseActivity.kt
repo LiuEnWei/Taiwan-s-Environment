@@ -17,8 +17,9 @@ abstract class BaseActivity(@LayoutRes contentLayoutId: Int) : AppCompatActivity
     override fun getResources(): Resources {
         val res = super.getResources()
         if (res.configuration.fontScale != 1f) {
-            res.configuration.setToDefaults()
-            val context = baseContext.createConfigurationContext(res.configuration)
+            val configuration = Configuration(res.configuration)
+            configuration.fontScale = 1f
+            val context = baseContext.createConfigurationContext(configuration)
             return context.resources
         }
         return super.getResources()
