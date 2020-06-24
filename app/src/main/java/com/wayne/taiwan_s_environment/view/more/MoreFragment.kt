@@ -51,7 +51,7 @@ class MoreFragment : BaseFragment(R.layout.fragment_more), View.OnClickListener 
                 findNavController().navigate(MoreFragmentDirections.actionMoreFragmentToPrivacyPolicyFragment())
             }
             R.id.btn_copyright -> {
-                Toast.makeText(requireContext(), R.string.copyright_message, Toast.LENGTH_LONG).show()
+                Toast.makeText(requireActivity(), R.string.copyright_message, Toast.LENGTH_LONG).show()
             }
             R.id.btn_app_version -> {
                 if (text_app_version.visibility == View.VISIBLE) {

@@ -36,7 +36,18 @@
     <string name="sunburn_time">#曝曬%1$d分鐘內就可能曬傷</string>
     <string name="pay_attention_to_sun_protection">#注意防曬</string>
 
-    <string name="please_click">請</string>
+    <string name="icons_made_by">%1$s made by %2$s from %3$s.</string>
+    <string name="taiwan_icon">Taiwan icon</string>
+    <string name="freepik">Freepik</string>
+    <string name="flaticon">Flaticon</string>
+    <string name="taiwan_svg">Taiwan SVG</string>
+    <string name="luuva">Luuva</string>
+    <string name="wikimedia_commons">wikimedia commons</string>
+    <string name="app_icons">App icons</string>
+    <string name="android">Android</string>
+    <string name="material_design">material design</string>
+
+    <string name="taiwan_epa_open_data">臺灣行政院環保署環境資料開放平臺</string>
 
     <string name="select_region">選擇地區</string>
     <!--  Taiwan Region  -->
@@ -68,7 +79,7 @@
     <string name="ludao_township">綠島</string>
     <string name="lanyu_township">蘭嶼</string>
     <string name="dongsha_islands">東沙群島</string>
-    <string name="nasha_islands">南沙群島</string>
+    <string name="nasha_islands">南沙太平島與中州礁</string>
     <string name="wuqiu_township">烏坵嶼</string>
 
     <string-array name="taiwan_region">

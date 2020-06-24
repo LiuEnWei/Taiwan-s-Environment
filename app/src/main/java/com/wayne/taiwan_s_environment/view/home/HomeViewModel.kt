@@ -43,6 +43,7 @@ class HomeViewModel : BaseViewModel() {
         get() = _uvList
 
     fun initData() {
+        Timber.e("initData ${pref.county}")
         pref.county?.let {
             getUVByCounty(it)
         }
@@ -71,11 +72,10 @@ class HomeViewModel : BaseViewModel() {
         viewModelScope.launch {
             flow {
                 val uvList = uvDao.getAllByCounty(county)
-
+                pref.county = county
                 if (uvList.isNotEmpty()) {
                     this@HomeViewModel.county.postValue(county)
                 }
-
                 emit(ApiResult.success(uvList))
             }.flowOn(Dispatchers.IO)
                 .catch { e -> emit(ApiResult.error(e)) }
@@ -96,6 +96,7 @@ class HomeViewModel : BaseViewModel() {
                 val uvList = uvDao.getAllByCounty(admin)
                 if (uvList.isNullOrEmpty()) throw CountyNotFoundException()
 
+                pref.county = admin
                 county.postValue(admin)
                 emit(ApiResult.success(uvList))
             }.flowOn(Dispatchers.IO)

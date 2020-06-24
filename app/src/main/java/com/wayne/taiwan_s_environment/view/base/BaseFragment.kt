@@ -1,6 +1,8 @@
 package com.wayne.taiwan_s_environment.view.base
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,6 +14,7 @@ import androidx.core.graphics.ColorUtils
 import androidx.fragment.app.Fragment
 import com.wayne.taiwan_s_environment.R
 import com.wayne.taiwan_s_environment.view.main.MainActivityListener
+
 
 abstract class BaseFragment(@LayoutRes contentLayoutId: Int): Fragment(contentLayoutId) {
 
@@ -46,6 +49,10 @@ abstract class BaseFragment(@LayoutRes contentLayoutId: Int): Fragment(contentLa
                 uiVisibility and View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR.inv()
             }
         }
+    }
+
+    fun openUrl(url: String) {
+        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
     }
 
     open fun isBottomNavigationShow(): Boolean {

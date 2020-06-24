@@ -96,8 +96,10 @@ class HomeFragment : BaseFragment(R.layout.fragment_home), OnCountySelectedListe
                 btn_location.setImageResource(R.drawable.ic_round_location_unknown_24)
                 showSelectCountyDialog()
             } else if (isLocationUpdates) {
+                viewModel.setPowerSaving(true)
                 stopLocationUpdates()
             } else {
+                viewModel.setPowerSaving(false)
                 startLocationUpdates()
             }
         }
@@ -209,9 +211,9 @@ class HomeFragment : BaseFragment(R.layout.fragment_home), OnCountySelectedListe
     }
 
     private fun stopLocationUpdates() {
-        btn_location.setImageResource(R.drawable.ic_round_location_searching_24)
         fusedLocationClient.removeLocationUpdates(locationCallback)
         isLocationUpdates = false
+        updateFloatingLocationButton()
     }
 
     private fun updateFloatingLocationButton() {
