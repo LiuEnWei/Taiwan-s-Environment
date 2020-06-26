@@ -1,6 +1,9 @@
 package com.wayne.taiwan_s_environment.model.db.dao
 
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
 import com.wayne.taiwan_s_environment.model.db.vo.UV
 
 @Dao

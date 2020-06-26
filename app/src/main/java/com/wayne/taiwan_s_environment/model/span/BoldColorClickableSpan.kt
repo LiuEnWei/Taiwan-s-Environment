@@ -4,7 +4,6 @@ import android.text.TextPaint
 import android.text.style.ClickableSpan
 import android.view.View
 import androidx.annotation.ColorInt
-import timber.log.Timber
 
 class BoldColorClickableSpan(@ColorInt val color: Int, private val id: Int, private val onClick: OnClickableSpanListener): ClickableSpan() {
     override fun updateDrawState(ds: TextPaint) {

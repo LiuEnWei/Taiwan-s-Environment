@@ -56,7 +56,16 @@
         &#8195;&#8195;2020年五月於前公司離職後，使用前公司常用的App架構，依照當初的專案構想又重新撰寫了一次，並將原始碼開源至GitHub。</string>
     <string name="sources_code">GitHub 原始碼</string>
 
-    <string name="no_site">%1$s 沒有觀測站</string>
+    <string name="uv">UV</string>
+    <string name="index">INDEX</string>
+    <string name="no_site">該地區查無觀測站</string>
+    <string name="reference">資料來源：</string>
+    <string name="oops">Oops</string>
+    <string name="network_error_message">Please check your network connection.</string>
+    <string name="go_settings_message">您未提供位置權限，請至設定頁開啟或選擇所在地區。</string>
+    <string name="go_settings">前往設定</string>
+
+    <string name="floating_button_guide">點擊右下角的懸浮按鈕提供位置權限，\n或長按設定所在區域。</string>
 
     <string name="select_region">選擇地區</string>
     <!--  Taiwan Region  -->

@@ -1,6 +1,8 @@
 package com.wayne.taiwan_s_environment.view.base
 
+import android.app.Dialog
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
@@ -9,10 +11,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat.getColor
 import androidx.core.graphics.ColorUtils
 import androidx.fragment.app.Fragment
 import com.wayne.taiwan_s_environment.R
+import com.wayne.taiwan_s_environment.view.main.MainActivity
 import com.wayne.taiwan_s_environment.view.main.MainActivityListener
 
 
@@ -53,6 +57,27 @@ abstract class BaseFragment(@LayoutRes contentLayoutId: Int): Fragment(contentLa
 
     fun openUrl(url: String) {
         startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+    }
+
+    fun showErrorMessage(message: String?, okClickListener: DialogInterface.OnClickListener?): Dialog {
+        val dialog = AlertDialog.Builder(requireContext())
+        dialog.setTitle(R.string.oops)
+        dialog.setMessage(message)
+        dialog.setCancelable(false)
+        dialog.setPositiveButton(android.R.string.ok, okClickListener)
+        return dialog.show()
+    }
+
+    fun getErrorMessage(throwable: Throwable): String? {
+        return if (isConnected()) {
+            throwable.message
+        } else {
+            getString(R.string.network_error_message)
+        }
+    }
+
+    fun isConnected(): Boolean {
+        return (requireActivity() as MainActivity).isConnected()
     }
 
     open fun isBottomNavigationShow(): Boolean {

@@ -1,5 +1,6 @@
 package com.wayne.taiwan_s_environment.view.taiwan
 
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -8,6 +9,7 @@ import androidx.lifecycle.Observer
 import com.richpath.RichPath
 import com.wayne.taiwan_s_environment.R
 import com.wayne.taiwan_s_environment.model.api.ApiResult
+import com.wayne.taiwan_s_environment.view.adapter.TaiwanAdapter
 import com.wayne.taiwan_s_environment.view.base.BaseFragment
 import kotlinx.android.synthetic.main.fragment_taiwan.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -15,10 +17,6 @@ import timber.log.Timber
 
 
 class TaiwanFragment : BaseFragment(R.layout.fragment_taiwan) {
-
-    companion object {
-
-    }
 
     private val viewModel by viewModel<TaiwanViewModel>()
     private var clickRichPath: RichPath? = null
@@ -35,10 +33,22 @@ class TaiwanFragment : BaseFragment(R.layout.fragment_taiwan) {
                     for (uv in list) {
                         Timber.e("$uv")
                     }
+
+                    if (list.isNullOrEmpty()) {
+                        text_no_site.visibility = View.VISIBLE
+                        recycler_taiwan.visibility = View.INVISIBLE
+                    } else {
+                        text_no_site.visibility = View.GONE
+                        recycler_taiwan.visibility = View.VISIBLE
+                    }
+                    recycler_taiwan.adapter = TaiwanAdapter(list)
                 }
 
                 is ApiResult.Error -> {
-
+                    showErrorMessage(getErrorMessage(it.throwable),
+                        DialogInterface.OnClickListener { dialog, view ->
+                            dialog.dismiss()
+                        })
                 }
             }
         })
@@ -68,6 +78,8 @@ class TaiwanFragment : BaseFragment(R.layout.fragment_taiwan) {
         }
 
         (requireActivity()as AppCompatActivity ).setSupportActionBar(toolbar)
+
+        viewModel.getUVByCounty()
     }
 
     override fun isBottomNavigationShow(): Boolean {

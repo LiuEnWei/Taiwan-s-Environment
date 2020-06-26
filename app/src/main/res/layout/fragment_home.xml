@@ -24,6 +24,23 @@
             android:clipChildren="false"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <TextView
+        android:id="@+id/text_guide"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="@string/floating_button_guide"
+        android:gravity="center"
+        android:padding="30dp"
+        android:textSize="16sp"
+        android:textColor="@color/colorGray600"
+        android:background="@color/colorGray200"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:visibility="visible"/>
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btn_location"
         android:layout_width="wrap_content"

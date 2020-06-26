@@ -1,12 +1,9 @@
 package com.wayne.taiwan_s_environment.view.imageoriginal
 
-import android.graphics.Typeface
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.method.LinkMovementMethod
-import android.text.style.ClickableSpan
-import android.text.style.StyleSpan
 import android.view.View
 import com.wayne.taiwan_s_environment.Constant
 import com.wayne.taiwan_s_environment.R
