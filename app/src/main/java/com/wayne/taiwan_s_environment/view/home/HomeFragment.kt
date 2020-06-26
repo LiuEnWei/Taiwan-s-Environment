@@ -1,12 +1,14 @@
 package com.wayne.taiwan_s_environment.view.home
 
 import android.Manifest
+import android.content.DialogInterface
 import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
 import android.os.Looper
 import android.view.View
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import com.google.android.gms.common.api.ResolvableApiException
@@ -51,7 +53,10 @@ class HomeFragment : BaseFragment(R.layout.fragment_home), OnCountySelectedListe
                 }
                 is ApiResult.Error -> {
                     Timber.e("uv update error ${it.throwable}")
-                    //TODO show error dialog
+                    showErrorMessage(getErrorMessage(it.throwable),
+                        DialogInterface.OnClickListener { dialog, view ->
+                            dialog.dismiss()
+                        })
                 }
             }
         })
@@ -71,12 +76,14 @@ class HomeFragment : BaseFragment(R.layout.fragment_home), OnCountySelectedListe
                     Timber.e("${it.throwable}")
                     when (it.throwable) {
                         is CountyNotFoundException, is SameCountyException -> {
-                            Timber.e("CountyNotFoundException")
                             updateFloatingLocationButton()
                         }
 
                         else -> {
-                            //TODO show error dialog
+                            showErrorMessage(getErrorMessage(it.throwable),
+                                DialogInterface.OnClickListener { dialog, view ->
+                                    dialog.dismiss()
+                                })
                         }
                     }
                 }
@@ -84,6 +91,11 @@ class HomeFragment : BaseFragment(R.layout.fragment_home), OnCountySelectedListe
         })
 
         viewModel.county.observe(viewLifecycleOwner, Observer {
+            if (it == null) {
+                text_guide.visibility = View.VISIBLE
+            } else {
+                text_guide.visibility = View.GONE
+            }
             updateFloatingLocationButton()
         })
 
@@ -96,10 +108,17 @@ class HomeFragment : BaseFragment(R.layout.fragment_home), OnCountySelectedListe
                 btn_location.setImageResource(R.drawable.ic_round_location_unknown_24)
                 showSelectCountyDialog()
             } else if (isLocationUpdates) {
+                viewModel.setPowerSaving(true)
                 stopLocationUpdates()
             } else {
+                viewModel.setPowerSaving(false)
                 startLocationUpdates()
             }
+        }
+
+        btn_location.setOnLongClickListener {
+            showSelectCountyDialog()
+            return@setOnLongClickListener true
         }
 
         swipe_refresh.setOnRefreshListener {
@@ -185,7 +204,13 @@ class HomeFragment : BaseFragment(R.layout.fragment_home), OnCountySelectedListe
                             grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                     btn_location.setImageResource(R.drawable.ic_round_location_unknown_24)
                 } else {
-                    // TODO show dialog to go settings or selected county
+                    AlertDialog.Builder(requireContext())
+                        .setTitle(R.string.oops)
+                        .setMessage(R.string.go_settings_message)
+                        .setNegativeButton(android.R.string.cancel, locationPermissionsDialogListener)
+                        .setNeutralButton(R.string.select_region, locationPermissionsDialogListener)
+                        .setPositiveButton(R.string.go_settings, locationPermissionsDialogListener)
+                        .show()
                 }
             }
         }
@@ -209,14 +234,12 @@ class HomeFragment : BaseFragment(R.layout.fragment_home), OnCountySelectedListe
     }
 
     private fun stopLocationUpdates() {
-        btn_location.setImageResource(R.drawable.ic_round_location_searching_24)
         fusedLocationClient.removeLocationUpdates(locationCallback)
         isLocationUpdates = false
+        updateFloatingLocationButton()
     }
 
     private fun updateFloatingLocationButton() {
-        // TODO show error message ?
-
         if (ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
             && ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             btn_location.setImageResource(R.drawable.ic_round_location_disabled_24)
@@ -236,5 +259,23 @@ class HomeFragment : BaseFragment(R.layout.fragment_home), OnCountySelectedListe
     override fun onSelected(county: String) {
         Timber.e("selected county : $county")
         viewModel.getUVByCounty(county)
+    }
+
+    private val locationPermissionsDialogListener = DialogInterface.OnClickListener { dialogInterface, i ->
+        when (i) {
+            DialogInterface.BUTTON_NEGATIVE -> {
+                // cancel
+                dialogInterface.dismiss()
+            }
+            DialogInterface.BUTTON_NEUTRAL -> {
+                // select region
+                showSelectCountyDialog()
+                dialogInterface.dismiss()
+            }
+            DialogInterface.BUTTON_POSITIVE -> {
+                // go settings
+                dialogInterface.dismiss()
+            }
+        }
     }
 }

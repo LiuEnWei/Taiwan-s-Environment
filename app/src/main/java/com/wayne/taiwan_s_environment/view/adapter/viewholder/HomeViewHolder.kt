@@ -12,7 +12,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.wayne.taiwan_s_environment.R
-import com.wayne.taiwan_s_environment.model.span.BoldColorSpan
+import com.wayne.taiwan_s_environment.model.span.BoldColorRelativeSizeSpan
 import com.wayne.taiwan_s_environment.utils.getUVColor
 import java.text.SimpleDateFormat
 import java.util.*
@@ -58,13 +58,12 @@ class HomeViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
 //            val uv = uvi.toFloat().roundToInt()
 
             val messageBuilder = SpannableStringBuilder()
-            messageBuilder.append(context.getString(R.string.uv_index, uvi))
-            messageBuilder.append("\n")
-            messageBuilder.append("\n")
-            messageBuilder.append("\n")
+            messageBuilder.appendln(context.getString(R.string.uv_index, uvi))
+            messageBuilder.appendln()
+            messageBuilder.appendln()
 
             val uviStart = messageBuilder.indexOf(uvi)
-            messageBuilder.setSpan(BoldColorSpan(context.getUVColor(uv),2f), uviStart, uviStart + uvi.length, Spanned.SPAN_INCLUSIVE_INCLUSIVE)
+            messageBuilder.setSpan(BoldColorRelativeSizeSpan(context.getUVColor(uv),2f), uviStart, uviStart + uvi.length, Spanned.SPAN_INCLUSIVE_INCLUSIVE)
 
             var uvIndexLevel: String? = null
             when {
@@ -80,28 +79,28 @@ class HomeViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
 
                 uv in 6..7 -> {
                     uvIndexLevel = "#${context.getString(R.string.uv_index_high)}"
-                    messageBuilder.append(uvIndexLevel)
-                    messageBuilder.append(context.getString(R.string.sunburn_time, 30))
+                    messageBuilder.appendln(uvIndexLevel)
+                    messageBuilder.appendln(context.getString(R.string.sunburn_time, 30))
                     messageBuilder.append(context.getString(R.string.pay_attention_to_sun_protection))
                 }
 
                 uv in 8..10 -> {
                     uvIndexLevel = "#${context.getString(R.string.uv_index_excess)}"
-                    messageBuilder.append(uvIndexLevel)
-                    messageBuilder.append(context.getString(R.string.sunburn_time, 20))
+                    messageBuilder.appendln(uvIndexLevel)
+                    messageBuilder.appendln(context.getString(R.string.sunburn_time, 20))
                     messageBuilder.append(context.getString(R.string.pay_attention_to_sun_protection))
                 }
 
                 uv >= 11 -> {
                     uvIndexLevel = "#${context.getString(R.string.uv_index_dangerous)}"
-                    messageBuilder.append(uvIndexLevel)
-                    messageBuilder.append(context.getString(R.string.sunburn_time, 15))
+                    messageBuilder.appendln(uvIndexLevel)
+                    messageBuilder.appendln(context.getString(R.string.sunburn_time, 15))
                     messageBuilder.append(context.getString(R.string.pay_attention_to_sun_protection))
                 }
             }
             uvIndexLevel?.let {
                 val levelStart = messageBuilder.indexOf(it)
-                messageBuilder.setSpan(BoldColorSpan(context.resources.getColor(R.color.colorLightBlue700)), levelStart, messageBuilder.length, Spanned.SPAN_INCLUSIVE_INCLUSIVE)
+                messageBuilder.setSpan(BoldColorRelativeSizeSpan(context.resources.getColor(R.color.colorLightBlue700)), levelStart, messageBuilder.length, Spanned.SPAN_INCLUSIVE_INCLUSIVE)
             }
 
             textMessage.text = messageBuilder

@@ -27,9 +27,9 @@ class TaiwanViewModel : BaseViewModel() {
         viewModelScope.launch {
             flow {
                 val uvList = if (county == null) {
-                    uvDao.getAll()
+                    uvDao.getAllNewest()
                 } else {
-                    uvDao.getAllByCounty(county)
+                    uvDao.getAllNewestByCounty(county)
                 }
                 emit(ApiResult.success(uvList))
             }.flowOn(Dispatchers.IO)

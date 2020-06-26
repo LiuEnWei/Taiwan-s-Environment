@@ -22,7 +22,7 @@
             android:paddingBottom="25dp">
 
             <TextView
-                style="@style/privacy_policy_title"
+                style="@style/title"
                 android:id="@+id/text_privacy_policy_1_title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -32,68 +32,68 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
             <View
-                style="@style/privacy_policy_title_line"
+                style="@style/title_line"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/text_privacy_policy_1_title"/>
             <TextView
-                style="@style/privacy_policy_detail"
+                style="@style/detail"
                 android:id="@+id/text_privacy_policy_1_detail"
                 android:text="@string/privacy_policy_1_detail"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/text_privacy_policy_1_title" />
             <TextView
-                style="@style/privacy_policy_title"
+                style="@style/title"
                 android:id="@+id/text_privacy_policy_2_title"
                 android:text="@string/privacy_policy_2_title"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/text_privacy_policy_1_detail" />
             <View
-                style="@style/privacy_policy_title_line"
+                style="@style/title_line"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/text_privacy_policy_2_title"/>
             <TextView
-                style="@style/privacy_policy_detail"
+                style="@style/detail"
                 android:id="@+id/text_privacy_policy_2_detail"
                 android:text="@string/privacy_policy_2_detail"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/text_privacy_policy_2_title" />
             <TextView
-                style="@style/privacy_policy_title"
+                style="@style/title"
                 android:id="@+id/text_privacy_policy_3_title"
                 android:text="@string/privacy_policy_3_title"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/text_privacy_policy_2_detail" />
             <View
-                style="@style/privacy_policy_title_line"
+                style="@style/title_line"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/text_privacy_policy_3_title"/>
             <TextView
-                style="@style/privacy_policy_detail"
+                style="@style/detail"
                 android:id="@+id/text_privacy_policy_3_detail"
                 android:text="@string/privacy_policy_3_detail"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/text_privacy_policy_3_title" />
             <TextView
-                style="@style/privacy_policy_title"
+                style="@style/title"
                 android:id="@+id/text_privacy_policy_4_title"
                 android:text="@string/privacy_policy_4_title"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/text_privacy_policy_3_detail" />
             <View
-                style="@style/privacy_policy_title_line"
+                style="@style/title_line"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/text_privacy_policy_4_title"/>
             <TextView
-                style="@style/privacy_policy_detail"
+                style="@style/detail"
                 android:id="@+id/text_privacy_policy_4_detail"
                 android:text="@string/privacy_policy_4_detail"
                 app:layout_constraintEnd_toEndOf="parent"

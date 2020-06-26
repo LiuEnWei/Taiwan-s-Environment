@@ -36,7 +36,36 @@
     <string name="sunburn_time">#曝曬%1$d分鐘內就可能曬傷</string>
     <string name="pay_attention_to_sun_protection">#注意防曬</string>
 
-    <string name="please_click">請</string>
+    <string name="icons_made_by">%1$s made by %2$s from %3$s.</string>
+    <string name="taiwan_icon">Taiwan icon</string>
+    <string name="freepik">Freepik</string>
+    <string name="flaticon">Flaticon</string>
+    <string name="taiwan_svg">Taiwan SVG</string>
+    <string name="luuva">Luuva</string>
+    <string name="wikimedia_commons">wikimedia commons</string>
+    <string name="app_icons">App icons</string>
+    <string name="android">Android</string>
+    <string name="material_design">material design</string>
+
+    <string name="taiwan_epa_open_data">臺灣行政院環保署環境資料開放平臺</string>
+
+    <string name="name">Liu En-Wei</string>
+    <string name="about_developer_detail">&#8195;&#8195;一個Android Developer，大學三年級因專題學習撰寫Android App，畢業後至今工作五年，閒暇時喜歡旅遊、讀寫小說、玩遊戲和看遊戲實況。</string>
+    <string name="about_project">關於專案</string>
+    <string name="about_project_detail">&#8195;&#8195;此專案的構想是在2018年，為了練習Kotlin，利用當時公司(於2019年四月離職)提供的Side Project Time。\n
+        &#8195;&#8195;2020年五月於前公司離職後，使用前公司常用的App架構，依照當初的專案構想又重新撰寫了一次，並將原始碼開源至GitHub。</string>
+    <string name="sources_code">GitHub 原始碼</string>
+
+    <string name="uv">UV</string>
+    <string name="index">INDEX</string>
+    <string name="no_site">該地區查無觀測站</string>
+    <string name="reference">資料來源：</string>
+    <string name="oops">Oops</string>
+    <string name="network_error_message">Please check your network connection.</string>
+    <string name="go_settings_message">您未提供位置權限，請至設定頁開啟或選擇所在地區。</string>
+    <string name="go_settings">前往設定</string>
+
+    <string name="floating_button_guide">點擊右下角的懸浮按鈕提供位置權限，\n或長按設定所在區域。</string>
 
     <string name="select_region">選擇地區</string>
     <!--  Taiwan Region  -->
@@ -68,7 +97,7 @@
     <string name="ludao_township">綠島</string>
     <string name="lanyu_township">蘭嶼</string>
     <string name="dongsha_islands">東沙群島</string>
-    <string name="nasha_islands">南沙群島</string>
+    <string name="nasha_islands">南沙太平島與中州礁</string>
     <string name="wuqiu_township">烏坵嶼</string>
 
     <string-array name="taiwan_region">

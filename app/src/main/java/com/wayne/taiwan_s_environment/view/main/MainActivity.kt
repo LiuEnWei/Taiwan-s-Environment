@@ -1,6 +1,10 @@
 package com.wayne.taiwan_s_environment.view.main
 
+import android.content.Context
 import android.content.res.ColorStateList
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.navigation.NavController
@@ -18,6 +22,7 @@ class MainActivity : BaseActivity(R.layout.activity_main), MainActivityListener 
 
     private val viewModel by viewModel<MainViewModel>()
     private lateinit var appBarConfig: AppBarConfiguration
+    private lateinit var connectivityManager: ConnectivityManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,6 +31,8 @@ class MainActivity : BaseActivity(R.layout.activity_main), MainActivityListener 
         toolbar.setupWithNavController(findNavController(), appBarConfig)
         setSupportActionBar(toolbar)
         setupActionBarWithNavController(findNavController(), appBarConfig)
+
+        connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
         bottom_navigation.setOnNavigationItemSelectedListener {
             if (it.itemId != bottom_navigation.selectedItemId) {
@@ -51,6 +58,25 @@ class MainActivity : BaseActivity(R.layout.activity_main), MainActivityListener 
 
     private fun findNavController(): NavController {
         return findNavController(R.id.nav_host_fragment)
+    }
+
+    fun isConnected(): Boolean {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val nw = connectivityManager.activeNetwork ?: return false
+            val actNw = connectivityManager.getNetworkCapabilities(nw) ?: return false
+            return when {
+                actNw.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+                actNw.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+                //for other device how are able to connect with Ethernet
+                actNw.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
+                //for check internet over Bluetooth
+                actNw.hasTransport(NetworkCapabilities.TRANSPORT_BLUETOOTH) -> true
+                else -> false
+            }
+        } else {
+            val nwInfo = connectivityManager.activeNetworkInfo ?: return false
+            return nwInfo.isConnected
+        }
     }
 
     override fun setBottomNavigationIsShow(isShow: Boolean) {

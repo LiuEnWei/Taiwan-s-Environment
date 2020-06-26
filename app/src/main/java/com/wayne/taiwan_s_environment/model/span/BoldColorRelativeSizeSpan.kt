@@ -4,7 +4,7 @@ import android.text.TextPaint
 import android.text.style.RelativeSizeSpan
 import androidx.annotation.ColorInt
 
-class BoldColorSpan(@ColorInt val color: Int, proportion: Float = 1f): RelativeSizeSpan(proportion) {
+class BoldColorRelativeSizeSpan(@ColorInt val color: Int, proportion: Float = 1f): RelativeSizeSpan(proportion) {
     override fun updateDrawState(ds: TextPaint) {
         super.updateDrawState(ds)
         ds.isFakeBoldText = true

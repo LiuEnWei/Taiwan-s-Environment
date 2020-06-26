@@ -1,5 +1,6 @@
 package com.wayne.taiwan_s_environment.view.splash
 
+import android.content.DialogInterface
 import android.graphics.drawable.AnimatedVectorDrawable
 import android.os.Bundle
 import android.view.View
@@ -25,19 +26,22 @@ class SplashFragment : BaseFragment(R.layout.fragment_splash) {
             when (it) {
                 is ApiResult.Success -> {
                     vectorDrawable?.stop()
+                    // TODO
 //                    if (viewModel.isFirstStartApp) {
 //                        findNavController().navigate(SplashFragmentDirections.actionSplashFragmentToIntroFragment())
 //                    } else {
 //                        findNavController().navigate(SplashFragmentDirections.actionSplashFragmentToHomeFragment())
 //                    }
-                    // TODO
                     findNavController().navigate(SplashFragmentDirections.actionSplashFragmentToHomeFragment())
                 }
 
                 is ApiResult.Error -> {
-                    Timber.e("${it.throwable}")
-                    viewModel.getOpenUV()
-                    //TODO show error message
+                    Timber.e("${it.throwable}}")
+                    showErrorMessage(getErrorMessage(it.throwable),
+                        DialogInterface.OnClickListener { dialog, view ->
+                            dialog.dismiss()
+                            viewModel.getOpenUV()
+                        })
                 }
             }
         })
