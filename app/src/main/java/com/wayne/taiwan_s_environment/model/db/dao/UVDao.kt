@@ -28,4 +28,7 @@ interface UVDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertUVAll(uv: List<UV>)
+
+    @Query("DELETE FROM uv WHERE time < :time")
+    fun deleteByTime(time: Long)
 }

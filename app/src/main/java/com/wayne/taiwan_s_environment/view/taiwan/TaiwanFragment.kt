@@ -6,6 +6,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat.getColor
 import androidx.lifecycle.Observer
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.richpath.RichPath
 import com.wayne.taiwan_s_environment.R
 import com.wayne.taiwan_s_environment.model.api.ApiResult
@@ -23,17 +24,16 @@ class TaiwanFragment : BaseFragment(R.layout.fragment_taiwan) {
     private val defaultColor: Int by lazy { getColor(requireContext(), R.color.colorRocGreen)  }
     private val clickColor: Int by lazy { getColor(requireContext(), R.color.colorGreen500)  }
 
+    private lateinit var bottomSheet: BottomSheetBehavior<View>
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        bottomSheet = BottomSheetBehavior.from(bottom_sheet)
 
         viewModel.uvList.observe(viewLifecycleOwner, Observer {
             when (it) {
                 is ApiResult.Success -> {
                     val list = it.result
-                    for (uv in list) {
-                        Timber.e("$uv")
-                    }
-
                     if (list.isNullOrEmpty()) {
                         text_no_site.visibility = View.VISIBLE
                         recycler_taiwan.visibility = View.INVISIBLE
@@ -67,6 +67,10 @@ class TaiwanFragment : BaseFragment(R.layout.fragment_taiwan) {
                         clickRichPath = it
                         viewModel.getUVByCounty(rich.name)
                         toolbar.title = rich.name
+
+                        if (bottomSheet.state == BottomSheetBehavior.STATE_COLLAPSED) {
+                            bottomSheet.state = BottomSheetBehavior.STATE_EXPANDED
+                        }
                     }
                 }
                 else -> {

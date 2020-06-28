@@ -46,6 +46,7 @@ class SplashFragment : BaseFragment(R.layout.fragment_splash) {
             }
         })
 
+        viewModel.cleanOldData()
         viewModel.getOpenUV()
         startSplashAnimator()
     }
