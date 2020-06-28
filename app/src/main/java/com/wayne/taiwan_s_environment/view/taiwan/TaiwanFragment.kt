@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat.getColor
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.richpath.RichPath
@@ -13,13 +14,11 @@ import com.wayne.taiwan_s_environment.model.api.ApiResult
 import com.wayne.taiwan_s_environment.view.adapter.TaiwanAdapter
 import com.wayne.taiwan_s_environment.view.base.BaseFragment
 import kotlinx.android.synthetic.main.fragment_taiwan.*
-import org.koin.androidx.viewmodel.ext.android.viewModel
-import timber.log.Timber
 
 
 class TaiwanFragment : BaseFragment(R.layout.fragment_taiwan) {
 
-    private val viewModel by viewModel<TaiwanViewModel>()
+    private val viewModel by viewModels<TaiwanViewModel>()
     private var clickRichPath: RichPath? = null
     private val defaultColor: Int by lazy { getColor(requireContext(), R.color.colorRocGreen)  }
     private val clickColor: Int by lazy { getColor(requireContext(), R.color.colorGreen500)  }

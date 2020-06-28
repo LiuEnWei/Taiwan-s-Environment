@@ -58,7 +58,7 @@ class SplashViewModel : BaseViewModel() {
                     emit(ApiResult.success(arrayListOf()))
                 } else {
                     val limit = (nowTime - maxTime) / oneHour * Constant.EPA_DATA_UV_SITE_COUNTS
-                    val result = epaDateService.getUV(limit = limit)
+                    val result = epaDateService.getUV(limit = limit.toInt())
                     val records = result.body()?.records
                     if (!result.isSuccessful || records == null) throw HttpException(result)
 

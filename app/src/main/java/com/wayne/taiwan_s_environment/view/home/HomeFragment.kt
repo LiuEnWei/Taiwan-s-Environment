@@ -10,6 +10,7 @@ import android.os.Looper
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
@@ -23,7 +24,6 @@ import com.wayne.taiwan_s_environment.view.base.BaseFragment
 import com.wayne.taiwan_s_environment.view.dialog.selectcounty.OnCountySelectedListener
 import com.wayne.taiwan_s_environment.view.dialog.selectcounty.SelectCountyDialog
 import kotlinx.android.synthetic.main.fragment_home.*
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
 class HomeFragment : BaseFragment(R.layout.fragment_home), OnCountySelectedListener {
@@ -32,7 +32,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home), OnCountySelectedListe
         const val PERMISSIONS_CODE = 1000
     }
 
-    private val viewModel by viewModel<HomeViewModel>()
+    private val viewModel by viewModels<HomeViewModel>()
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var locationRequest: LocationRequest
