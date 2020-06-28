@@ -9,6 +9,10 @@
     AQI
   
     ...
+   
+  * **DONE**
+  
+    UV
 
 * **Open data**
 
