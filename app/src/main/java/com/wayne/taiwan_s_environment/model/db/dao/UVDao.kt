@@ -17,7 +17,7 @@ interface UVDao {
     @Query("SELECT MAX(time) FROM uv")
     fun getMaxTime(): Long
 
-    @Query("SELECT * FROM uv GROUP BY siteName ORDER BY county")
+    @Query("SELECT siteName as siteName, county as county, publishAgency as publishAgency, publishTime as publishTime, uvi as uvi, wgs84Lat as wgs84Lat, wgs84Lon as wgs84Lon, MAX(time) as time FROM uv GROUP BY siteName ORDER BY county")
     fun getAllNewest(): List<UV>
 
     @Query("SELECT siteName as siteName, county as county, publishAgency as publishAgency, publishTime as publishTime, uvi as uvi, wgs84Lat as wgs84Lat, wgs84Lon as wgs84Lon, MAX(time) as time FROM uv WHERE county = :county GROUP BY siteName")
@@ -31,4 +31,7 @@ interface UVDao {
 
     @Query("DELETE FROM uv WHERE time < :time")
     fun deleteByTime(time: Long)
+
+    @Query("DELETE FROM uv")
+    fun deleteAll()
 }
