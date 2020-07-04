@@ -9,8 +9,9 @@ import com.wayne.taiwan_s_environment.MyApplication
 import com.wayne.taiwan_s_environment.R
 import com.wayne.taiwan_s_environment.model.api.ApiResult
 import com.wayne.taiwan_s_environment.model.api.EpaDataService
+import com.wayne.taiwan_s_environment.model.db.dao.AQIDao
 import com.wayne.taiwan_s_environment.model.db.dao.UVDao
-import com.wayne.taiwan_s_environment.model.db.vo.UV
+import com.wayne.taiwan_s_environment.model.db.vo.Home
 import com.wayne.taiwan_s_environment.model.exception.CountyNotFoundException
 import com.wayne.taiwan_s_environment.model.exception.SameCountyException
 import com.wayne.taiwan_s_environment.model.pref.Pref
@@ -31,17 +32,18 @@ class HomeViewModel : BaseViewModel() {
 
     private val epaDateService: EpaDataService by inject()
     private val uvDao: UVDao by inject()
+    private val aqiDao: AQIDao by inject()
     private val pref: Pref by inject()
 
-    private val _openUvUpdate = MutableLiveData<ApiResult<Nothing>>()
-    val openUvUpdate: LiveData<ApiResult<Nothing>>
-        get() = _openUvUpdate
+    private val _epaDataUpdate = MutableLiveData<ApiResult<Nothing>>()
+    val epaDataUpdate: LiveData<ApiResult<Nothing>>
+        get() = _epaDataUpdate
 
     val county = MutableLiveData<String>()
 
-    private val _uvList = MutableLiveData<ApiResult<List<UV>>>()
-    val uvList: LiveData<ApiResult<List<UV>>>
-        get() = _uvList
+    private val _epaList = MutableLiveData<ApiResult<ArrayList<Home>>>()
+    val epaList: LiveData<ApiResult<ArrayList<Home>>>
+        get() = _epaList
 
     fun initData() {
         Timber.e("initData ${pref.county}")
@@ -56,12 +58,12 @@ class HomeViewModel : BaseViewModel() {
                 val result = epaDateService.getUV()
                 val records = result.body()?.records
                 if (!result.isSuccessful || records == null) throw HttpException(result)
-                uvDao.insertUVAll(records.toDbUVList())
+                uvDao.insertAll(records.toDbUVList())
                 emit(ApiResult.success(null))
             }.flowOn(Dispatchers.IO)
                 .catch { e -> emit(ApiResult.error(e)) }
                 .collect {
-                    _openUvUpdate.value = it
+                    _epaDataUpdate.value = it
                     county.value?.let { county ->
                         getUVByCounty(county)
                     }
@@ -73,15 +75,18 @@ class HomeViewModel : BaseViewModel() {
         county.checkSiteCounty().let {
             viewModelScope.launch {
                 flow {
-                    val uvList = uvDao.getAllByCounty(it)
+                    val list = arrayListOf<Home>()
+                    list.addAll(uvDao.getAllByCounty(it))
+                    list.addAll(aqiDao.getAllByCounty(it))
+                    list.sort()
                     pref.county = it
-                    if (uvList.isNotEmpty()) {
+                    if (list.isNotEmpty()) {
                         this@HomeViewModel.county.postValue(it)
                     }
-                    emit(ApiResult.success(uvList))
+                    emit(ApiResult.success(list))
                 }.flowOn(Dispatchers.IO)
                     .catch { e -> emit(ApiResult.error(e)) }
-                    .collect { _uvList.value = it }
+                    .collect { _epaList.value = it }
             }
         }
     }
@@ -97,15 +102,18 @@ class HomeViewModel : BaseViewModel() {
                 Timber.e("admin : $admin")
                 if (admin == county.value) throw SameCountyException()
 
-                val uvList = uvDao.getAllByCounty(admin)
-                if (uvList.isNullOrEmpty()) throw CountyNotFoundException()
+                val list = arrayListOf<Home>()
+                list.addAll(uvDao.getAllByCounty(admin))
+                list.addAll(aqiDao.getAllByCounty(admin))
+                list.sort()
+                if (list.isNullOrEmpty()) throw CountyNotFoundException()
 
                 pref.county = admin
                 county.postValue(admin)
-                emit(ApiResult.success(uvList))
+                emit(ApiResult.success(list))
             }.flowOn(Dispatchers.IO)
                 .catch { e -> emit(ApiResult.error(e)) }
-                .collect { _uvList.value = it }
+                .collect { _epaList.value = it }
         }
     }
 

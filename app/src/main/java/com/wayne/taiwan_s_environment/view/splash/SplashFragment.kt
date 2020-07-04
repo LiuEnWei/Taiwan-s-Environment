@@ -24,7 +24,7 @@ class SplashFragment : BaseFragment(R.layout.fragment_splash) {
 
         viewModel.uvList.observe(viewLifecycleOwner, Observer {
             when (it) {
-                is ApiResult.Success -> {
+                is ApiResult.Empty -> {
                     vectorDrawable?.stop()
                     // TODO
 //                    if (viewModel.isFirstStartApp) {
@@ -40,14 +40,14 @@ class SplashFragment : BaseFragment(R.layout.fragment_splash) {
                     showErrorMessage(getErrorMessage(it.throwable),
                         DialogInterface.OnClickListener { dialog, view ->
                             dialog.dismiss()
-                            viewModel.getOpenUV()
+                            viewModel.getEpaData()
                         })
                 }
             }
         })
 
         viewModel.cleanOldData()
-        viewModel.getOpenUV()
+        viewModel.getEpaData()
         startSplashAnimator()
     }
 

@@ -13,3 +13,15 @@ fun Context.getUVColor(uv: Int): Int {
         else -> resources.getColor(R.color.colorGray600)
     }
 }
+
+fun Context.getAQIColor(aqi: Int): Int {
+    return when (aqi) {
+        in 0..50 -> resources.getColor(R.color.colorAQIGood)
+        in 51..100 -> resources.getColor(R.color.colorAQIModerate)
+        in 101..150 -> resources.getColor(R.color.colorAQIUnhealthyForSensitiveGroups)
+        in 151..200 -> resources.getColor(R.color.colorAQIUnhealthy)
+        in 201..300 -> resources.getColor(R.color.colorAQIVeryUnhealthy)
+        in 301..500 -> resources.getColor(R.color.colorAQIHazardous)
+        else -> resources.getColor(R.color.colorGray600)
+    }
+}

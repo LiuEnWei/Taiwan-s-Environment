@@ -16,7 +16,7 @@ interface EpaDataService {
                       @Query("format") format: String = "json"): Response<EpaResponse<UV>>
 
     @GET("api/v1/aqx_p_432")
-    suspend fun getAQI(@Query("limit") limit: Int = Constant.EPA_DATA_UV_SITE_COUNTS,
+    suspend fun getAQI(@Query("limit") limit: Int = Constant.EPA_DATA_AQI_SITE_COUNTS,
                        @Query("offset") offset: Int = 0,
                        @Query("api_key") apiKey: String = Constant.EPA_DATA_API_KEY,
                        @Query("format") format: String = "json"): Response<EpaResponse<AQI>>

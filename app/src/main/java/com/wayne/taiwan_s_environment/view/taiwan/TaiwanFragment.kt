@@ -29,7 +29,7 @@ class TaiwanFragment : BaseFragment(R.layout.fragment_taiwan) {
         super.onViewCreated(view, savedInstanceState)
         bottomSheet = BottomSheetBehavior.from(bottom_sheet)
 
-        viewModel.uvList.observe(viewLifecycleOwner, Observer {
+        viewModel.epaList.observe(viewLifecycleOwner, Observer {
             when (it) {
                 is ApiResult.Success -> {
                     val list = it.result

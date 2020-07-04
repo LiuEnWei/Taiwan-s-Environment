@@ -6,8 +6,9 @@ import androidx.lifecycle.viewModelScope
 import com.wayne.taiwan_s_environment.Constant
 import com.wayne.taiwan_s_environment.model.api.ApiResult
 import com.wayne.taiwan_s_environment.model.api.EpaDataService
-import com.wayne.taiwan_s_environment.model.api.vo.UV
+import com.wayne.taiwan_s_environment.model.db.dao.AQIDao
 import com.wayne.taiwan_s_environment.model.db.dao.UVDao
+import com.wayne.taiwan_s_environment.utils.toDbAQIList
 import com.wayne.taiwan_s_environment.utils.toDbUVList
 import com.wayne.taiwan_s_environment.view.base.BaseViewModel
 import kotlinx.coroutines.Dispatchers
@@ -26,20 +27,21 @@ class SplashViewModel : BaseViewModel() {
 
     private val epaDateService: EpaDataService by inject()
     private val uvDao: UVDao by inject()
+    private val aqiDao: AQIDao by inject()
 
-    private val _uvList = MutableLiveData<ApiResult<List<UV>>>()
-    val uvList: LiveData<ApiResult<List<UV>>>
+    private val _uvList = MutableLiveData<ApiResult<Nothing>>()
+    val uvList: LiveData<ApiResult<Nothing>>
         get() = _uvList
 
     private var startTime: Long? = null
     private var oneHour = 60 * 60 * 1000
     private var minDelayTime = 7000L
 
-    fun getOpenUV() {
+    fun getEpaData() {
         if (startTime == null) startTime = Date().time
         viewModelScope.launch {
             flow {
-                val maxTime = uvDao.getMaxTime().let {
+                val maxTime = uvDao.getMaxTime().coerceAtMost(aqiDao.getMaxTime()).let {
                     val today = getTodayStart()
                     return@let if (it == 0L || it < today) {
                         today
@@ -55,22 +57,27 @@ class SplashViewModel : BaseViewModel() {
                 if (nowTime - maxTime < oneHour) {
                     // not need update
                     delay(minDelayTime)
-                    emit(ApiResult.success(arrayListOf()))
+                    emit(ApiResult.success(null))
                 } else {
-                    val limit = (nowTime - maxTime) / oneHour * Constant.EPA_DATA_UV_SITE_COUNTS
-                    val result = epaDateService.getUV(limit = limit.toInt())
-                    val records = result.body()?.records
-                    if (!result.isSuccessful || records == null) throw HttpException(result)
+                    val hourCount = (nowTime - maxTime) / oneHour
+                    val uvLimit = hourCount * Constant.EPA_DATA_UV_SITE_COUNTS
+                    val uvResult = epaDateService.getUV(limit = uvLimit.toInt())
+                    val uvRecords = uvResult.body()?.records
+                    if (!uvResult.isSuccessful || uvRecords == null) throw HttpException(uvResult)
+                    uvDao.insertAll(uvRecords.toDbUVList())
 
-                    uvDao.insertUVAll(records.toDbUVList())
+                    val aqiLimit = hourCount * Constant.EPA_DATA_AQI_SITE_COUNTS
+                    val aqiResult = epaDateService.getAQI(limit = aqiLimit.toInt())
+                    val aqiRecords = aqiResult.body()?.records
+                    if (!aqiResult.isSuccessful || aqiRecords == null) throw HttpException(uvResult)
+                    aqiDao.insertAll(aqiRecords.toDbAQIList())
 
                     val delayTime = Date().time - startTime!!
                     if (delayTime < minDelayTime) {
                         delay(minDelayTime - delayTime)
                     }
 
-                    Timber.e("${records.size}")
-                    emit(ApiResult.success(records))
+                    emit(ApiResult.success(null))
                 }
             }.flowOn(Dispatchers.IO)
                 .catch { e -> emit(ApiResult.error(e)) }

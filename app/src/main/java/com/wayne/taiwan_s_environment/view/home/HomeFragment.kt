@@ -45,7 +45,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home), OnCountySelectedListe
 
         initLocation()
 
-        viewModel.openUvUpdate.observe(viewLifecycleOwner, Observer {
+        viewModel.epaDataUpdate.observe(viewLifecycleOwner, Observer {
             when (it) {
                 is ApiResult.Empty -> {
                     Timber.e("uv update success")
@@ -61,7 +61,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home), OnCountySelectedListe
             }
         })
 
-        viewModel.uvList.observe(viewLifecycleOwner, Observer {
+        viewModel.epaList.observe(viewLifecycleOwner, Observer {
             when (it) {
                 is ApiResult.Success -> {
                     Timber.e("uv list success")

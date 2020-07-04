@@ -2,31 +2,32 @@ package com.wayne.taiwan_s_environment.model.db.vo
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
-import androidx.room.PrimaryKey
 
-@Entity(tableName = "aqi")
+@Entity(tableName = "aqi", primaryKeys = ["siteName", "publishTime"])
 data class AQI(
-    @PrimaryKey var siteName: String,
+    @ColumnInfo(name = "siteName") var siteName: String,
+    @ColumnInfo(name = "county") var county: String,
+    @ColumnInfo(name = "aqi") var aqi: String,
+    @ColumnInfo(name = "pollutant") var pollutant: String,
+    @ColumnInfo(name = "status") var status: String,
+    @ColumnInfo(name = "s_o2") var SO2: String,
+    @ColumnInfo(name = "c_o") var CO: String,
+    @ColumnInfo(name = "c_o_8hr") var CO_8hr: String,
+    @ColumnInfo(name = "o3") var O3: String,
+    @ColumnInfo(name = "o3_8hr") var O3_8hr: String,
+    @ColumnInfo(name = "pm10") var PM10: String,
+    @ColumnInfo(name = "pm2_5") var PM2_5: String,
+    @ColumnInfo(name = "n_o2") var NO2: String,
+    @ColumnInfo(name = "n_ox") var NOx: String,
+    @ColumnInfo(name = "n_o") var NO: String,
+    @ColumnInfo(name = "windSpeed") var windSpeed: String,
+    @ColumnInfo(name = "windDirec") var windDirec: String,
+    @ColumnInfo(name = "publishTime") var publishTime: String,
+    @ColumnInfo(name = "pm2_5_avg") var PM2_5_AVG: String,
+    @ColumnInfo(name = "pm10_avg") var PM10_AVG: String,
+    @ColumnInfo(name = "s_o2_avg") var SO2_AVG: String,
+    @ColumnInfo(name = "longitude") var longitude: String,
+    @ColumnInfo(name = "latitude") var latitude: String,
     @ColumnInfo(name = "siteId") var siteId: String,
-    @ColumnInfo(name = "county") var county: String? = null,
-    @ColumnInfo(name = "aqi") var aqi: String? = null,
-    @ColumnInfo(name = "pollutant") var pollutant: String? = null,
-    @ColumnInfo(name = "status") var status: String? = null,
-    @ColumnInfo(name = "SO2") var SO2: String? = null,
-    @ColumnInfo(name = "CO") var CO: String? = null,
-    @ColumnInfo(name = "CO_8hr") var CO_8hr: String? = null,
-    @ColumnInfo(name = "O3_8hr") var O3_8hr: String? = null,
-    @ColumnInfo(name = "PM10") var PM10: String? = null,
-    @ColumnInfo(name = "PM2_5") var PM2_5: String? = null,
-    @ColumnInfo(name = "NO2") var NO2: String? = null,
-    @ColumnInfo(name = "NOx") var NOx: String? = null,
-    @ColumnInfo(name = "NO") var NO: String? = null,
-    @ColumnInfo(name = "windSpeed") var windSpeed: String? = null,
-    @ColumnInfo(name = "windDirec") var windDirec: String? = null,
-    @ColumnInfo(name = "publishTime") var publishTime: String? = null,
-    @ColumnInfo(name = "PM2_5_AVG") var PM2_5_AVG: String? = null,
-    @ColumnInfo(name = "PM10_AVG") var PM10_AVG: String? = null,
-    @ColumnInfo(name = "SO2_AVG") var SO2_AVG: String? = null,
-    @ColumnInfo(name = "longitude") var longitude: String? = null,
-    @ColumnInfo(name = "latitude") var latitude: String? = null
+    @ColumnInfo(name = "time") var time: Long? = null
 )

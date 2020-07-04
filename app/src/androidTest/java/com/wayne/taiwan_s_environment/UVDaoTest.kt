@@ -1,21 +1,17 @@
 package com.wayne.taiwan_s_environment
 
 import android.content.Context
-import android.util.Log
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
-import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.wayne.taiwan_s_environment.model.db.AppDatabase
 import com.wayne.taiwan_s_environment.model.db.dao.UVDao
 import com.wayne.taiwan_s_environment.model.db.vo.UV
 import org.junit.After
-
+import org.junit.Assert.assertEquals
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-
-import org.junit.Assert.*
-import org.junit.Before
 import java.io.IOException
 
 /**
@@ -46,7 +42,7 @@ class UVDaoTest {
         val list = arrayListOf<UV>()
         list.add(UV("site1", "","","","","","",1000))
         list.add(UV("site2", "","","","","","",2000))
-        uvDao.insertUVAll(list)
+        uvDao.insertAll(list)
         assertEquals(uvDao.getAll().size, 2)
     }
 
@@ -55,7 +51,7 @@ class UVDaoTest {
         val list = arrayListOf<UV>()
         list.add(UV("site1", "","","","","","",1000))
         list.add(UV("site1", "","","","","","",2000))
-        uvDao.insertUVAll(list)
+        uvDao.insertAll(list)
         uvDao.deleteByTime(1000)
         assertEquals(uvDao.getAll().size, 1)
     }
@@ -69,7 +65,7 @@ class UVDaoTest {
         list.add(UV("site1", county,"","","1","","",3000))
         list.add(UV("site2", county,"","","1","","",2000))
         list.add(UV("site3", "${county}2","","","1","","",2000))
-        uvDao.insertUVAll(list)
+        uvDao.insertAll(list)
         var assert = ""
         for (uv in uvDao.getAllNewestByCounty(county)) {
             assert += uv.uvi
@@ -84,7 +80,7 @@ class UVDaoTest {
         list.add(UV("site1", "","","","0","","",2000))
         list.add(UV("site2", "","","","1","","",3000))
         list.add(UV("site3", "","","","1","","",2000))
-        uvDao.insertUVAll(list)
+        uvDao.insertAll(list)
 
         assertEquals(uvDao.getMaxTime(), 3000)
     }

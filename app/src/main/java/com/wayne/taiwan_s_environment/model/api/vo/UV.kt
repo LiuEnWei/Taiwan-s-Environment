@@ -4,6 +4,9 @@ import com.google.gson.annotations.SerializedName
 import java.text.SimpleDateFormat
 import java.util.*
 
+/**
+ * https://data.epa.gov.tw/dataset/uv_s_01/resource/c7438756-1c57-4e67-a857-7caef67ec973
+ * */
 data class UV(
     @SerializedName("County") val county: String,
     @SerializedName("PublishAgency") val publishAgency: String,
