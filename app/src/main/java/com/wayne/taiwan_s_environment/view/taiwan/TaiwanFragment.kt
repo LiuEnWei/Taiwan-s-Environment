@@ -11,12 +11,15 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.richpath.RichPath
 import com.wayne.taiwan_s_environment.R
 import com.wayne.taiwan_s_environment.model.api.ApiResult
+import com.wayne.taiwan_s_environment.model.db.vo.Home
 import com.wayne.taiwan_s_environment.view.adapter.TaiwanAdapter
+import com.wayne.taiwan_s_environment.view.adapter.viewholder.TaiwanAQIViewHolder
 import com.wayne.taiwan_s_environment.view.base.BaseFragment
+import com.wayne.taiwan_s_environment.view.dialog.aqi.AQIDialog
 import kotlinx.android.synthetic.main.fragment_taiwan.*
 
 
-class TaiwanFragment : BaseFragment(R.layout.fragment_taiwan) {
+class TaiwanFragment : BaseFragment(R.layout.fragment_taiwan), TaiwanAQIViewHolder.OnAQIClickListener {
 
     private val viewModel by viewModels<TaiwanViewModel>()
     private var clickRichPath: RichPath? = null
@@ -29,6 +32,8 @@ class TaiwanFragment : BaseFragment(R.layout.fragment_taiwan) {
         super.onViewCreated(view, savedInstanceState)
         bottomSheet = BottomSheetBehavior.from(bottom_sheet)
 
+        recycler_taiwan.adapter = TaiwanAdapter(arrayListOf(), this)
+
         viewModel.epaList.observe(viewLifecycleOwner, Observer {
             when (it) {
                 is ApiResult.Success -> {
@@ -40,7 +45,9 @@ class TaiwanFragment : BaseFragment(R.layout.fragment_taiwan) {
                         text_no_site.visibility = View.GONE
                         recycler_taiwan.visibility = View.VISIBLE
                     }
-                    recycler_taiwan.adapter = TaiwanAdapter(list)
+
+                    (recycler_taiwan.adapter as TaiwanAdapter).list = list
+                    (recycler_taiwan.adapter as TaiwanAdapter).notifyDataSetChanged()
                 }
 
                 is ApiResult.Error -> {
@@ -83,6 +90,10 @@ class TaiwanFragment : BaseFragment(R.layout.fragment_taiwan) {
         (requireActivity()as AppCompatActivity ).setSupportActionBar(toolbar)
 
         viewModel.getUVByCounty()
+    }
+
+    override fun onClick(aqi: Home) {
+        AQIDialog.newInstance(aqi).show(childFragmentManager, AQIDialog::javaClass.name)
     }
 
     override fun isBottomNavigationShow(): Boolean {

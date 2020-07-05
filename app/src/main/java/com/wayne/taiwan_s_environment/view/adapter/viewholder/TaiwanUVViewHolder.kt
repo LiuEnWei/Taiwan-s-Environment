@@ -9,11 +9,11 @@ import com.wayne.taiwan_s_environment.model.db.vo.Home
 import com.wayne.taiwan_s_environment.utils.getUVColor
 import kotlin.math.ceil
 
-class TaiwanViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+class TaiwanUVViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
     val context: Context = itemView.context
-    val textSiteName: TextView = itemView.findViewById(R.id.text_site_name)
-    val textUV: TextView = itemView.findViewById(R.id.text_uv)
-    val textAgency: TextView = itemView.findViewById(R.id.text_agency)
+    private val textSiteName: TextView = itemView.findViewById(R.id.text_site_name)
+    private val textUV: TextView = itemView.findViewById(R.id.text_uv)
+    private val textAgency: TextView = itemView.findViewById(R.id.text_agency)
 
     fun setUV(uv: Home) {
         textSiteName.text = uv.siteName

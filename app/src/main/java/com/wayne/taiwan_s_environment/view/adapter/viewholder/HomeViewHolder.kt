@@ -169,7 +169,7 @@ class HomeViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         try {
             val aqiColor = context.getAQIColor(ceil(aqi.toDouble()).toInt())
             val messageBuilder = SpannableStringBuilder()
-            messageBuilder.appendln(context.getString(R.string.aqi, aqi))
+            messageBuilder.appendln(context.getString(R.string.aqi_value, aqi))
             messageBuilder.appendln()
             messageBuilder.appendln()
 

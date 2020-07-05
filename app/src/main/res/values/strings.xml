@@ -67,8 +67,8 @@
 
     <string name="floating_button_guide">點擊右下角的懸浮按鈕提供位置權限，\n或長按設定所在區域。</string>
 
-    <string name="environmental_protection_administration">行政院環境保護署</string>
-    <string name="aqi">空氣品質指標：%1$s</string>
+    <string name="environmental_protection_administration">環境保護署</string>
+    <string name="aqi_value">空氣品質指標：%1$s</string>
     <string name="aqi_status">#空氣品質狀態%1$s</string>
     <string name="aqi_pollutant">#空氣污染指標物：%1$s</string>
     <string name="pm_2_5_title"><html><body>PM<sub>2.5</sub>\n(μg/m<sup>3</sup>)</body></html></string>
@@ -80,6 +80,8 @@
     <string name="hour_concentration">小時濃度</string>
     <string name="moving_average_concentration">移動平均濃度</string>
     <string name="eight_hours_moving_average_concentration">八小時移動平均濃度</string>
+    <string name="aqi">AQI</string>
+    <string name="brackets">(%1$s)</string>
 
     <string name="select_region">選擇地區</string>
     <!--  Taiwan Region  -->

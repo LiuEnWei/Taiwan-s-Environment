@@ -1,6 +1,7 @@
 package com.wayne.taiwan_s_environment.model.db.vo
 
 import androidx.room.ColumnInfo
+import java.io.Serializable
 
 data class Home (@ColumnInfo(name = "siteName") val siteName: String? = null,
                  @ColumnInfo(name = "county") val county: String? = null,
@@ -26,7 +27,7 @@ data class Home (@ColumnInfo(name = "siteName") val siteName: String? = null,
                  @ColumnInfo(name = "pm10_avg") val PM10_AVG: String? = null,
                  @ColumnInfo(name = "s_o2_avg") val SO2_AVG: String? = null,
                  @ColumnInfo(name = "time") val time: Long? = null,
-                 @ColumnInfo(name = "epaDataType") val epaDataType: Int? = null): Comparable<Home> {
+                 @ColumnInfo(name = "epaDataType") val epaDataType: Int): Comparable<Home>, Serializable {
 
 
     override fun compareTo(other: Home): Int {
@@ -35,7 +36,7 @@ data class Home (@ColumnInfo(name = "siteName") val siteName: String? = null,
         } else if (county != null && county != other.county) {
             county.compareTo(other.county?:"")
         } else {
-            (epaDataType?:0).compareTo(other.epaDataType?:0)
+            (epaDataType).compareTo(other.epaDataType)
         }
     }
 }

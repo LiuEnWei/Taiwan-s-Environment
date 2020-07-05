@@ -44,6 +44,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home), OnCountySelectedListe
         super.onViewCreated(view, savedInstanceState)
 
         initLocation()
+        recycler_home.adapter = HomeAdapter(arrayListOf())
 
         viewModel.epaDataUpdate.observe(viewLifecycleOwner, Observer {
             when (it) {
@@ -64,8 +65,8 @@ class HomeFragment : BaseFragment(R.layout.fragment_home), OnCountySelectedListe
         viewModel.epaList.observe(viewLifecycleOwner, Observer {
             when (it) {
                 is ApiResult.Success -> {
-                    Timber.e("uv list success")
-                    recycler_home.adapter = HomeAdapter(it.result)
+                    (recycler_home.adapter as HomeAdapter).list = it.result
+                    (recycler_home.adapter as HomeAdapter).notifyDataSetChanged()
                     if (viewModel.isPowerSaving()) {
                         stopLocationUpdates()
                     }
@@ -122,7 +123,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home), OnCountySelectedListe
         }
 
         swipe_refresh.setOnRefreshListener {
-            viewModel.getUVOpenData()
+            viewModel.updateEpaData()
         }
 
         viewModel.initData()

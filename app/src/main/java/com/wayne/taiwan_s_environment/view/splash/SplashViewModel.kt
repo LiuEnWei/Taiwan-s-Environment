@@ -38,9 +38,14 @@ class SplashViewModel : BaseViewModel() {
     private var minDelayTime = 7000L
 
     fun getEpaData() {
-        if (startTime == null) startTime = Date().time
         viewModelScope.launch {
             flow {
+                if (startTime == null){
+                    startTime = Date().time
+                    uvDao.deleteByTime(getTodayStart())
+                    aqiDao.deleteByTime(getTodayStart())
+                }
+
                 val maxTime = uvDao.getMaxTime().coerceAtMost(aqiDao.getMaxTime()).let {
                     val today = getTodayStart()
                     return@let if (it == 0L || it < today) {
@@ -97,11 +102,5 @@ class SplashViewModel : BaseViewModel() {
     private fun getNow(): Long {
         val cal = Calendar.getInstance(TimeZone.getTimeZone("GMT+08:00"))
         return cal.timeInMillis
-    }
-
-    fun cleanOldData() {
-        viewModelScope.launch {
-            uvDao.deleteByTime(getTodayStart())
-        }
     }
 }

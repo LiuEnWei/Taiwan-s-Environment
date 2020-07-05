@@ -6,7 +6,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.wayne.taiwan_s_environment.MyApplication
-import com.wayne.taiwan_s_environment.R
 import com.wayne.taiwan_s_environment.model.api.ApiResult
 import com.wayne.taiwan_s_environment.model.api.EpaDataService
 import com.wayne.taiwan_s_environment.model.db.dao.AQIDao
@@ -15,6 +14,7 @@ import com.wayne.taiwan_s_environment.model.db.vo.Home
 import com.wayne.taiwan_s_environment.model.exception.CountyNotFoundException
 import com.wayne.taiwan_s_environment.model.exception.SameCountyException
 import com.wayne.taiwan_s_environment.model.pref.Pref
+import com.wayne.taiwan_s_environment.utils.toDbAQIList
 import com.wayne.taiwan_s_environment.utils.toDbUVList
 import com.wayne.taiwan_s_environment.view.base.BaseViewModel
 import kotlinx.coroutines.Dispatchers
@@ -52,13 +52,19 @@ class HomeViewModel : BaseViewModel() {
         }
     }
 
-    fun getUVOpenData() {
+    fun updateEpaData() {
         viewModelScope.launch {
             flow {
-                val result = epaDateService.getUV()
-                val records = result.body()?.records
-                if (!result.isSuccessful || records == null) throw HttpException(result)
-                uvDao.insertAll(records.toDbUVList())
+                val uvResult = epaDateService.getUV()
+                val uvRecords = uvResult.body()?.records
+                if (!uvResult.isSuccessful || uvRecords == null) throw HttpException(uvResult)
+                uvDao.insertAll(uvRecords.toDbUVList())
+
+                val aqiResult = epaDateService.getAQI()
+                val aqiRecords = aqiResult.body()?.records
+                if (!aqiResult.isSuccessful || aqiRecords == null) throw HttpException(aqiResult)
+                aqiDao.insertAll(aqiRecords.toDbAQIList())
+
                 emit(ApiResult.success(null))
             }.flowOn(Dispatchers.IO)
                 .catch { e -> emit(ApiResult.error(e)) }
@@ -72,22 +78,20 @@ class HomeViewModel : BaseViewModel() {
     }
 
     fun getUVByCounty(county: String) {
-        county.checkSiteCounty().let {
-            viewModelScope.launch {
-                flow {
-                    val list = arrayListOf<Home>()
-                    list.addAll(uvDao.getAllByCounty(it))
-                    list.addAll(aqiDao.getAllByCounty(it))
-                    list.sort()
-                    pref.county = it
-                    if (list.isNotEmpty()) {
-                        this@HomeViewModel.county.postValue(it)
-                    }
-                    emit(ApiResult.success(list))
-                }.flowOn(Dispatchers.IO)
-                    .catch { e -> emit(ApiResult.error(e)) }
-                    .collect { _epaList.value = it }
-            }
+        viewModelScope.launch {
+            flow {
+                val list = arrayListOf<Home>()
+                list.addAll(uvDao.getAllByCounty(county))
+                list.addAll(aqiDao.getAllByCounty(county))
+                list.sort()
+                pref.county = county
+                if (list.isNotEmpty()) {
+                    this@HomeViewModel.county.postValue(county)
+                }
+                emit(ApiResult.success(list))
+            }.flowOn(Dispatchers.IO)
+                .catch { e -> emit(ApiResult.error(e)) }
+                .collect { _epaList.value = it }
         }
     }
 
@@ -98,7 +102,7 @@ class HomeViewModel : BaseViewModel() {
                 val address = geocoder.getFromLocation(location.latitude, location.longitude, 1)
                 val firstAddress = address.first()
                 Timber.e("firstAddress : ${firstAddress.getAddressLine(0)}")
-                val admin = firstAddress.adminArea.checkSiteCounty()
+                val admin = firstAddress.adminArea
                 Timber.e("admin : $admin")
                 if (admin == county.value) throw SameCountyException()
 
@@ -123,17 +127,5 @@ class HomeViewModel : BaseViewModel() {
 
     fun setPowerSaving(isPowerSaving: Boolean) {
         pref.isPowerSaving = isPowerSaving
-    }
-
-    /**
-     * 新竹市沒有UV觀測站
-     * */
-    private fun String.checkSiteCounty(): String {
-        val hsinchuCity = context.resources.getString(R.string.hsinchu_city)
-        if (this == hsinchuCity) {
-            return context.resources.getString(R.string.hsinchu_county)
-        } else {
-            return this
-        }
     }
 }

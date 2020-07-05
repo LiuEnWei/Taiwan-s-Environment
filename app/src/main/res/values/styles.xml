@@ -84,7 +84,4 @@
         <item name="android:gravity">center_vertical|end</item>
         <item name="android:background">@color/colorWhite</item>
     </style>
-    <declare-styleable name="HtmlTextView">
-        <attr name="android:text"/>
-    </declare-styleable>
 </resources>

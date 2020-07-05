@@ -6,26 +6,35 @@ import androidx.recyclerview.widget.RecyclerView
 import com.wayne.taiwan_s_environment.R
 import com.wayne.taiwan_s_environment.model.db.enum.EpaDataType
 import com.wayne.taiwan_s_environment.model.db.vo.Home
-import com.wayne.taiwan_s_environment.view.adapter.viewholder.TaiwanViewHolder
+import com.wayne.taiwan_s_environment.view.adapter.viewholder.TaiwanAQIViewHolder
+import com.wayne.taiwan_s_environment.view.adapter.viewholder.TaiwanUVViewHolder
 
-class TaiwanAdapter(var list: List<Home>): RecyclerView.Adapter<TaiwanViewHolder>() {
+class TaiwanAdapter(var list: List<Home>, private val onAQIClickListener: TaiwanAQIViewHolder.OnAQIClickListener): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaiwanViewHolder {
-        return TaiwanViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_taiwan, parent, false))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return when (viewType) {
+            EpaDataType.UV.value -> TaiwanUVViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_taiwan_uv, parent, false))
+            else -> TaiwanAQIViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_taiwan_aqi, parent, false))
+        }
     }
 
     override fun getItemCount(): Int {
         return list.size
     }
 
-    override fun onBindViewHolder(holder: TaiwanViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val data = list[position]
-        when (data.epaDataType) {
-            EpaDataType.UV.value -> {
+        when (holder) {
+            is TaiwanUVViewHolder -> {
                 holder.setUV(data)
             }
-            EpaDataType.AQI.value -> {
+            is TaiwanAQIViewHolder -> {
+                holder.setAQI(data, onAQIClickListener)
             }
         }
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return list[position].epaDataType
     }
 }
