@@ -7,6 +7,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.wayne.taiwan_s_environment.model.db.AppDatabase
 import com.wayne.taiwan_s_environment.model.db.dao.UVDao
 import com.wayne.taiwan_s_environment.model.db.vo.UV
+import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -38,7 +39,7 @@ class UVDaoTest {
     }
 
     @Test
-    fun insertUVAllTest() {
+    fun insertUVAllTest() = runBlocking {
         val list = arrayListOf<UV>()
         list.add(UV("site1", "","","","","","",1000))
         list.add(UV("site2", "","","","","","",2000))
@@ -47,7 +48,7 @@ class UVDaoTest {
     }
 
     @Test
-    fun deleteByTimeTest() {
+    fun deleteByTimeTest() = runBlocking {
         val list = arrayListOf<UV>()
         list.add(UV("site1", "","","","","","",1000))
         list.add(UV("site1", "","","","","","",2000))
@@ -57,7 +58,7 @@ class UVDaoTest {
     }
 
     @Test
-    fun getAllNewestByCountyTest() {
+    fun getAllNewestByCountyTest() = runBlocking {
         val county = "county"
         val list = arrayListOf<UV>()
         list.add(UV("site1", county,"","","0","","",1000))
@@ -74,7 +75,7 @@ class UVDaoTest {
     }
 
     @Test
-    fun getMaxTimeTest() {
+    fun getMaxTimeTest() = runBlocking {
         val list = arrayListOf<UV>()
         list.add(UV("site1", "","","","0","","",1000))
         list.add(UV("site1", "","","","0","","",2000))
@@ -82,6 +83,6 @@ class UVDaoTest {
         list.add(UV("site3", "","","","1","","",2000))
         uvDao.insertAll(list)
 
-        assertEquals(uvDao.getMaxTime(), 3000)
+        assertEquals(uvDao.getMaxTime(), 3000L)
     }
 }
