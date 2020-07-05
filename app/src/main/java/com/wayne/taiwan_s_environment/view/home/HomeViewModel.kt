@@ -91,7 +91,7 @@ class HomeViewModel : BaseViewModel() {
                 emit(ApiResult.success(list))
             }.flowOn(Dispatchers.IO)
                 .catch { e -> emit(ApiResult.error(e)) }
-                .collect { _epaList.value = it }
+                .collect { _epaList.postValue(it) }
         }
     }
 
@@ -117,7 +117,7 @@ class HomeViewModel : BaseViewModel() {
                 emit(ApiResult.success(list))
             }.flowOn(Dispatchers.IO)
                 .catch { e -> emit(ApiResult.error(e)) }
-                .collect { _epaList.value = it }
+                .collect { _epaList.postValue(it) }
         }
     }
 

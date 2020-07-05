@@ -46,7 +46,7 @@ class SplashViewModel : BaseViewModel() {
                     aqiDao.deleteByTime(getTodayStart())
                 }
 
-                val maxTime = uvDao.getMaxTime().coerceAtMost(aqiDao.getMaxTime()).let {
+                val maxTime = (uvDao.getMaxTime()?:0).coerceAtMost((aqiDao.getMaxTime()?:0)).let {
                     val today = getTodayStart()
                     return@let if (it == 0L || it < today) {
                         today

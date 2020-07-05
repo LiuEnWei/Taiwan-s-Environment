@@ -49,11 +49,10 @@ class HomeFragment : BaseFragment(R.layout.fragment_home), OnCountySelectedListe
         viewModel.epaDataUpdate.observe(viewLifecycleOwner, Observer {
             when (it) {
                 is ApiResult.Empty -> {
-                    Timber.e("uv update success")
                     swipe_refresh.isRefreshing = false
                 }
                 is ApiResult.Error -> {
-                    Timber.e("uv update error ${it.throwable}")
+                    it.throwable.printStackTrace()
                     showErrorMessage(getErrorMessage(it.throwable),
                         DialogInterface.OnClickListener { dialog, view ->
                             dialog.dismiss()
@@ -73,8 +72,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home), OnCountySelectedListe
                 }
 
                 is ApiResult.Error -> {
-                    Timber.e("uv list error : ${it.throwable}")
-                    Timber.e("${it.throwable}")
+                    it.throwable.printStackTrace()
                     when (it.throwable) {
                         is CountyNotFoundException, is SameCountyException -> {
                             updateFloatingLocationButton()

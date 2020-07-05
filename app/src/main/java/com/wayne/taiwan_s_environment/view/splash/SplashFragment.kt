@@ -36,7 +36,7 @@ class SplashFragment : BaseFragment(R.layout.fragment_splash) {
                 }
 
                 is ApiResult.Error -> {
-                    Timber.e("${it.throwable}}")
+                    it.throwable.printStackTrace()
                     showErrorMessage(getErrorMessage(it.throwable),
                         DialogInterface.OnClickListener { dialog, view ->
                             dialog.dismiss()
