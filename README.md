@@ -6,13 +6,13 @@
   
     Intro page
   
-    AQI
-  
     ...
    
   * **DONE**
   
     UV
+    
+    AQI
 
 * **Open data**
 
