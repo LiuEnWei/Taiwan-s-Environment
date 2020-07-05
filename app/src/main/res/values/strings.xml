@@ -65,7 +65,7 @@
     <string name="go_settings_message">您未提供位置權限，請至設定頁開啟或選擇所在地區。</string>
     <string name="go_settings">前往設定</string>
 
-    <string name="floating_button_guide">點擊右下角的懸浮按鈕提供位置權限，\n或長按設定所在區域。</string>
+    <string name="floating_button_guide">點擊右下角的懸浮按鈕提供位置權限，\n或長按右下角的懸浮按鈕設定所在區域。</string>
 
     <string name="environmental_protection_administration">環境保護署</string>
     <string name="aqi_value">空氣品質指標：%1$s</string>
