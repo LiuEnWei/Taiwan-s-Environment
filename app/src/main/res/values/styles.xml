@@ -83,4 +83,13 @@
         <item name="android:gravity">center_vertical|end</item>
         <item name="android:background">@color/colorWhite</item>
     </style>
+    
+    <declare-styleable name="IndicatorView">
+        <attr name="dotColor" format="color"/>
+        <attr name="indicatorColor" format="color"/>
+        <attr name="dotSpacing" format="dimension"/>
+        <attr name="dotSize" format="dimension"/>
+        <attr name="dotStroke" format="dimension"/>
+        <attr name="cornerRadius" format="dimension"/>
+    </declare-styleable>
 </resources>

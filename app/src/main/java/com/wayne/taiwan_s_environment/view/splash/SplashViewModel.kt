@@ -8,6 +8,7 @@ import com.wayne.taiwan_s_environment.model.api.ApiResult
 import com.wayne.taiwan_s_environment.model.api.EpaDataService
 import com.wayne.taiwan_s_environment.model.db.dao.AQIDao
 import com.wayne.taiwan_s_environment.model.db.dao.UVDao
+import com.wayne.taiwan_s_environment.model.pref.Pref
 import com.wayne.taiwan_s_environment.utils.toDbAQIList
 import com.wayne.taiwan_s_environment.utils.toDbUVList
 import com.wayne.taiwan_s_environment.view.base.BaseViewModel
@@ -28,6 +29,7 @@ class SplashViewModel : BaseViewModel() {
     private val epaDateService: EpaDataService by inject()
     private val uvDao: UVDao by inject()
     private val aqiDao: AQIDao by inject()
+    private val pref: Pref by inject()
 
     private val _uvList = MutableLiveData<ApiResult<Nothing>>()
     val uvList: LiveData<ApiResult<Nothing>>
@@ -58,24 +60,27 @@ class SplashViewModel : BaseViewModel() {
                 Timber.e("local max publish time : $maxTime")
                 val nowTime = getNow()
                 Timber.e("nowTime : $nowTime")
-                Timber.e("nowTime : ${Date().time}")
                 if (nowTime - maxTime < oneHour) {
                     // not need update
+                    Timber.e("not need update")
                     delay(minDelayTime)
                     emit(ApiResult.success(null))
                 } else {
+                    Timber.e("need update")
                     val hourCount = (nowTime - maxTime) / oneHour
                     val uvLimit = hourCount * Constant.EPA_DATA_UV_SITE_COUNTS
                     val uvResult = epaDateService.getUV(limit = uvLimit.toInt())
                     val uvRecords = uvResult.body()?.records
                     if (!uvResult.isSuccessful || uvRecords == null) throw HttpException(uvResult)
                     uvDao.insertAll(uvRecords.toDbUVList())
+                    Timber.e("uv all : ${uvDao.getAll().size}")
 
                     val aqiLimit = hourCount * Constant.EPA_DATA_AQI_SITE_COUNTS
                     val aqiResult = epaDateService.getAQI(limit = aqiLimit.toInt())
                     val aqiRecords = aqiResult.body()?.records
                     if (!aqiResult.isSuccessful || aqiRecords == null) throw HttpException(uvResult)
                     aqiDao.insertAll(aqiRecords.toDbAQIList())
+                    Timber.e("aqi all : ${aqiDao.getAll().size}")
 
                     val delayTime = Date().time - startTime!!
                     if (delayTime < minDelayTime) {
@@ -102,5 +107,9 @@ class SplashViewModel : BaseViewModel() {
     private fun getNow(): Long {
         val cal = Calendar.getInstance(TimeZone.getTimeZone("GMT+08:00"))
         return cal.timeInMillis
+    }
+
+    fun isFirstStartApp(): Boolean {
+        return pref.isFirstStartApp
     }
 }

@@ -76,7 +76,7 @@ Flaticon : https://www.flaticon.com
                 android:strokeLineJoin="round"
                 android:strokeWidth="0.5"
                 android:trimPathOffset=".248"
-                android:trimPathEnd="1"/>
+                android:trimPathEnd="0"/>
         </group>
     </group>
     <group>

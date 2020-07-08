@@ -2,11 +2,14 @@ package com.wayne.taiwan_s_environment.view.home
 
 import android.Manifest
 import android.content.DialogInterface
+import android.content.Intent
 import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.location.Location
+import android.net.Uri
 import android.os.Bundle
 import android.os.Looper
+import android.provider.Settings
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
@@ -25,6 +28,7 @@ import com.wayne.taiwan_s_environment.view.dialog.selectcounty.OnCountySelectedL
 import com.wayne.taiwan_s_environment.view.dialog.selectcounty.SelectCountyDialog
 import kotlinx.android.synthetic.main.fragment_home.*
 import timber.log.Timber
+
 
 class HomeFragment : BaseFragment(R.layout.fragment_home), OnCountySelectedListener {
 
@@ -274,6 +278,11 @@ class HomeFragment : BaseFragment(R.layout.fragment_home), OnCountySelectedListe
             DialogInterface.BUTTON_POSITIVE -> {
                 // go settings
                 dialogInterface.dismiss()
+
+                val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                val uri: Uri = Uri.fromParts("package", requireContext().packageName, null)
+                intent.data = uri
+                startActivity(intent)
             }
         }
     }

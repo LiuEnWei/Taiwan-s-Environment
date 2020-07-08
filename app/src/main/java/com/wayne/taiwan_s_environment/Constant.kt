@@ -15,6 +15,7 @@ class Constant {
         const val LINK_TAIWAN_EPA_OPEN_DATA = "https://data.epa.gov.tw/"
 
         const val LINK_TAIWAN_ICON = "https://www.flaticon.com/free-icon/taiwan_24170"
+        const val LINK_ANDROID_ICON = "https://www.flaticon.com/free-icon/android-logo_38002"
         const val LINK_FREEPIK = "https://www.flaticon.com/authors/freepik"
         const val LINK_FLATICON = "https://www.flaticon.com"
         const val LINK_TAIWAN_SVG = "https://upload.wikimedia.org/wikipedia/commons/0/06/Taiwan_ROC_political_division_map.svg"

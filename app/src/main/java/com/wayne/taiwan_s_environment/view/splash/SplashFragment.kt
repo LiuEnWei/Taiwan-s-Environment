@@ -26,13 +26,11 @@ class SplashFragment : BaseFragment(R.layout.fragment_splash) {
             when (it) {
                 is ApiResult.Empty -> {
                     vectorDrawable?.stop()
-                    // TODO
-//                    if (viewModel.isFirstStartApp) {
-//                        findNavController().navigate(SplashFragmentDirections.actionSplashFragmentToIntroFragment())
-//                    } else {
-//                        findNavController().navigate(SplashFragmentDirections.actionSplashFragmentToHomeFragment())
-//                    }
-                    findNavController().navigate(SplashFragmentDirections.actionSplashFragmentToHomeFragment())
+                    if (viewModel.isFirstStartApp()) {
+                        findNavController().navigate(SplashFragmentDirections.actionSplashFragmentToIntroFragment())
+                    } else {
+                        findNavController().navigate(SplashFragmentDirections.actionSplashFragmentToHomeFragment())
+                    }
                 }
 
                 is ApiResult.Error -> {

@@ -21,6 +21,9 @@ class ImageOriginalFragment: BaseFragment(R.layout.fragment_image_original), OnC
         text_taiwan_icon.text = getSpannableString(R.string.taiwan_icon, R.string.freepik, R.string.flaticon)
         text_taiwan_icon.movementMethod = LinkMovementMethod.getInstance()
 
+        text_android_icon.text = getSpannableString(R.string.android_icon, R.string.freepik, R.string.flaticon)
+        text_android_icon.movementMethod = LinkMovementMethod.getInstance()
+
         text_taiwan_svg.text = getSpannableString(R.string.taiwan_svg, R.string.luuva, R.string.wikimedia_commons)
         text_taiwan_svg.movementMethod = LinkMovementMethod.getInstance()
 
@@ -52,6 +55,7 @@ class ImageOriginalFragment: BaseFragment(R.layout.fragment_image_original), OnC
 
         when (id) {
             R.string.taiwan_icon -> openUrl(Constant.LINK_TAIWAN_ICON)
+            R.string.android_icon -> openUrl(Constant.LINK_ANDROID_ICON)
             R.string.freepik -> openUrl(Constant.LINK_FREEPIK)
             R.string.flaticon -> openUrl(Constant.LINK_FLATICON)
             R.string.taiwan_svg -> openUrl(Constant.LINK_TAIWAN_SVG)

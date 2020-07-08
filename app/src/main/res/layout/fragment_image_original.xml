@@ -26,9 +26,16 @@
                 app:layout_constraintEnd_toEndOf="parent"/>
             <TextView
                 style="@style/ItemImageOriginal"
-                android:id="@+id/text_taiwan_svg"
+                android:id="@+id/text_android_icon"
                 android:text="@string/icons_made_by"
                 app:layout_constraintTop_toBottomOf="@id/text_taiwan_icon"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+            <TextView
+                style="@style/ItemImageOriginal"
+                android:id="@+id/text_taiwan_svg"
+                android:text="@string/icons_made_by"
+                app:layout_constraintTop_toBottomOf="@id/text_android_icon"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
             <TextView
