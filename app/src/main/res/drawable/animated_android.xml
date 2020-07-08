@@ -5,6 +5,9 @@
         android:animation="@animator/anim_right_hand"
         android:name="right_hand"/>
     <target
+        android:animation="@animator/anim_left_hand"
+        android:name="left_hand"/>
+    <target
         android:animation="@animator/anim_eyelid"
         android:name="right_eyelid"/>
     <target

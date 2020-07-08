@@ -15,7 +15,7 @@ class IntroPagerAdapter: RecyclerView.Adapter<IntroViewHolder>() {
     private val introArray = arrayOf(
         Intro(R.string.intro_title_first, R.string.intro_content_first, R.drawable.animated_android),
         Intro(R.string.intro_title_second, R.string.intro_content_second, R.drawable.animated_map),
-        Intro(R.string.intro_title_third, R.string.intro_content_third, R.drawable.ic_outline_share_24))
+        Intro(R.string.intro_title_third, R.string.intro_content_third, R.drawable.animated_share))
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): IntroViewHolder {
         return IntroViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_intro, parent, false))
