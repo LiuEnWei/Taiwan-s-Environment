@@ -4,8 +4,6 @@
   
   * **TODO**
   
-    Intro page
-  
     ...
    
   * **DONE**
