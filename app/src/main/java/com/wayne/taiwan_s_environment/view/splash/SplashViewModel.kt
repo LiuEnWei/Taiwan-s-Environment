@@ -48,9 +48,11 @@ class SplashViewModel : BaseViewModel() {
                     aqiDao.deleteByTime(getTodayStart())
                 }
 
-                val maxTime = (uvDao.getMaxTime()?:0).coerceAtMost((aqiDao.getMaxTime()?:0)).let {
+                val uvMaxTime = uvDao.getMaxTime()?:0
+                val aqiMaxTime = aqiDao.getMaxTime()?:0
+                val maxTime = (uvMaxTime).coerceAtMost(aqiMaxTime).let {
                     val today = getTodayStart()
-                    return@let if (it > today) {
+                    return@let if (it == 0L || it < today) {
                         today
                     } else {
                         it
@@ -58,16 +60,21 @@ class SplashViewModel : BaseViewModel() {
                 }
 
                 Timber.e("local max publish time : $maxTime")
-                val nowTime = getNow()
-                Timber.e("nowTime : $nowTime")
-                if (nowTime - maxTime < oneHour) {
+                val nowTime = getNowHourTime()
+                Timber.e("nowHourTime : $nowTime")
+                if (uvMaxTime != 0L && aqiMaxTime != 0L && nowTime - maxTime < oneHour) {
                     // not need update
                     Timber.e("not need update")
                     delay(minDelayTime)
                     emit(ApiResult.success(null))
                 } else {
                     Timber.e("need update")
-                    val hourCount = (nowTime - maxTime) / oneHour
+                    val hourCount = if (maxTime == nowTime) {
+                        1
+                    } else {
+                        (nowTime - maxTime) / oneHour
+                    }
+                    Timber.e("need update, hourCount : $hourCount")
                     val uvLimit = hourCount * Constant.EPA_DATA_UV_SITE_COUNTS
                     val uvResult = epaDateService.getUV(limit = uvLimit.toInt())
                     val uvRecords = uvResult.body()?.records
@@ -104,8 +111,11 @@ class SplashViewModel : BaseViewModel() {
         return cal.timeInMillis
     }
 
-    private fun getNow(): Long {
+    private fun getNowHourTime(): Long {
         val cal = Calendar.getInstance(TimeZone.getTimeZone("GMT+08:00"))
+        cal.set(Calendar.MINUTE, 0)
+        cal.set(Calendar.SECOND, 0)
+        cal.set(Calendar.MILLISECOND, 0)
         return cal.timeInMillis
     }
 
