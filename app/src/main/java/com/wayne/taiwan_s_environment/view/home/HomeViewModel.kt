@@ -6,14 +6,15 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.wayne.taiwan_s_environment.MyApplication
-import com.wayne.taiwan_s_environment.R
 import com.wayne.taiwan_s_environment.model.api.ApiResult
 import com.wayne.taiwan_s_environment.model.api.EpaDataService
+import com.wayne.taiwan_s_environment.model.db.dao.AQIDao
 import com.wayne.taiwan_s_environment.model.db.dao.UVDao
-import com.wayne.taiwan_s_environment.model.db.vo.UV
+import com.wayne.taiwan_s_environment.model.db.vo.Home
 import com.wayne.taiwan_s_environment.model.exception.CountyNotFoundException
 import com.wayne.taiwan_s_environment.model.exception.SameCountyException
 import com.wayne.taiwan_s_environment.model.pref.Pref
+import com.wayne.taiwan_s_environment.utils.toDbAQIList
 import com.wayne.taiwan_s_environment.utils.toDbUVList
 import com.wayne.taiwan_s_environment.view.base.BaseViewModel
 import kotlinx.coroutines.Dispatchers
@@ -31,17 +32,18 @@ class HomeViewModel : BaseViewModel() {
 
     private val epaDateService: EpaDataService by inject()
     private val uvDao: UVDao by inject()
+    private val aqiDao: AQIDao by inject()
     private val pref: Pref by inject()
 
-    private val _openUvUpdate = MutableLiveData<ApiResult<Nothing>>()
-    val openUvUpdate: LiveData<ApiResult<Nothing>>
-        get() = _openUvUpdate
+    private val _epaDataUpdate = MutableLiveData<ApiResult<Nothing>>()
+    val epaDataUpdate: LiveData<ApiResult<Nothing>>
+        get() = _epaDataUpdate
 
     val county = MutableLiveData<String>()
 
-    private val _uvList = MutableLiveData<ApiResult<List<UV>>>()
-    val uvList: LiveData<ApiResult<List<UV>>>
-        get() = _uvList
+    private val _epaList = MutableLiveData<ApiResult<ArrayList<Home>>>()
+    val epaList: LiveData<ApiResult<ArrayList<Home>>>
+        get() = _epaList
 
     fun initData() {
         Timber.e("initData ${pref.county}")
@@ -50,18 +52,24 @@ class HomeViewModel : BaseViewModel() {
         }
     }
 
-    fun getUVOpenData() {
+    fun updateEpaData() {
         viewModelScope.launch {
             flow {
-                val result = epaDateService.getUV()
-                val records = result.body()?.records
-                if (!result.isSuccessful || records == null) throw HttpException(result)
-                uvDao.insertUVAll(records.toDbUVList())
+                val uvResult = epaDateService.getUV()
+                val uvRecords = uvResult.body()?.records
+                if (!uvResult.isSuccessful || uvRecords == null) throw HttpException(uvResult)
+                uvDao.insertAll(uvRecords.toDbUVList())
+
+                val aqiResult = epaDateService.getAQI()
+                val aqiRecords = aqiResult.body()?.records
+                if (!aqiResult.isSuccessful || aqiRecords == null) throw HttpException(aqiResult)
+                aqiDao.insertAll(aqiRecords.toDbAQIList())
+
                 emit(ApiResult.success(null))
             }.flowOn(Dispatchers.IO)
                 .catch { e -> emit(ApiResult.error(e)) }
                 .collect {
-                    _openUvUpdate.value = it
+                    _epaDataUpdate.value = it
                     county.value?.let { county ->
                         getUVByCounty(county)
                     }
@@ -70,19 +78,20 @@ class HomeViewModel : BaseViewModel() {
     }
 
     fun getUVByCounty(county: String) {
-        county.checkSiteCounty().let {
-            viewModelScope.launch {
-                flow {
-                    val uvList = uvDao.getAllByCounty(it)
-                    pref.county = it
-                    if (uvList.isNotEmpty()) {
-                        this@HomeViewModel.county.postValue(it)
-                    }
-                    emit(ApiResult.success(uvList))
-                }.flowOn(Dispatchers.IO)
-                    .catch { e -> emit(ApiResult.error(e)) }
-                    .collect { _uvList.value = it }
-            }
+        viewModelScope.launch {
+            flow {
+                val list = arrayListOf<Home>()
+                list.addAll(uvDao.getAllByCounty(county))
+                list.addAll(aqiDao.getAllByCounty(county))
+                list.sort()
+                pref.county = county
+                if (list.isNotEmpty()) {
+                    this@HomeViewModel.county.postValue(county)
+                }
+                emit(ApiResult.success(list))
+            }.flowOn(Dispatchers.IO)
+                .catch { e -> emit(ApiResult.error(e)) }
+                .collect { _epaList.postValue(it) }
         }
     }
 
@@ -93,19 +102,22 @@ class HomeViewModel : BaseViewModel() {
                 val address = geocoder.getFromLocation(location.latitude, location.longitude, 1)
                 val firstAddress = address.first()
                 Timber.e("firstAddress : ${firstAddress.getAddressLine(0)}")
-                val admin = firstAddress.adminArea.checkSiteCounty()
+                val admin = firstAddress.adminArea
                 Timber.e("admin : $admin")
                 if (admin == county.value) throw SameCountyException()
 
-                val uvList = uvDao.getAllByCounty(admin)
-                if (uvList.isNullOrEmpty()) throw CountyNotFoundException()
+                val list = arrayListOf<Home>()
+                list.addAll(uvDao.getAllByCounty(admin))
+                list.addAll(aqiDao.getAllByCounty(admin))
+                list.sort()
+                if (list.isNullOrEmpty()) throw CountyNotFoundException()
 
                 pref.county = admin
                 county.postValue(admin)
-                emit(ApiResult.success(uvList))
+                emit(ApiResult.success(list))
             }.flowOn(Dispatchers.IO)
                 .catch { e -> emit(ApiResult.error(e)) }
-                .collect { _uvList.value = it }
+                .collect { _epaList.postValue(it) }
         }
     }
 
@@ -115,17 +127,5 @@ class HomeViewModel : BaseViewModel() {
 
     fun setPowerSaving(isPowerSaving: Boolean) {
         pref.isPowerSaving = isPowerSaving
-    }
-
-    /**
-     * 新竹市沒有UV觀測站
-     * */
-    private fun String.checkSiteCounty(): String {
-        val hsinchuCity = context.resources.getString(R.string.hsinchu_city)
-        if (this == hsinchuCity) {
-            return context.resources.getString(R.string.hsinchu_county)
-        } else {
-            return this
-        }
     }
 }

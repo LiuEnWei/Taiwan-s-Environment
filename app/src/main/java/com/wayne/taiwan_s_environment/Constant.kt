@@ -5,12 +5,17 @@ class Constant {
     companion object {
         const val EPA_DATA_URL = "https://data.epa.gov.tw/"
         const val EPA_DATA_API_KEY = "15d3267a-e830-485d-b0be-df3b3cde8c02"
+        const val EPA_DATA_UV_SITE_COUNTS = 34
+        const val EPA_DATA_AQI_SITE_COUNTS = 81
+        const val EPA_DATA_TYPE_UV = 1
+        const val EPA_DATA_TYPE_AQI = 2
         const val DB_NAME = "app.db"
         const val PREFS_NAME = "prefs"
 
         const val LINK_TAIWAN_EPA_OPEN_DATA = "https://data.epa.gov.tw/"
 
         const val LINK_TAIWAN_ICON = "https://www.flaticon.com/free-icon/taiwan_24170"
+        const val LINK_ANDROID_ICON = "https://www.flaticon.com/free-icon/android-logo_38002"
         const val LINK_FREEPIK = "https://www.flaticon.com/authors/freepik"
         const val LINK_FLATICON = "https://www.flaticon.com"
         const val LINK_TAIWAN_SVG = "https://upload.wikimedia.org/wikipedia/commons/0/06/Taiwan_ROC_political_division_map.svg"

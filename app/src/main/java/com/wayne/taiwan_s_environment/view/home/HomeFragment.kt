@@ -2,14 +2,18 @@ package com.wayne.taiwan_s_environment.view.home
 
 import android.Manifest
 import android.content.DialogInterface
+import android.content.Intent
 import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.location.Location
+import android.net.Uri
 import android.os.Bundle
 import android.os.Looper
+import android.provider.Settings
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
@@ -23,8 +27,8 @@ import com.wayne.taiwan_s_environment.view.base.BaseFragment
 import com.wayne.taiwan_s_environment.view.dialog.selectcounty.OnCountySelectedListener
 import com.wayne.taiwan_s_environment.view.dialog.selectcounty.SelectCountyDialog
 import kotlinx.android.synthetic.main.fragment_home.*
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
+
 
 class HomeFragment : BaseFragment(R.layout.fragment_home), OnCountySelectedListener {
 
@@ -32,7 +36,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home), OnCountySelectedListe
         const val PERMISSIONS_CODE = 1000
     }
 
-    private val viewModel by viewModel<HomeViewModel>()
+    private val viewModel by viewModels<HomeViewModel>()
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var locationRequest: LocationRequest
@@ -44,15 +48,15 @@ class HomeFragment : BaseFragment(R.layout.fragment_home), OnCountySelectedListe
         super.onViewCreated(view, savedInstanceState)
 
         initLocation()
+        recycler_home.adapter = HomeAdapter(arrayListOf())
 
-        viewModel.openUvUpdate.observe(viewLifecycleOwner, Observer {
+        viewModel.epaDataUpdate.observe(viewLifecycleOwner, Observer {
             when (it) {
                 is ApiResult.Empty -> {
-                    Timber.e("uv update success")
                     swipe_refresh.isRefreshing = false
                 }
                 is ApiResult.Error -> {
-                    Timber.e("uv update error ${it.throwable}")
+                    it.throwable.printStackTrace()
                     showErrorMessage(getErrorMessage(it.throwable),
                         DialogInterface.OnClickListener { dialog, view ->
                             dialog.dismiss()
@@ -61,19 +65,18 @@ class HomeFragment : BaseFragment(R.layout.fragment_home), OnCountySelectedListe
             }
         })
 
-        viewModel.uvList.observe(viewLifecycleOwner, Observer {
+        viewModel.epaList.observe(viewLifecycleOwner, Observer {
             when (it) {
                 is ApiResult.Success -> {
-                    Timber.e("uv list success")
-                    recycler_home.adapter = HomeAdapter(it.result)
+                    (recycler_home.adapter as HomeAdapter).list = it.result
+                    (recycler_home.adapter as HomeAdapter).notifyDataSetChanged()
                     if (viewModel.isPowerSaving()) {
                         stopLocationUpdates()
                     }
                 }
 
                 is ApiResult.Error -> {
-                    Timber.e("uv list error : ${it.throwable}")
-                    Timber.e("${it.throwable}")
+                    it.throwable.printStackTrace()
                     when (it.throwable) {
                         is CountyNotFoundException, is SameCountyException -> {
                             updateFloatingLocationButton()
@@ -122,7 +125,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home), OnCountySelectedListe
         }
 
         swipe_refresh.setOnRefreshListener {
-            viewModel.getUVOpenData()
+            viewModel.updateEpaData()
         }
 
         viewModel.initData()
@@ -275,6 +278,11 @@ class HomeFragment : BaseFragment(R.layout.fragment_home), OnCountySelectedListe
             DialogInterface.BUTTON_POSITIVE -> {
                 // go settings
                 dialogInterface.dismiss()
+
+                val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                val uri: Uri = Uri.fromParts("package", requireContext().packageName, null)
+                intent.data = uri
+                startActivity(intent)
             }
         }
     }

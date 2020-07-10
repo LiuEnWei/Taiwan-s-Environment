@@ -2,16 +2,49 @@ package com.wayne.taiwan_s_environment.view.intro
 
 import android.os.Bundle
 import android.view.View
+import androidx.annotation.Px
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.ViewPager2
+import androidx.viewpager2.widget.ViewPager2.ScrollState
 import com.wayne.taiwan_s_environment.R
+import com.wayne.taiwan_s_environment.utils.toDp
+import com.wayne.taiwan_s_environment.view.adapter.IntroPagerAdapter
+import com.wayne.taiwan_s_environment.view.adapter.transformer.IntroPageTransformer
 import com.wayne.taiwan_s_environment.view.base.BaseFragment
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import kotlinx.android.synthetic.main.fragment_intro.*
+import timber.log.Timber
 
-// TODO
-class IntroFragment : BaseFragment(R.layout.fragment_intro) {
-    private val viewModel by viewModel<IntroViewModel>()
+class IntroFragment : BaseFragment(R.layout.fragment_intro), View.OnClickListener {
+    private val viewModel by viewModels<IntroViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        text_skip.setOnClickListener(this)
+        btn_start_now.setOnClickListener(this)
+
+        view_pager.adapter = IntroPagerAdapter()
+        view_pager.offscreenPageLimit = 3
+        view_pager.setPageTransformer(IntroPageTransformer())
+        indicator.setViewPager2(view_pager)
+    }
+
+    override fun getStatusBarColor(): Int {
+        return R.color.colorAmber500
+    }
+
+    override fun onClick(view: View?) {
+        when (view?.id) {
+            R.id.text_skip ,R.id.btn_start_now -> {
+                if (viewModel.isFirstStartApp()) {
+                    viewModel.introFinish()
+                    findNavController().navigate(IntroFragmentDirections.actionIntroFragmentToHomeFragment())
+                } else {
+                    findNavController().popBackStack()
+                }
+            }
+        }
     }
 }

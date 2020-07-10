@@ -4,11 +4,13 @@
   
   * **TODO**
   
-    UV
-  
-    AQI
-  
     ...
+   
+  * **DONE**
+  
+    UV
+    
+    AQI
 
 * **Open data**
 

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animated-vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:drawable="@drawable/ic_android_logo">
+    <target
+        android:animation="@animator/anim_right_hand"
+        android:name="right_hand"/>
+    <target
+        android:animation="@animator/anim_left_hand"
+        android:name="left_hand"/>
+    <target
+        android:animation="@animator/anim_eyelid"
+        android:name="right_eyelid"/>
+    <target
+        android:animation="@animator/anim_eyelid"
+        android:name="left_eyelid"/>
+</animated-vector>

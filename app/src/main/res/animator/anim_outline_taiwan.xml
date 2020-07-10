@@ -5,12 +5,6 @@
         android:duration="0"
         android:propertyName="trimPathEnd"
         android:valueFrom="1"
-        android:valueTo="1"
-        android:valueType="floatType"/>
-    <objectAnimator
-        android:duration="0"
-        android:propertyName="trimPathEnd"
-        android:valueFrom="1"
         android:valueTo="0"
         android:valueType="floatType"/>
     <objectAnimator

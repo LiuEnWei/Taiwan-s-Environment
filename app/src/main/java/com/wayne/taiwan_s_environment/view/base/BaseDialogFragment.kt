@@ -28,10 +28,16 @@ abstract class BaseDialogFragment(@LayoutRes val contentLayoutId: Int): DialogFr
 
     override fun onStart() {
         super.onStart()
-        dialog!!.window!!.setLayout(
-            WindowManager.LayoutParams.MATCH_PARENT,
-            WindowManager.LayoutParams.MATCH_PARENT
-        )
+        if (isFull()) {
+            dialog!!.window!!.setLayout(
+                WindowManager.LayoutParams.MATCH_PARENT,
+                WindowManager.LayoutParams.MATCH_PARENT
+            )
+        }
         dialog!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+    }
+
+    open fun isFull(): Boolean {
+        return false
     }
 }

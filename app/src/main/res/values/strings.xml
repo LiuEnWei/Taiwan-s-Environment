@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Taiwan-s-Environment</string>
+    <string name="app_name">臺灣環境資訊</string>
 
     <string name="home">首頁</string>
     <string name="home_title">個人首頁</string>
@@ -11,6 +11,7 @@
     <string name="references">參考資料</string>
     <string name="photo_and_icon_original">照片/圖標來源</string>
     <string name="about_developer">關於開發者</string>
+    <string name="app_intro">應用程式介紹</string>
     <string name="privacy_policy">隱私權政策</string>
     <string name="copyright">版權聲明</string>
     <string name="app_version">應用程式版本</string>
@@ -38,6 +39,7 @@
 
     <string name="icons_made_by">%1$s made by %2$s from %3$s.</string>
     <string name="taiwan_icon">Taiwan icon</string>
+    <string name="android_icon">Android icon</string>
     <string name="freepik">Freepik</string>
     <string name="flaticon">Flaticon</string>
     <string name="taiwan_svg">Taiwan SVG</string>
@@ -65,7 +67,32 @@
     <string name="go_settings_message">您未提供位置權限，請至設定頁開啟或選擇所在地區。</string>
     <string name="go_settings">前往設定</string>
 
-    <string name="floating_button_guide">點擊右下角的懸浮按鈕提供位置權限，\n或長按設定所在區域。</string>
+    <string name="floating_button_guide">點擊右下角的懸浮按鈕提供位置權限，\n或長按右下角的懸浮按鈕設定所在區域。</string>
+
+    <string name="environmental_protection_administration">環境保護署</string>
+    <string name="aqi_value">空氣品質指標：%1$s</string>
+    <string name="aqi_status">#空氣品質狀態%1$s</string>
+    <string name="aqi_pollutant">#空氣污染指標物：%1$s</string>
+    <string name="pm_2_5_title">PM<sub>2.5</sub>\n(μg/m<sup>3</sup>)</string>
+    <string name="pm_10_title">PM<sub>10</sub>\n(μg/m<sup>3</sup>)</string>
+    <string name="o3_title">O<sub>3</sub>\n(ppb)</string>
+    <string name="c_o_title">CO\n(ppm)</string>
+    <string name="s_o_2_title">SO<sub>2</sub>\n(ppb)</string>
+    <string name="n_o_2_title">NO<sub>2</sub>\n(ppb)</string>
+    <string name="hour_concentration">小時濃度</string>
+    <string name="moving_average_concentration">移動平均濃度</string>
+    <string name="eight_hours_moving_average_concentration">八小時移動平均濃度</string>
+    <string name="aqi">AQI</string>
+    <string name="brackets">(%1$s)</string>
+
+    <string name="intro_title_first">Hi, 您好</string>
+    <string name="intro_content_first">這是一個獨立開發者製作的App，目前串接了空氣污染指標、紫外線指數等政府公開資料。</string>
+    <string name="intro_title_second">自由選擇是否提供權限</string>
+    <string name="intro_content_second">您可以選擇提供權限或是自行設定所在區域，是否提供位置權限並不影響正常功能運作。</string>
+    <string name="intro_title_third">開源的程式碼</string>
+    <string name="intro_content_third">程式的原始碼已上傳至Github，您可以在「更多」中獲得相關訊息。</string>
+    <string name="skip">略過</string>
+    <string name="start_now">立即開始</string>
 
     <string name="select_region">選擇地區</string>
     <!--  Taiwan Region  -->

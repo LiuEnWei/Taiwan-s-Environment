@@ -5,35 +5,39 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat.getColor
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.richpath.RichPath
 import com.wayne.taiwan_s_environment.R
 import com.wayne.taiwan_s_environment.model.api.ApiResult
+import com.wayne.taiwan_s_environment.model.db.vo.Home
 import com.wayne.taiwan_s_environment.view.adapter.TaiwanAdapter
+import com.wayne.taiwan_s_environment.view.adapter.viewholder.TaiwanAQIViewHolder
 import com.wayne.taiwan_s_environment.view.base.BaseFragment
+import com.wayne.taiwan_s_environment.view.dialog.aqi.AQIDialog
 import kotlinx.android.synthetic.main.fragment_taiwan.*
-import org.koin.androidx.viewmodel.ext.android.viewModel
-import timber.log.Timber
 
 
-class TaiwanFragment : BaseFragment(R.layout.fragment_taiwan) {
+class TaiwanFragment : BaseFragment(R.layout.fragment_taiwan), TaiwanAQIViewHolder.OnAQIClickListener {
 
-    private val viewModel by viewModel<TaiwanViewModel>()
+    private val viewModel by viewModels<TaiwanViewModel>()
     private var clickRichPath: RichPath? = null
     private val defaultColor: Int by lazy { getColor(requireContext(), R.color.colorRocGreen)  }
     private val clickColor: Int by lazy { getColor(requireContext(), R.color.colorGreen500)  }
 
+    private lateinit var bottomSheet: BottomSheetBehavior<View>
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        bottomSheet = BottomSheetBehavior.from(bottom_sheet)
 
-        viewModel.uvList.observe(viewLifecycleOwner, Observer {
+        recycler_taiwan.adapter = TaiwanAdapter(arrayListOf(), this)
+
+        viewModel.epaList.observe(viewLifecycleOwner, Observer {
             when (it) {
                 is ApiResult.Success -> {
                     val list = it.result
-                    for (uv in list) {
-                        Timber.e("$uv")
-                    }
-
                     if (list.isNullOrEmpty()) {
                         text_no_site.visibility = View.VISIBLE
                         recycler_taiwan.visibility = View.INVISIBLE
@@ -41,7 +45,9 @@ class TaiwanFragment : BaseFragment(R.layout.fragment_taiwan) {
                         text_no_site.visibility = View.GONE
                         recycler_taiwan.visibility = View.VISIBLE
                     }
-                    recycler_taiwan.adapter = TaiwanAdapter(list)
+
+                    (recycler_taiwan.adapter as TaiwanAdapter).list = list
+                    (recycler_taiwan.adapter as TaiwanAdapter).notifyDataSetChanged()
                 }
 
                 is ApiResult.Error -> {
@@ -67,6 +73,10 @@ class TaiwanFragment : BaseFragment(R.layout.fragment_taiwan) {
                         clickRichPath = it
                         viewModel.getUVByCounty(rich.name)
                         toolbar.title = rich.name
+
+                        if (bottomSheet.state == BottomSheetBehavior.STATE_COLLAPSED) {
+                            bottomSheet.state = BottomSheetBehavior.STATE_EXPANDED
+                        }
                     }
                 }
                 else -> {
@@ -80,6 +90,10 @@ class TaiwanFragment : BaseFragment(R.layout.fragment_taiwan) {
         (requireActivity()as AppCompatActivity ).setSupportActionBar(toolbar)
 
         viewModel.getUVByCounty()
+    }
+
+    override fun onClick(aqi: Home) {
+        AQIDialog.newInstance(aqi).show(childFragmentManager, AQIDialog::javaClass.name)
     }
 
     override fun isBottomNavigationShow(): Boolean {

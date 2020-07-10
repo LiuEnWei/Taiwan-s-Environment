@@ -4,7 +4,6 @@ import android.app.Application
 import com.wayne.taiwan_s_environment.di.apiModule
 import com.wayne.taiwan_s_environment.di.appModule
 import com.wayne.taiwan_s_environment.di.dbModule
-import com.wayne.taiwan_s_environment.di.viewModelModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -31,8 +30,7 @@ class MyApplication : Application() {
         val modules = listOf(
             apiModule,
             appModule,
-            dbModule,
-            viewModelModule
+            dbModule
         )
 
         startKoin {

@@ -7,6 +7,7 @@ import android.net.NetworkCapabilities
 import android.os.Build
 import android.os.Bundle
 import android.view.View
+import androidx.activity.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -16,11 +17,10 @@ import androidx.navigation.ui.setupWithNavController
 import com.wayne.taiwan_s_environment.R
 import com.wayne.taiwan_s_environment.view.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_main.*
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : BaseActivity(R.layout.activity_main), MainActivityListener {
 
-    private val viewModel by viewModel<MainViewModel>()
+    private val viewModel by viewModels<MainViewModel>()
     private lateinit var appBarConfig: AppBarConfiguration
     private lateinit var connectivityManager: ConnectivityManager
 

@@ -11,6 +11,14 @@
     <color name="colorUVIndexExcess">#d8001d</color>
     <color name="colorUVIndexDangerous">#6B49C8</color>
 
+    <!--  from : https://airtw.epa.gov.tw/  -->
+    <color name="colorAQIGood">#009966</color>
+    <color name="colorAQIModerate">#fffB26</color>
+    <color name="colorAQIUnhealthyForSensitiveGroups">#ff9933</color>
+    <color name="colorAQIUnhealthy">#cc0033</color>
+    <color name="colorAQIVeryUnhealthy">#660099</color>
+    <color name="colorAQIHazardous">#7e0023</color>
+
     <!--  Taiwan ROC political division map -->
     <color name="colorRocBlue">#afdde9</color>
     <color name="colorRocGreen">#eeffaa</color>

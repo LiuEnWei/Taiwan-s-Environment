@@ -19,6 +19,7 @@ class MoreFragment : BaseFragment(R.layout.fragment_more), View.OnClickListener 
         btn_references.setOnClickListener(this)
         btn_photo_and_icon_original.setOnClickListener(this)
         btn_about_developer.setOnClickListener(this)
+        btn_app_intro.setOnClickListener(this)
         btn_privacy_policy.setOnClickListener(this)
         btn_copyright.setOnClickListener(this)
         btn_app_version.setOnClickListener(this)
@@ -46,6 +47,9 @@ class MoreFragment : BaseFragment(R.layout.fragment_more), View.OnClickListener 
             }
             R.id.btn_about_developer -> {
                 findNavController().navigate(MoreFragmentDirections.actionMoreFragmentToAboutDeveloperFragment())
+            }
+            R.id.btn_app_intro -> {
+                findNavController().navigate(MoreFragmentDirections.actionMoreFragmentToIntroFragment())
             }
             R.id.btn_privacy_policy -> {
                 findNavController().navigate(MoreFragmentDirections.actionMoreFragmentToPrivacyPolicyFragment())

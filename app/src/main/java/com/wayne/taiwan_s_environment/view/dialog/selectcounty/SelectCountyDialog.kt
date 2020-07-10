@@ -10,7 +10,7 @@ import kotlinx.android.synthetic.main.dialog_select_county.*
 
 class SelectCountyDialog: BaseDialogFragment(R.layout.dialog_select_county), OnCountySelectedListener {
 
-    var onCountySelectedListener: OnCountySelectedListener? = null
+    private var onCountySelectedListener: OnCountySelectedListener? = null
 
     companion object {
         private const val KEY_ARRAY_ID = "KEY_ARRAY_ID"
@@ -35,13 +35,10 @@ class SelectCountyDialog: BaseDialogFragment(R.layout.dialog_select_county), OnC
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        isCancelable = true
         val arrayId = arguments?.getInt(KEY_ARRAY_ID)
         arrayId?.let {
             recycler_county.adapter = SelectCountyAdapter(resources.getStringArray(it), this)
-        }
-
-        parent_layout.setOnClickListener {
-            this.dismiss()
         }
     }
 
