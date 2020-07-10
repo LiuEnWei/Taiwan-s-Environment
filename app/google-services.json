@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1060568644533",
+    "firebase_url": "https://taiwan-s-environment.firebaseio.com",
+    "project_id": "taiwan-s-environment",
+    "storage_bucket": "taiwan-s-environment.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1060568644533:android:5c927299a10bf07933b7fc",
+        "android_client_info": {
+          "package_name": "com.wayne.taiwan_s_environment"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1060568644533-cdsd0jodkpnrebclqavl6ma5on4dd2rj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.wayne.taiwan_s_environment",
+            "certificate_hash": "e800f70702ae6f6bc3c3b7bfe14e83781a4e521d"
+          }
+        },
+        {
+          "client_id": "1060568644533-s6lm1jvum5t9rncc3nrlf5aphallcvq6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDAODIJ6eb7dooNz4BXO0YMc1rQzhdPLUo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1060568644533-s6lm1jvum5t9rncc3nrlf5aphallcvq6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
