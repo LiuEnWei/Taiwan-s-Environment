@@ -32,6 +32,7 @@ class TaiwanFragment : BaseFragment(R.layout.fragment_taiwan), TaiwanAQIViewHold
         super.onViewCreated(view, savedInstanceState)
         bottomSheet = BottomSheetBehavior.from(bottom_sheet)
 
+        recycler_taiwan.setItemViewCacheSize(10)
         recycler_taiwan.adapter = TaiwanAdapter(arrayListOf(), this)
 
         viewModel.epaList.observe(viewLifecycleOwner, Observer {

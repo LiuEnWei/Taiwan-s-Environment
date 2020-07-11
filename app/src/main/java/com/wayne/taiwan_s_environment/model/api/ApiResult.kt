@@ -2,6 +2,13 @@ package com.wayne.taiwan_s_environment.model.api
 
 sealed class ApiResult<T> {
     companion object {
+        fun <T> loading(): ApiResult<T> {
+            return Loading()
+        }
+
+        fun <T> loaded(): ApiResult<T> {
+            return Loaded()
+        }
         fun <T> success(result: T?): ApiResult<T> {
             return when(result) {
                 null -> Empty()
@@ -18,4 +25,6 @@ sealed class ApiResult<T> {
     data class Error<T>(val throwable: Throwable): ApiResult<T>()
 
     class Empty<T>: ApiResult<T>()
+    class Loading<T> : ApiResult<T>()
+    class Loaded<T> : ApiResult<T>()
 }
