@@ -3,7 +3,9 @@
   A simple app to display Taiwan's environmental data
   
   * **TODO**
-  
+
+    Fix Memory leak : LocationCallback
+
     ...
    
   * **DONE**

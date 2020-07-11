@@ -261,6 +261,8 @@ class HomeFragment : BaseFragment(R.layout.fragment_home), OnCountySelectedListe
 
     override fun onSelected(county: String) {
         Timber.e("selected county : $county")
+        viewModel.setPowerSaving(true)
+        stopLocationUpdates()
         viewModel.getUVByCounty(county)
     }
 
