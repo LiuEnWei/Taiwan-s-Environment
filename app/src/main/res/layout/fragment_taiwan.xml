@@ -29,61 +29,50 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0">
 
-        <RelativeLayout
+        <LinearLayout
             android:id="@+id/bottom_sheet"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
             app:behavior_hideable="false"
             app:behavior_peekHeight="?attr/actionBarSize"
             app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
-
-            <androidx.core.widget.NestedScrollView
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <LinearLayout
+                android:layout_height="?attr/actionBarSize">
+                <View
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:layout_height="20dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="@drawable/bg_white_top_radius_20"/>
+                <View
+                    android:layout_width="30dp"
+                    android:layout_height="4dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_alignParentBottom="true"
+                    android:background="@drawable/bg_gray400_radius_25" />
+            </RelativeLayout>
 
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="?attr/actionBarSize">
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="20dp"
-                            android:layout_alignParentBottom="true"
-                            android:background="@drawable/bg_white_top_radius_20"/>
-                        <View
-                            android:layout_width="30dp"
-                            android:layout_height="4dp"
-                            android:layout_marginBottom="8dp"
-                            android:layout_centerHorizontal="true"
-                            android:layout_alignParentBottom="true"
-                            android:background="@drawable/bg_gray400_radius_25" />
-                    </RelativeLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_taiwan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_white"
+                android:visibility="invisible"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/recycler_taiwan"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/bg_white"
-                        android:visibility="invisible"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-
-                    <TextView
-                        android:id="@+id/text_no_site"
-                        android:layout_width="match_parent"
-                        android:layout_height="120dp"
-                        android:background="@drawable/bg_white"
-                        android:gravity="center"
-                        android:text="@string/no_site"
-                        android:textColor="@color/colorGray500"
-                        android:textSize="18sp"
-                        android:visibility="gone" />
-                </LinearLayout>
-            </androidx.core.widget.NestedScrollView>
-        </RelativeLayout>
+            <TextView
+                android:id="@+id/text_no_site"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:background="@drawable/bg_white"
+                android:gravity="center"
+                android:text="@string/no_site"
+                android:textColor="@color/colorGray500"
+                android:textSize="18sp"
+                android:visibility="gone" />
+        </LinearLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <androidx.appcompat.widget.Toolbar
