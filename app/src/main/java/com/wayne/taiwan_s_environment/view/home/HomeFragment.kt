@@ -3,25 +3,22 @@ package com.wayne.taiwan_s_environment.view.home
 import android.Manifest
 import android.content.DialogInterface
 import android.content.Intent
-import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.location.Location
 import android.net.Uri
 import android.os.Bundle
-import android.os.Looper
 import android.provider.Settings
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import com.google.android.gms.common.api.ResolvableApiException
-import com.google.android.gms.location.*
-import com.google.android.gms.tasks.Task
 import com.wayne.taiwan_s_environment.R
 import com.wayne.taiwan_s_environment.model.api.ApiResult
 import com.wayne.taiwan_s_environment.model.exception.CountyNotFoundException
 import com.wayne.taiwan_s_environment.model.exception.SameCountyException
+import com.wayne.taiwan_s_environment.model.manager.LocationManager
+import com.wayne.taiwan_s_environment.model.manager.LocationManagerListener
 import com.wayne.taiwan_s_environment.view.adapter.HomeAdapter
 import com.wayne.taiwan_s_environment.view.base.BaseFragment
 import com.wayne.taiwan_s_environment.view.dialog.selectcounty.OnCountySelectedListener
@@ -37,17 +34,25 @@ class HomeFragment : BaseFragment(R.layout.fragment_home), OnCountySelectedListe
     }
 
     private val viewModel by viewModels<HomeViewModel>()
-
-    private lateinit var fusedLocationClient: FusedLocationProviderClient
-    private lateinit var locationRequest: LocationRequest
-    private lateinit var locationCallback: LocationCallback
-
-    private var isLocationUpdates: Boolean = false
+    private lateinit var locationManager: LocationManager
+    private var locationManagerListener: LocationManagerListener? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initLocation()
+        locationManagerListener = object: LocationManagerListener {
+            override fun onLocationUpdated(location: Location) {
+                viewModel.getUVByLocation(location)
+            }
+
+            override fun updateFloatingLocationButton() {
+                this@HomeFragment.updateFloatingLocationButton()
+            }
+
+        }
+        locationManager = LocationManager(requireContext(), locationManagerListener)
+        lifecycle.addObserver(locationManager)
+
         recycler_home.adapter = HomeAdapter(arrayListOf())
 
         viewModel.epaDataUpdate.observe(viewLifecycleOwner, Observer {
@@ -71,7 +76,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home), OnCountySelectedListe
                     (recycler_home.adapter as HomeAdapter).list = it.result
                     (recycler_home.adapter as HomeAdapter).notifyDataSetChanged()
                     if (viewModel.isPowerSaving()) {
-                        stopLocationUpdates()
+                        locationManager.stopLocationUpdates()
                     }
                 }
 
@@ -110,12 +115,12 @@ class HomeFragment : BaseFragment(R.layout.fragment_home), OnCountySelectedListe
             } else if (viewModel.county.value == null) {
                 btn_location.setImageResource(R.drawable.ic_round_location_unknown_24)
                 showSelectCountyDialog()
-            } else if (isLocationUpdates) {
+            } else if (locationManager.isLocationUpdate()) {
                 viewModel.setPowerSaving(true)
-                stopLocationUpdates()
+                locationManager.stopLocationUpdates()
             } else {
                 viewModel.setPowerSaving(false)
-                startLocationUpdates()
+                locationManager.startLocationUpdates()
             }
         }
 
@@ -131,16 +136,6 @@ class HomeFragment : BaseFragment(R.layout.fragment_home), OnCountySelectedListe
         viewModel.initData()
     }
 
-    override fun onResume() {
-        super.onResume()
-        if (!isLocationUpdates) startLocationUpdates()
-    }
-
-    override fun onPause() {
-        super.onPause()
-        stopLocationUpdates()
-    }
-
     override fun isBottomNavigationShow(): Boolean {
         return true
     }
@@ -153,50 +148,27 @@ class HomeFragment : BaseFragment(R.layout.fragment_home), OnCountySelectedListe
         return R.color.colorLightBlue200
     }
 
-    private fun initLocation() {
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+    override fun onResume() {
+        super.onResume()
+        Timber.e("onResume()")
+    }
 
-        locationCallback = object : LocationCallback() {
-            override fun onLocationResult(locationResult: LocationResult?) {
-                locationResult ?: return
-                for (location in locationResult.locations){
-                    // Update UI with location data
-                    // ...
-                    Timber.e("location : $location")
-                    viewModel.getUVByLocation(location)
-                }
-            }
-        }
+    override fun onPause() {
+        super.onPause()
+        Timber.e("onPause()")
+    }
 
-        locationRequest = LocationRequest.create().apply {
-            interval = 10000
-            fastestInterval = 5000
-            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-        }
-        val builder = LocationSettingsRequest.Builder()
-                .addLocationRequest(locationRequest)
+    override fun onDestroyView() {
+        Timber.e("onDestroyView()")
+        locationManager.listener = null
+        lifecycle.removeObserver(locationManager)
+        locationManagerListener = null
+        super.onDestroyView()
+    }
 
-        val client: SettingsClient = LocationServices.getSettingsClient(requireActivity())
-        val task: Task<LocationSettingsResponse> = client.checkLocationSettings(builder.build())
-
-        task.addOnSuccessListener { locationSettingsResponse ->
-            Timber.e("locationSettingsResponse success")
-        }
-
-        task.addOnFailureListener { exception ->
-            Timber.e("locationSettingsResponse failure")
-            if (exception is ResolvableApiException){
-                // Location settings are not satisfied, but this can be fixed
-                // by showing the user a dialog.
-                try {
-                    // Show the dialog by calling startResolutionForResult(),
-                    // and check the result in onActivityResult().
-//                    exception.startResolutionForResult(requireActivity(), REQUEST_CHECK_SETTINGS)
-                } catch (sendEx: IntentSender.SendIntentException) {
-                    // Ignore the error.
-                }
-            }
-        }
+    override fun onDestroy() {
+        super.onDestroy()
+        Timber.e("onDestroy()")
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
@@ -205,6 +177,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home), OnCountySelectedListe
             PERMISSIONS_CODE -> {
                 if ((grantResults.isNotEmpty() &&
                             grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    viewModel.setPowerSaving(false)
                     btn_location.setImageResource(R.drawable.ic_round_location_unknown_24)
                 } else {
                     AlertDialog.Builder(requireContext())
@@ -219,36 +192,13 @@ class HomeFragment : BaseFragment(R.layout.fragment_home), OnCountySelectedListe
         }
     }
 
-    private fun startLocationUpdates() {
-        if (ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
-                || ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            btn_location.setImageResource(R.drawable.ic_round_location_unknown_24)
-            fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
-                Timber.e("lastLocation : $location")
-                location?.let {
-                    viewModel.getUVByLocation(it)
-                }
-            }
-            fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper())
-            isLocationUpdates = true
-        } else {
-            btn_location.setImageResource(R.drawable.ic_round_location_disabled_24)
-        }
-    }
-
-    private fun stopLocationUpdates() {
-        fusedLocationClient.removeLocationUpdates(locationCallback)
-        isLocationUpdates = false
-        updateFloatingLocationButton()
-    }
-
     private fun updateFloatingLocationButton() {
         if (ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
             && ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             btn_location.setImageResource(R.drawable.ic_round_location_disabled_24)
         } else if (viewModel.county.value == null) {
             btn_location.setImageResource(R.drawable.ic_round_location_unknown_24)
-        } else if (isLocationUpdates) {
+        } else if (locationManager.isLocationUpdate()) {
             btn_location.setImageResource(R.drawable.ic_round_my_location_24)
         } else {
             btn_location.setImageResource(R.drawable.ic_round_location_searching_24)
@@ -262,7 +212,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home), OnCountySelectedListe
     override fun onSelected(county: String) {
         Timber.e("selected county : $county")
         viewModel.setPowerSaving(true)
-        stopLocationUpdates()
+        locationManager.stopLocationUpdates()
         viewModel.getUVByCounty(county)
     }
 
