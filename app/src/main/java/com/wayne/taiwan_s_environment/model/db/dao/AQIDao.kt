@@ -26,11 +26,8 @@ interface AQIDao {
     suspend fun getAllNewestByCounty(county: String): List<Home>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAll(uv: List<AQI>)
+    suspend fun insertAll(aqi: List<AQI>)
 
     @Query("DELETE FROM aqi WHERE time < :time")
     suspend fun deleteByTime(time: Long)
-
-    @Query("DELETE FROM aqi")
-    suspend fun deleteAll()
 }

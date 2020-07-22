@@ -6,14 +6,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.wayne.taiwan_s_environment.MyApplication
+import com.wayne.taiwan_s_environment.model.Repository
 import com.wayne.taiwan_s_environment.model.api.ApiResult
-import com.wayne.taiwan_s_environment.model.api.EpaDataService
-import com.wayne.taiwan_s_environment.model.db.dao.AQIDao
-import com.wayne.taiwan_s_environment.model.db.dao.UVDao
 import com.wayne.taiwan_s_environment.model.db.vo.Home
 import com.wayne.taiwan_s_environment.model.exception.CountyNotFoundException
 import com.wayne.taiwan_s_environment.model.exception.SameCountyException
-import com.wayne.taiwan_s_environment.model.pref.Pref
 import com.wayne.taiwan_s_environment.utils.toDbAQIList
 import com.wayne.taiwan_s_environment.utils.toDbUVList
 import com.wayne.taiwan_s_environment.view.base.BaseViewModel
@@ -30,10 +27,7 @@ import java.util.*
 
 class HomeViewModel : BaseViewModel() {
 
-    private val epaDateService: EpaDataService by inject()
-    private val uvDao: UVDao by inject()
-    private val aqiDao: AQIDao by inject()
-    private val pref: Pref by inject()
+    private val repository: Repository by inject()
 
     private val _epaDataUpdate = MutableLiveData<ApiResult<Nothing>>()
     val epaDataUpdate: LiveData<ApiResult<Nothing>>
@@ -46,8 +40,8 @@ class HomeViewModel : BaseViewModel() {
         get() = _epaList
 
     fun initData() {
-        Timber.e("initData ${pref.county}")
-        pref.county?.let {
+        repository.getPrefCounty()?.let {
+            Timber.e("initData $it")
             getUVByCounty(it)
         }
     }
@@ -55,15 +49,15 @@ class HomeViewModel : BaseViewModel() {
     fun updateEpaData() {
         viewModelScope.launch {
             flow {
-                val uvResult = epaDateService.getUV()
+                val uvResult = repository.getUV()
                 val uvRecords = uvResult.body()?.records
                 if (!uvResult.isSuccessful || uvRecords == null) throw HttpException(uvResult)
-                uvDao.insertAll(uvRecords.toDbUVList())
+                repository.insertUV(uvRecords.toDbUVList())
 
-                val aqiResult = epaDateService.getAQI()
+                val aqiResult = repository.getAQI()
                 val aqiRecords = aqiResult.body()?.records
                 if (!aqiResult.isSuccessful || aqiRecords == null) throw HttpException(aqiResult)
-                aqiDao.insertAll(aqiRecords.toDbAQIList())
+                repository.insertAQI(aqiRecords.toDbAQIList())
 
                 emit(ApiResult.success(null))
             }.flowOn(Dispatchers.IO)
@@ -80,11 +74,8 @@ class HomeViewModel : BaseViewModel() {
     fun getUVByCounty(county: String) {
         viewModelScope.launch {
             flow {
-                val list = arrayListOf<Home>()
-                list.addAll(uvDao.getAllByCounty(county))
-                list.addAll(aqiDao.getAllByCounty(county))
-                list.sort()
-                pref.county = county
+                val list = repository.getAllByCounty(county)
+                repository.setPrefCounty(county)
                 if (list.isNotEmpty()) {
                     this@HomeViewModel.county.postValue(county)
                 }
@@ -106,13 +97,9 @@ class HomeViewModel : BaseViewModel() {
                 Timber.e("admin : $admin")
                 if (admin == county.value) throw SameCountyException()
 
-                val list = arrayListOf<Home>()
-                list.addAll(uvDao.getAllByCounty(admin))
-                list.addAll(aqiDao.getAllByCounty(admin))
-                list.sort()
+                val list = repository.getAllByCounty(admin)
                 if (list.isNullOrEmpty()) throw CountyNotFoundException()
-
-                pref.county = admin
+                repository.setPrefCounty(admin)
                 county.postValue(admin)
                 emit(ApiResult.success(list))
             }.flowOn(Dispatchers.IO)
@@ -122,10 +109,10 @@ class HomeViewModel : BaseViewModel() {
     }
 
     fun isPowerSaving(): Boolean {
-        return pref.isPowerSaving
+        return repository.isPowerSaving()
     }
 
     fun setPowerSaving(isPowerSaving: Boolean) {
-        pref.isPowerSaving = isPowerSaving
+        repository.setPowerSaving(isPowerSaving)
     }
 }

@@ -148,27 +148,11 @@ class HomeFragment : BaseFragment(R.layout.fragment_home), OnCountySelectedListe
         return R.color.colorLightBlue200
     }
 
-    override fun onResume() {
-        super.onResume()
-        Timber.e("onResume()")
-    }
-
-    override fun onPause() {
-        super.onPause()
-        Timber.e("onPause()")
-    }
-
     override fun onDestroyView() {
-        Timber.e("onDestroyView()")
         locationManager.listener = null
         lifecycle.removeObserver(locationManager)
         locationManagerListener = null
         super.onDestroyView()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Timber.e("onDestroy()")
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
