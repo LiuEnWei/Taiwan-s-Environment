@@ -26,14 +26,8 @@ interface UVDao {
     suspend fun getAllNewestByCounty(county: String): List<Home>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertUV(uv: UV)
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(uv: List<UV>)
 
     @Query("DELETE FROM uv WHERE time < :time")
     suspend fun deleteByTime(time: Long)
-
-    @Query("DELETE FROM uv")
-    suspend fun deleteAll()
 }

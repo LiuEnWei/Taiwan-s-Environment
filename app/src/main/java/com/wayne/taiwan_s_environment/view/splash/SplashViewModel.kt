@@ -4,11 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.wayne.taiwan_s_environment.Constant
+import com.wayne.taiwan_s_environment.model.Repository
 import com.wayne.taiwan_s_environment.model.api.ApiResult
-import com.wayne.taiwan_s_environment.model.api.EpaDataService
-import com.wayne.taiwan_s_environment.model.db.dao.AQIDao
-import com.wayne.taiwan_s_environment.model.db.dao.UVDao
-import com.wayne.taiwan_s_environment.model.pref.Pref
 import com.wayne.taiwan_s_environment.utils.toDbAQIList
 import com.wayne.taiwan_s_environment.utils.toDbUVList
 import com.wayne.taiwan_s_environment.view.base.BaseViewModel
@@ -26,10 +23,7 @@ import java.util.*
 
 class SplashViewModel : BaseViewModel() {
 
-    private val epaDateService: EpaDataService by inject()
-    private val uvDao: UVDao by inject()
-    private val aqiDao: AQIDao by inject()
-    private val pref: Pref by inject()
+    private val repository: Repository by inject()
 
     private val _uvList = MutableLiveData<ApiResult<Nothing>>()
     val uvList: LiveData<ApiResult<Nothing>>
@@ -44,13 +38,10 @@ class SplashViewModel : BaseViewModel() {
             flow {
                 if (startTime == null){
                     startTime = Date().time
-                    uvDao.deleteByTime(getTodayStart())
-                    aqiDao.deleteByTime(getTodayStart())
+                    repository.deleteByTime(getTodayStart())
                 }
 
-                val uvMaxTime = uvDao.getMaxTime()?:0
-                val aqiMaxTime = aqiDao.getMaxTime()?:0
-                val maxTime = (uvMaxTime).coerceAtMost(aqiMaxTime).let {
+                val maxTime = repository.getMaxTime().let {
                     val today = getTodayStart()
                     return@let if (it == 0L || it < today) {
                         today
@@ -62,13 +53,12 @@ class SplashViewModel : BaseViewModel() {
                 Timber.e("local max publish time : $maxTime")
                 val nowTime = getNowHourTime()
                 Timber.e("nowHourTime : $nowTime")
-                if (uvMaxTime != 0L && aqiMaxTime != 0L && nowTime - maxTime < oneHour) {
+                if (repository.getUVMaxTime() != 0L && repository.getAQIMaxTime() != 0L && nowTime - maxTime < oneHour) {
                     // not need update
                     Timber.e("not need update")
                     delay(minDelayTime)
                     emit(ApiResult.success(null))
                 } else {
-                    Timber.e("need update")
                     val hourCount = if (maxTime == nowTime) {
                         1
                     } else {
@@ -76,18 +66,16 @@ class SplashViewModel : BaseViewModel() {
                     }
                     Timber.e("need update, hourCount : $hourCount")
                     val uvLimit = hourCount * Constant.EPA_DATA_UV_SITE_COUNTS
-                    val uvResult = epaDateService.getUV(limit = uvLimit.toInt())
+                    val uvResult = repository.getUV(limit = uvLimit.toInt())
                     val uvRecords = uvResult.body()?.records
                     if (!uvResult.isSuccessful || uvRecords == null) throw HttpException(uvResult)
-                    uvDao.insertAll(uvRecords.toDbUVList())
-                    Timber.e("uv all : ${uvDao.getAll().size}")
+                    repository.insertUV(uvRecords.toDbUVList())
 
                     val aqiLimit = hourCount * Constant.EPA_DATA_AQI_SITE_COUNTS
-                    val aqiResult = epaDateService.getAQI(limit = aqiLimit.toInt())
+                    val aqiResult = repository.getAQI(limit = aqiLimit.toInt())
                     val aqiRecords = aqiResult.body()?.records
                     if (!aqiResult.isSuccessful || aqiRecords == null) throw HttpException(uvResult)
-                    aqiDao.insertAll(aqiRecords.toDbAQIList())
-                    Timber.e("aqi all : ${aqiDao.getAll().size}")
+                    repository.insertAQI(aqiRecords.toDbAQIList())
 
                     val delayTime = Date().time - startTime!!
                     if (delayTime < minDelayTime) {
@@ -120,6 +108,6 @@ class SplashViewModel : BaseViewModel() {
     }
 
     fun isFirstStartApp(): Boolean {
-        return pref.isFirstStartApp
+        return repository.isFirstStartApp()
     }
 }

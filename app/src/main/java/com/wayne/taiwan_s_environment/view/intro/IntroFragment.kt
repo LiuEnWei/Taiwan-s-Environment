@@ -2,19 +2,13 @@ package com.wayne.taiwan_s_environment.view.intro
 
 import android.os.Bundle
 import android.view.View
-import androidx.annotation.Px
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager2.widget.ViewPager2
-import androidx.viewpager2.widget.ViewPager2.ScrollState
 import com.wayne.taiwan_s_environment.R
-import com.wayne.taiwan_s_environment.utils.toDp
 import com.wayne.taiwan_s_environment.view.adapter.IntroPagerAdapter
 import com.wayne.taiwan_s_environment.view.adapter.transformer.IntroPageTransformer
 import com.wayne.taiwan_s_environment.view.base.BaseFragment
 import kotlinx.android.synthetic.main.fragment_intro.*
-import timber.log.Timber
 
 class IntroFragment : BaseFragment(R.layout.fragment_intro), View.OnClickListener {
     private val viewModel by viewModels<IntroViewModel>()

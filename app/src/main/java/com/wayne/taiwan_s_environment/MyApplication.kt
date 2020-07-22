@@ -1,9 +1,7 @@
 package com.wayne.taiwan_s_environment
 
 import android.app.Application
-import com.wayne.taiwan_s_environment.di.apiModule
 import com.wayne.taiwan_s_environment.di.appModule
-import com.wayne.taiwan_s_environment.di.dbModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -28,9 +26,7 @@ class MyApplication : Application() {
         Timber.plant(Timber.DebugTree())
 
         val modules = listOf(
-            apiModule,
-            appModule,
-            dbModule
+            appModule
         )
 
         startKoin {

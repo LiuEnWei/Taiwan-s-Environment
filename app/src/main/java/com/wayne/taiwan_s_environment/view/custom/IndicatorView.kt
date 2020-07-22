@@ -3,18 +3,13 @@ package com.wayne.taiwan_s_environment.view.custom
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
-import android.graphics.drawable.ShapeDrawable
 import android.util.AttributeSet
 import android.view.View
 import android.widget.RelativeLayout
 import androidx.annotation.Px
-import androidx.constraintlayout.solver.widgets.Rectangle
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.wayne.taiwan_s_environment.R
-import com.wayne.taiwan_s_environment.utils.toDp
-import kotlinx.android.synthetic.main.fragment_intro.*
-import timber.log.Timber
 
 class IndicatorView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : RelativeLayout(context, attrs, defStyleAttr) {
 

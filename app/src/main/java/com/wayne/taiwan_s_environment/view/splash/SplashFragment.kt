@@ -11,7 +11,6 @@ import com.wayne.taiwan_s_environment.R
 import com.wayne.taiwan_s_environment.model.api.ApiResult
 import com.wayne.taiwan_s_environment.view.base.BaseFragment
 import kotlinx.android.synthetic.main.fragment_splash.*
-import timber.log.Timber
 
 
 class SplashFragment : BaseFragment(R.layout.fragment_splash) {

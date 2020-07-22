@@ -69,7 +69,6 @@ class LocationManager(val context: Context, var listener: LocationManagerListene
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     fun resume(){
         startLocationUpdates()
-        Timber.e("resume()")
     }
 
     fun startLocationUpdates() {
@@ -90,13 +89,11 @@ class LocationManager(val context: Context, var listener: LocationManagerListene
     @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
     fun pause() {
        stopLocationUpdates()
-        Timber.e("pause()")
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     fun destroy() {
         listener = null
-        Timber.e("destroy()")
     }
 
     fun stopLocationUpdates() {
