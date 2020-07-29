@@ -3,28 +3,39 @@ package com.wayne.taiwan_s_environment.model
 import com.wayne.taiwan_s_environment.Constant
 import com.wayne.taiwan_s_environment.model.api.EpaDataService
 import com.wayne.taiwan_s_environment.model.api.vo.AQI
-import com.wayne.taiwan_s_environment.model.api.vo.EpaResponse
 import com.wayne.taiwan_s_environment.model.api.vo.UV
 import com.wayne.taiwan_s_environment.model.db.dao.AQIDao
 import com.wayne.taiwan_s_environment.model.db.dao.UVDao
 import com.wayne.taiwan_s_environment.model.db.vo.Home
 import com.wayne.taiwan_s_environment.model.pref.Pref
-import retrofit2.Response
 
 class Repository(private val epaDataService: EpaDataService, private val uvDao: UVDao, private val aqiDao: AQIDao, private val pref: Pref) {
 
     suspend fun getUV(limit: Int = Constant.EPA_DATA_UV_SITE_COUNTS,
                       offset: Int = 0,
                       apiKey: String = Constant.EPA_DATA_API_KEY,
-                      format: String = "json"): Response<EpaResponse<UV>> {
-        return epaDataService.getUV(limit, offset, apiKey, format)
+                      format: String = "json"): Result<List<UV>> {
+        return try {
+            val response =  epaDataService.getUV(limit, offset, apiKey, format)
+
+            Result.success(response.records)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Result.error(e)
+        }
     }
 
     suspend fun getAQI(limit: Int = Constant.EPA_DATA_AQI_SITE_COUNTS,
                        offset: Int = 0,
                        apiKey: String = Constant.EPA_DATA_API_KEY,
-                       format: String = "json"): Response<EpaResponse<AQI>> {
-        return epaDataService.getAQI(limit, offset, apiKey, format)
+                       format: String = "json"): Result<List<AQI>> {
+        return try {
+            val response = epaDataService.getAQI(limit, offset, apiKey, format)
+            Result.success(response.records)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Result.error(e)
+        }
     }
 
     suspend fun insertUV(uv: List<com.wayne.taiwan_s_environment.model.db.vo.UV>) {

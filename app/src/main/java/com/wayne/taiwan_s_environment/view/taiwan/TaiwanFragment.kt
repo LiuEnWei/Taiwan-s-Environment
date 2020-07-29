@@ -1,6 +1,5 @@
 package com.wayne.taiwan_s_environment.view.taiwan
 
-import android.content.DialogInterface
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -10,7 +9,6 @@ import androidx.lifecycle.Observer
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.richpath.RichPath
 import com.wayne.taiwan_s_environment.R
-import com.wayne.taiwan_s_environment.model.api.ApiResult
 import com.wayne.taiwan_s_environment.model.db.vo.Home
 import com.wayne.taiwan_s_environment.view.adapter.TaiwanAdapter
 import com.wayne.taiwan_s_environment.view.adapter.viewholder.TaiwanAQIViewHolder
@@ -36,28 +34,15 @@ class TaiwanFragment : BaseFragment(R.layout.fragment_taiwan), TaiwanAQIViewHold
         recycler_taiwan.adapter = TaiwanAdapter(arrayListOf(), this)
 
         viewModel.epaList.observe(viewLifecycleOwner, Observer {
-            when (it) {
-                is ApiResult.Success -> {
-                    val list = it.result
-                    if (list.isNullOrEmpty()) {
-                        text_no_site.visibility = View.VISIBLE
-                        recycler_taiwan.visibility = View.INVISIBLE
-                    } else {
-                        text_no_site.visibility = View.GONE
-                        recycler_taiwan.visibility = View.VISIBLE
-                    }
-
-                    (recycler_taiwan.adapter as TaiwanAdapter).list = list
-                    (recycler_taiwan.adapter as TaiwanAdapter).notifyDataSetChanged()
-                }
-
-                is ApiResult.Error -> {
-                    showErrorMessage(getErrorMessage(it.throwable),
-                        DialogInterface.OnClickListener { dialog, view ->
-                            dialog.dismiss()
-                        })
-                }
+            if (it.isNullOrEmpty()) {
+                text_no_site.visibility = View.VISIBLE
+                recycler_taiwan.visibility = View.INVISIBLE
+            } else {
+                text_no_site.visibility = View.GONE
+                recycler_taiwan.visibility = View.VISIBLE
             }
+            (recycler_taiwan.adapter as TaiwanAdapter).list = it
+            (recycler_taiwan.adapter as TaiwanAdapter).notifyDataSetChanged()
         })
 
         rich_path_taiwan.setOnPathClickListener { rich ->

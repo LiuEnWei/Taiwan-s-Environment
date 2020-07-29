@@ -7,21 +7,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.wayne.taiwan_s_environment.MyApplication
 import com.wayne.taiwan_s_environment.model.Repository
-import com.wayne.taiwan_s_environment.model.api.ApiResult
+import com.wayne.taiwan_s_environment.model.Result
 import com.wayne.taiwan_s_environment.model.db.vo.Home
 import com.wayne.taiwan_s_environment.model.exception.CountyNotFoundException
-import com.wayne.taiwan_s_environment.model.exception.SameCountyException
 import com.wayne.taiwan_s_environment.utils.toDbAQIList
 import com.wayne.taiwan_s_environment.utils.toDbUVList
 import com.wayne.taiwan_s_environment.view.base.BaseViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import org.koin.core.inject
-import retrofit2.HttpException
 import timber.log.Timber
 import java.util.*
 
@@ -29,14 +22,14 @@ class HomeViewModel : BaseViewModel() {
 
     private val repository: Repository by inject()
 
-    private val _epaDataUpdate = MutableLiveData<ApiResult<Nothing>>()
-    val epaDataUpdate: LiveData<ApiResult<Nothing>>
+    private val _epaDataUpdate = MutableLiveData<Result<Nothing>>()
+    val epaDataUpdate: LiveData<Result<Nothing>>
         get() = _epaDataUpdate
 
     val county = MutableLiveData<String>()
 
-    private val _epaList = MutableLiveData<ApiResult<ArrayList<Home>>>()
-    val epaList: LiveData<ApiResult<ArrayList<Home>>>
+    private val _epaList = MutableLiveData<Result<ArrayList<Home>>>()
+    val epaList: LiveData<Result<ArrayList<Home>>>
         get() = _epaList
 
     fun initData() {
@@ -48,63 +41,72 @@ class HomeViewModel : BaseViewModel() {
 
     fun updateEpaData() {
         viewModelScope.launch {
-            flow {
-                val uvResult = repository.getUV()
-                val uvRecords = uvResult.body()?.records
-                if (!uvResult.isSuccessful || uvRecords == null) throw HttpException(uvResult)
-                repository.insertUV(uvRecords.toDbUVList())
+            try {
 
-                val aqiResult = repository.getAQI()
-                val aqiRecords = aqiResult.body()?.records
-                if (!aqiResult.isSuccessful || aqiRecords == null) throw HttpException(aqiResult)
-                repository.insertAQI(aqiRecords.toDbAQIList())
+            } catch (e: Exception) {
 
-                emit(ApiResult.success(null))
-            }.flowOn(Dispatchers.IO)
-                .catch { e -> emit(ApiResult.error(e)) }
-                .collect {
-                    _epaDataUpdate.value = it
-                    county.value?.let { county ->
-                        getUVByCounty(county)
-                    }
+            }
+            val uvResult = repository.getUV()
+            if (uvResult is Result.Success) {
+                repository.insertUV(uvResult.result.toDbUVList())
+            }
+            val aqiResult = repository.getAQI()
+            if (aqiResult is Result.Success) {
+                repository.insertAQI(aqiResult.result.toDbAQIList())
+            }
+
+            when {
+                uvResult is Result.Error -> {
+                    _epaDataUpdate.value = Result.error(uvResult.throwable)
                 }
+                aqiResult is Result.Error -> {
+                    _epaDataUpdate.value = Result.error(aqiResult.throwable)
+                }
+                else -> {
+                    _epaDataUpdate.value = Result.success(null)
+                }
+            }
+
+            county.value?.let { county ->
+                getUVByCounty(county)
+            }
         }
     }
 
     fun getUVByCounty(county: String) {
         viewModelScope.launch {
-            flow {
+            _epaList.postValue(Result.loading())
+            try {
                 val list = repository.getAllByCounty(county)
                 repository.setPrefCounty(county)
                 if (list.isNotEmpty()) {
                     this@HomeViewModel.county.postValue(county)
                 }
-                emit(ApiResult.success(list))
-            }.flowOn(Dispatchers.IO)
-                .catch { e -> emit(ApiResult.error(e)) }
-                .collect { _epaList.postValue(it) }
+                _epaList.postValue(Result.success(list))
+            } catch (e: Exception) {
+                _epaList.postValue(Result.error(e))
+            }
         }
     }
 
     fun getUVByLocation(location: Location) {
         viewModelScope.launch {
-            flow {
+            _epaList.postValue(Result.loading())
+            try {
                 val geocoder = Geocoder(MyApplication.applicationContext(), Locale.getDefault())
                 val address = geocoder.getFromLocation(location.latitude, location.longitude, 1)
                 val firstAddress = address.first()
                 Timber.e("firstAddress : ${firstAddress.getAddressLine(0)}")
-                val admin = firstAddress.adminArea
+                val admin = firstAddress.adminArea.replaceAdmin()
                 Timber.e("admin : $admin")
-                if (admin == county.value) throw SameCountyException()
-
                 val list = repository.getAllByCounty(admin)
                 if (list.isNullOrEmpty()) throw CountyNotFoundException()
                 repository.setPrefCounty(admin)
                 county.postValue(admin)
-                emit(ApiResult.success(list))
-            }.flowOn(Dispatchers.IO)
-                .catch { e -> emit(ApiResult.error(e)) }
-                .collect { _epaList.postValue(it) }
+                _epaList.postValue(Result.success(list))
+            } catch (e: Exception) {
+                _epaList.postValue(Result.error(e))
+            }
         }
     }
 
@@ -114,5 +116,9 @@ class HomeViewModel : BaseViewModel() {
 
     fun setPowerSaving(isPowerSaving: Boolean) {
         repository.setPowerSaving(isPowerSaving)
+    }
+
+    fun String.replaceAdmin(): String {
+        return this.replace("台", "臺")
     }
 }

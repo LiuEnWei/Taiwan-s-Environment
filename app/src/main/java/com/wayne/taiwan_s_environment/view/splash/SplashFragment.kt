@@ -8,7 +8,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.wayne.taiwan_s_environment.R
-import com.wayne.taiwan_s_environment.model.api.ApiResult
+import com.wayne.taiwan_s_environment.model.Result
 import com.wayne.taiwan_s_environment.view.base.BaseFragment
 import kotlinx.android.synthetic.main.fragment_splash.*
 
@@ -23,7 +23,7 @@ class SplashFragment : BaseFragment(R.layout.fragment_splash) {
 
         viewModel.uvList.observe(viewLifecycleOwner, Observer {
             when (it) {
-                is ApiResult.Empty -> {
+                is Result.Empty -> {
                     vectorDrawable?.stop()
                     if (viewModel.isFirstStartApp()) {
                         findNavController().navigate(SplashFragmentDirections.actionSplashFragmentToIntroFragment())
@@ -32,7 +32,7 @@ class SplashFragment : BaseFragment(R.layout.fragment_splash) {
                     }
                 }
 
-                is ApiResult.Error -> {
+                is Result.Error -> {
                     it.throwable.printStackTrace()
                     showErrorMessage(getErrorMessage(it.throwable),
                         DialogInterface.OnClickListener { dialog, view ->

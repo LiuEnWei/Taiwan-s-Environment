@@ -14,9 +14,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.wayne.taiwan_s_environment.R
-import com.wayne.taiwan_s_environment.model.api.ApiResult
 import com.wayne.taiwan_s_environment.model.exception.CountyNotFoundException
-import com.wayne.taiwan_s_environment.model.exception.SameCountyException
 import com.wayne.taiwan_s_environment.model.manager.LocationManager
 import com.wayne.taiwan_s_environment.model.manager.LocationManagerListener
 import com.wayne.taiwan_s_environment.view.adapter.HomeAdapter
@@ -25,6 +23,7 @@ import com.wayne.taiwan_s_environment.view.dialog.selectcounty.OnCountySelectedL
 import com.wayne.taiwan_s_environment.view.dialog.selectcounty.SelectCountyDialog
 import kotlinx.android.synthetic.main.fragment_home.*
 import timber.log.Timber
+import com.wayne.taiwan_s_environment.model.Result
 
 
 class HomeFragment : BaseFragment(R.layout.fragment_home), OnCountySelectedListener {
@@ -57,10 +56,10 @@ class HomeFragment : BaseFragment(R.layout.fragment_home), OnCountySelectedListe
 
         viewModel.epaDataUpdate.observe(viewLifecycleOwner, Observer {
             when (it) {
-                is ApiResult.Empty -> {
+                is Result.Empty -> {
                     swipe_refresh.isRefreshing = false
                 }
-                is ApiResult.Error -> {
+                is Result.Error -> {
                     it.throwable.printStackTrace()
                     showErrorMessage(getErrorMessage(it.throwable),
                         DialogInterface.OnClickListener { dialog, view ->
@@ -72,7 +71,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home), OnCountySelectedListe
 
         viewModel.epaList.observe(viewLifecycleOwner, Observer {
             when (it) {
-                is ApiResult.Success -> {
+                is Result.Success -> {
                     (recycler_home.adapter as HomeAdapter).list = it.result
                     (recycler_home.adapter as HomeAdapter).notifyDataSetChanged()
                     if (viewModel.isPowerSaving()) {
@@ -80,10 +79,10 @@ class HomeFragment : BaseFragment(R.layout.fragment_home), OnCountySelectedListe
                     }
                 }
 
-                is ApiResult.Error -> {
+                is Result.Error -> {
                     it.throwable.printStackTrace()
                     when (it.throwable) {
-                        is CountyNotFoundException, is SameCountyException -> {
+                        is CountyNotFoundException -> {
                             updateFloatingLocationButton()
                         }
 
