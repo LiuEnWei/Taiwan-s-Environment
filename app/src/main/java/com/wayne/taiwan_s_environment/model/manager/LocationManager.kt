@@ -20,7 +20,7 @@ class LocationManager(val context: Context, var listener: LocationManagerListene
     private var fusedLocationClient: FusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(context)
     private var locationRequest: LocationRequest = LocationRequest.create().apply {
         interval = 10000
-        fastestInterval = 5000
+        fastestInterval = 60000
         priority = LocationRequest.PRIORITY_HIGH_ACCURACY
     }
     private var locationCallback: LocationCallback = object : LocationCallback() {
