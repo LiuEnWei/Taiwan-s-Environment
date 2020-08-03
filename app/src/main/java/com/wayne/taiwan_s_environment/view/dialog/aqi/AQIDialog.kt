@@ -9,6 +9,7 @@ import com.wayne.taiwan_s_environment.view.base.BaseDialogFragment
 import kotlinx.android.synthetic.main.dialog_aqi.*
 import kotlinx.android.synthetic.main.item_aqi_more.*
 import kotlinx.android.synthetic.main.item_taiwan_aqi.*
+import java.lang.Exception
 import kotlin.math.ceil
 
 class AQIDialog: BaseDialogFragment(R.layout.dialog_aqi) {
@@ -30,9 +31,14 @@ class AQIDialog: BaseDialogFragment(R.layout.dialog_aqi) {
 
         text_site_name.text = aqi.siteName
 
-        val aqiValue = ceil(aqi.aqi!!.toDouble()).toInt()
-        text_aqi.text = aqiValue.toString()
-        text_aqi.setTextColor(requireContext().getAQIColor(aqiValue))
+        try {
+            val aqiValue = ceil(aqi.aqi!!.toDouble()).toInt()
+            text_aqi.text = aqiValue.toString()
+            text_aqi.setTextColor(requireContext().getAQIColor(aqiValue))
+        } catch (e: Exception) {
+            text_aqi.text = "-"
+            text_aqi.setTextColor(requireContext().getAQIColor(-1))
+        }
         text_agency.text = getString(R.string.environmental_protection_administration)
         text_status.text = getString(R.string.brackets, aqi.status + if (!aqi.pollutant.isNullOrEmpty()) { " ${aqi.pollutant}" } else { "" })
 
