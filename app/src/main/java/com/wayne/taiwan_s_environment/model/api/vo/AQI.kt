@@ -3,6 +3,7 @@ package com.wayne.taiwan_s_environment.model.api.vo
 import com.google.gson.annotations.SerializedName
 import java.text.SimpleDateFormat
 import java.util.*
+
 /**
  * https://data.epa.gov.tw/dataset/aqx_p_432/resource/8ff027dc-2da2-42e8-85de-78ac3faf470e#
  * */
@@ -22,8 +23,8 @@ data class AQI(
     @SerializedName("NO2") val NO2: String,
     @SerializedName("NOx") val NOx: String,
     @SerializedName("NO") val NO: String,
-    @SerializedName("WindSpeed") val windSpeed: String,
-    @SerializedName("WindDirec") val windDirec: String,
+    @SerializedName("WindSpeed") val windSpeed: String?,
+    @SerializedName("WindDirec") val windDirec: String?,
     @SerializedName("PublishTime") val publishTime: String,
     @SerializedName("PM2.5_AVG") val PM2_5_AVG: String,
     @SerializedName("PM10_AVG") val PM10_AVG: String,
@@ -33,7 +34,7 @@ data class AQI(
     @SerializedName("SiteId") val siteId: String
 ) {
     companion object {
-        val PUBLISH_TIME_FORMAT = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.TAIWAN)
+        val PUBLISH_TIME_FORMAT = SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.TAIWAN)
     }
 
     private fun getTime(): Long? {
@@ -61,8 +62,8 @@ data class AQI(
             NO2,
             NOx,
             NO,
-            windSpeed,
-            windDirec,
+            windSpeed ?: "",
+            windDirec ?: "",
             publishTime,
             PM2_5_AVG,
             PM10_AVG,
