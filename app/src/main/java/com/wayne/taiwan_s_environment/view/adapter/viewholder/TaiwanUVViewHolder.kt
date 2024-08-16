@@ -18,7 +18,7 @@ class TaiwanUVViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
     fun setUV(uv: Home) {
         textSiteName.text = uv.siteName
 
-        val uvi = ceil(uv.uvi!!.toDouble()).toInt()
+        val uvi = ceil(uv.uvi?.toDoubleOrNull() ?: 0.0).toInt()
 
         textUV.text = uvi.toString()
         textUV.setTextColor(context.getUVColor(uvi))

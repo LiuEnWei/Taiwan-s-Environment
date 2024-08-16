@@ -109,16 +109,16 @@ class HomeViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
     private fun setUVMessage(uvi: String?) {
         if (uvi == null) return
         try {
-            val uv = ceil(uvi.toDouble()).toInt()
-//            val uv = uvi.toFloat().roundToInt()
+            val uv = ceil(uvi.toDoubleOrNull() ?: 0.0).toInt()
+            val showUvi = uvi.ifEmpty { "0" }
 
             val messageBuilder = SpannableStringBuilder()
-            messageBuilder.appendln(context.getString(R.string.uv_index, uvi))
+            messageBuilder.appendln(context.getString(R.string.uv_index, showUvi))
             messageBuilder.appendln()
             messageBuilder.appendln()
 
-            val uviStart = messageBuilder.indexOf(uvi)
-            messageBuilder.setSpan(BoldColorRelativeSizeSpan(context.getUVColor(uv),2f), uviStart, uviStart + uvi.length, Spanned.SPAN_INCLUSIVE_INCLUSIVE)
+            val uviStart = messageBuilder.indexOf(showUvi)
+            messageBuilder.setSpan(BoldColorRelativeSizeSpan(context.getUVColor(uv),2f), uviStart, uviStart + showUvi.length, Spanned.SPAN_INCLUSIVE_INCLUSIVE)
 
             var uvIndexLevel: String? = null
             when {

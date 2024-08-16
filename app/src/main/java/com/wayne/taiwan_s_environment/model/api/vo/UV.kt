@@ -8,13 +8,13 @@ import java.util.*
  * https://data.epa.gov.tw/dataset/uv_s_01/resource/c7438756-1c57-4e67-a857-7caef67ec973
  * */
 data class UV(
-    @SerializedName("County") val county: String,
-    @SerializedName("PublishAgency") val publishAgency: String,
-    @SerializedName("PublishTime") val publishTime: String,
-    @SerializedName("SiteName") val siteName: String,
-    @SerializedName("UVI") val uvi: String,
-    @SerializedName("WGS84Lat") val wgs84Lat: String,
-    @SerializedName("WGS84Lon") val wgs84Lon: String
+    @SerializedName("county") val county: String,
+    @SerializedName("unit") val publishAgency: String,
+    @SerializedName("datacreationdate") val publishTime: String,
+    @SerializedName("sitename") val siteName: String,
+    @SerializedName("uvi") val uvi: String,
+    @SerializedName("wgs84_lat") val wgs84Lat: String,
+    @SerializedName("wgs84_lon") val wgs84Lon: String
 ) {
     companion object {
         val PUBLISH_TIME_FORMAT = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.TAIWAN)
